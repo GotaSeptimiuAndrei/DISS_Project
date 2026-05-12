@@ -1,19 +1,22 @@
 import { Link } from "react-router";
 import { motion } from "motion/react";
-import { 
-  Users, 
-  Calendar, 
-  TrendingUp, 
-  Search, 
-  MessageSquare, 
+import {
+  Users,
+  Calendar,
+  TrendingUp,
+  Search,
+  MessageSquare,
   Clock,
   Star,
   ArrowRight,
   Target,
-  BookOpen
+  BookOpen,
 } from "lucide-react";
+import { useChatPanel } from "./ChatPanel";
 
 export function Dashboard() {
+  const { openChat, ChatPortal } = useChatPanel();
+
   const upcomingSessions = [
     {
       id: 1,
@@ -21,7 +24,8 @@ export function Dashboard() {
       topic: "Leadership Development",
       date: "Tomorrow, 2:00 PM",
       duration: "60 min",
-      image: "https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHByb2Zlc3Npb25hbCUyMHdvbWFuJTIwaGVhZHNob3R8ZW58MXx8fHwxNzc1NDcwOTI5fDA&ixlib=rb-4.1.0&q=80&w=400"
+      image:
+        "https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHByb2Zlc3Npb25hbCUyMHdvbWFuJTIwaGVhZHNob3R8ZW58MXx8fHwxNzc1NDcwOTI5fDA&ixlib=rb-4.1.0&q=80&w=400",
     },
     {
       id: 2,
@@ -29,8 +33,9 @@ export function Dashboard() {
       topic: "Product Strategy Session",
       date: "Friday, 10:00 AM",
       duration: "45 min",
-      image: "https://images.unsplash.com/photo-1543132220-7bc04a0e790a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYW4lMjBidXNpbmVzcyUyMHByb2Zlc3Npb25hbCUyMHBvcnRyYWl0fGVufDF8fHx8MTc3NTU0OTA0OXww&ixlib=rb-4.1.0&q=80&w=400"
-    }
+      image:
+        "https://images.unsplash.com/photo-1543132220-7bc04a0e790a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYW4lMjBidXNpbmVzcyUyMHByb2Zlc3Npb25hbCUyMHBvcnRyYWl0fGVufDF8fHx8MTc3NTU0OTA0OXww&ixlib=rb-4.1.0&q=80&w=400",
+    },
   ];
 
   const recommendedMentors = [
@@ -43,7 +48,8 @@ export function Dashboard() {
       matchScore: 95,
       rating: 4.9,
       sessions: 127,
-      image: "https://images.unsplash.com/photo-1706025090996-63717544be2d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhc2lhbiUyMG1hbiUyMHByb2Zlc3Npb25hbCUyMGhlYWRzaG90fGVufDF8fHx8MTc3NTQ2NTQ0N3ww&ixlib=rb-4.1.0&q=80&w=400"
+      image:
+        "https://images.unsplash.com/photo-1706025090996-63717544be2d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhc2lhbiUyMG1hbiUyMHByb2Zlc3Npb25hbCUyMGhlYWRzaG90fGVufDF8fHx8MTc3NTQ2NTQ0N3ww&ixlib=rb-4.1.0&q=80&w=400",
     },
     {
       id: 2,
@@ -54,7 +60,8 @@ export function Dashboard() {
       matchScore: 92,
       rating: 4.8,
       sessions: 89,
-      image: "https://images.unsplash.com/photo-1652471949169-9c587e8898cd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxibGFjayUyMHdvbWFuJTIwYnVzaW5lc3MlMjBwcm9mZXNzaW9uYWx8ZW58MXx8fHwxNzc1NTQ5MTc3fDA&ixlib=rb-4.1.0&q=80&w=400"
+      image:
+        "https://images.unsplash.com/photo-1652471949169-9c587e8898cd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxibGFjayUyMHdvbWFuJTIwYnVzaW5lc3MlMjBwcm9mZXNzaW9uYWx8ZW58MXx8fHwxNzc1NTQ5MTc3fDA&ixlib=rb-4.1.0&q=80&w=400",
     },
     {
       id: 3,
@@ -65,14 +72,15 @@ export function Dashboard() {
       matchScore: 88,
       rating: 4.9,
       sessions: 156,
-      image: "https://images.unsplash.com/photo-1648757766966-43d24bf7a264?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsYXRpbm8lMjBtYW4lMjBidXNpbmVzcyUyMHBvcnRyYWl0fGVufDF8fHx8MTc3NTU0OTE3N3ww&ixlib=rb-4.1.0&q=80&w=400"
-    }
+      image:
+        "https://images.unsplash.com/photo-1648757766966-43d24bf7a264?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsYXRpbm8lMjBtYW4lMjBidXNpbmVzcyUyMHBvcnRyYWl0fGVufDF8fHx8MTc3NTU0OTE3N3ww&ixlib=rb-4.1.0&q=80&w=400",
+    },
   ];
 
   const goals = [
     { name: "Leadership Skills", progress: 65, sessions: 8 },
     { name: "Technical Skills", progress: 45, sessions: 5 },
-    { name: "Communication", progress: 80, sessions: 10 }
+    { name: "Communication", progress: 80, sessions: 10 },
   ];
 
   return (
@@ -84,25 +92,39 @@ export function Dashboard() {
             <div className="flex items-center gap-8">
               <Link to="/" className="flex items-center gap-2">
                 <Users className="w-6 h-6 text-blue-600" />
-                <span className="text-lg font-bold text-slate-900">MentorMatch</span>
+                <span className="text-lg font-bold text-slate-900">
+                  MentorMatch
+                </span>
               </Link>
               <div className="hidden md:flex items-center gap-6">
                 <Link to="/dashboard" className="text-blue-600 font-medium">
                   Dashboard
                 </Link>
-                <Link to="/find-mentors" className="text-slate-600 hover:text-slate-900">
+                <Link
+                  to="/find-mentors"
+                  className="text-slate-600 hover:text-slate-900"
+                >
                   Find Mentors
                 </Link>
-                <Link to="/my-mentors" className="text-slate-600 hover:text-slate-900">
+                <Link
+                  to="/my-mentors"
+                  className="text-slate-600 hover:text-slate-900"
+                >
                   My Mentors
                 </Link>
-                <Link to="/progress" className="text-slate-600 hover:text-slate-900">
+                <Link
+                  to="/progress"
+                  className="text-slate-600 hover:text-slate-900"
+                >
                   Progress
                 </Link>
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <button className="p-2 text-slate-600 hover:text-slate-900 relative">
+              <button
+                onClick={() => openChat()}
+                className="p-2 text-slate-600 hover:text-slate-900 relative"
+              >
                 <MessageSquare className="w-5 h-5" />
                 <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
               </button>
@@ -112,6 +134,7 @@ export function Dashboard() {
             </div>
           </div>
         </div>
+        <ChatPortal />
       </nav>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -189,8 +212,13 @@ export function Dashboard() {
             {/* Upcoming Sessions */}
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-slate-900">Upcoming Sessions</h2>
-                <Link to="/my-mentors" className="text-blue-600 text-sm font-medium hover:underline">
+                <h2 className="text-xl font-bold text-slate-900">
+                  Upcoming Sessions
+                </h2>
+                <Link
+                  to="/my-mentors"
+                  className="text-blue-600 text-sm font-medium hover:underline"
+                >
                   View all
                 </Link>
               </div>
@@ -206,12 +234,20 @@ export function Dashboard() {
                       className="w-12 h-12 rounded-full object-cover"
                     />
                     <div className="flex-1">
-                      <div className="font-semibold text-slate-900">{session.mentor}</div>
-                      <div className="text-sm text-slate-600">{session.topic}</div>
+                      <div className="font-semibold text-slate-900">
+                        {session.mentor}
+                      </div>
+                      <div className="text-sm text-slate-600">
+                        {session.topic}
+                      </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-sm font-medium text-slate-900">{session.date}</div>
-                      <div className="text-sm text-slate-600">{session.duration}</div>
+                      <div className="text-sm font-medium text-slate-900">
+                        {session.date}
+                      </div>
+                      <div className="text-sm text-slate-600">
+                        {session.duration}
+                      </div>
                     </div>
                     <button className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm hover:bg-blue-700">
                       Join
@@ -225,7 +261,10 @@ export function Dashboard() {
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold text-slate-900">Your Goals</h2>
-                <Link to="/progress" className="text-blue-600 text-sm font-medium hover:underline">
+                <Link
+                  to="/progress"
+                  className="text-blue-600 text-sm font-medium hover:underline"
+                >
                   View details
                 </Link>
               </div>
@@ -235,7 +274,9 @@ export function Dashboard() {
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
                         <Target className="w-4 h-4 text-blue-600" />
-                        <span className="font-medium text-slate-900">{goal.name}</span>
+                        <span className="font-medium text-slate-900">
+                          {goal.name}
+                        </span>
                       </div>
                       <div className="text-sm text-slate-600">
                         {goal.sessions} sessions completed
@@ -249,7 +290,9 @@ export function Dashboard() {
                         transition={{ duration: 0.8, delay: index * 0.1 }}
                       />
                     </div>
-                    <div className="text-right text-sm text-slate-600 mt-1">{goal.progress}%</div>
+                    <div className="text-right text-sm text-slate-600 mt-1">
+                      {goal.progress}%
+                    </div>
                   </div>
                 ))}
               </div>
@@ -284,7 +327,9 @@ export function Dashboard() {
 
             {/* Recommended Mentors */}
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-              <h3 className="text-lg font-bold text-slate-900 mb-4">Recommended for You</h3>
+              <h3 className="text-lg font-bold text-slate-900 mb-4">
+                Recommended for You
+              </h3>
               <div className="space-y-4">
                 {recommendedMentors.map((mentor) => (
                   <Link
@@ -299,8 +344,12 @@ export function Dashboard() {
                         className="w-12 h-12 rounded-full object-cover"
                       />
                       <div className="flex-1">
-                        <div className="font-semibold text-slate-900 text-sm">{mentor.name}</div>
-                        <div className="text-xs text-slate-600">{mentor.title}</div>
+                        <div className="font-semibold text-slate-900 text-sm">
+                          {mentor.name}
+                        </div>
+                        <div className="text-xs text-slate-600">
+                          {mentor.title}
+                        </div>
                       </div>
                       <div className="flex items-center gap-1 text-xs">
                         <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full font-medium">

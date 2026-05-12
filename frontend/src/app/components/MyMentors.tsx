@@ -1,95 +1,113 @@
 import { Link } from "react-router";
 import { motion } from "motion/react";
-import { Users, Star, Calendar, MessageSquare, Video, Clock } from "lucide-react";
+import {
+  Users,
+  Star,
+  Calendar,
+  MessageSquare,
+  Video,
+  Clock,
+} from "lucide-react";
+import { useChatPanel } from "./ChatPanel";
 
 export function MyMentors() {
+  const { openChat, ChatPortal } = useChatPanel();
+
   const activeMentors = [
     {
       id: 1,
       name: "Dr. Sarah Chen",
       title: "Chief Technology Officer",
       company: "Amazon",
-      image: "https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHByb2Zlc3Npb25hbCUyMHdvbWFuJTIwaGVhZHNob3R8ZW58MXx8fHwxNzc1NDcwOTI5fDA&ixlib=rb-4.1.0&q=80&w=400",
+      image:
+        "https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHByb2Zlc3Npb25hbCUyMHdvbWFuJTIwaGVhZHNob3R8ZW58MXx8fHwxNzc1NDcwOTI5fDA&ixlib=rb-4.1.0&q=80&w=400",
       rating: 4.9,
       sessionsCompleted: 8,
       nextSession: "Tomorrow, 2:00 PM",
-      status: "active"
+      status: "active",
     },
     {
       id: 2,
       name: "Marcus Williams",
       title: "Senior Product Manager",
       company: "Amazon",
-      image: "https://images.unsplash.com/photo-1543132220-7bc04a0e790a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYW4lMjBidXNpbmVzcyUyMHByb2Zlc3Npb25hbCUyMHBvcnRyYWl0fGVufDF8fHx8MTc3NTU0OTA0OXww&ixlib=rb-4.1.0&q=80&w=400",
+      image:
+        "https://images.unsplash.com/photo-1543132220-7bc04a0e790a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYW4lMjBidXNpbmVzcyUyMHByb2Zlc3Npb25hbCUyMHBvcnRyYWl0fGVufDF8fHx8MTc3NTU0OTA0OXww&ixlib=rb-4.1.0&q=80&w=400",
       rating: 4.8,
       sessionsCompleted: 5,
       nextSession: "Friday, 10:00 AM",
-      status: "active"
+      status: "active",
     },
     {
       id: 3,
       name: "James Park",
       title: "Senior Software Architect",
       company: "Amazon",
-      image: "https://images.unsplash.com/photo-1706025090996-63717544be2d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhc2lhbiUyMG1hbiUyMHByb2Zlc3Npb25hbCUyMGhlYWRzaG90fGVufDF8fHx8MTc3NTQ2NTQ0N3ww&ixlib=rb-4.1.0&q=80&w=400",
+      image:
+        "https://images.unsplash.com/photo-1706025090996-63717544be2d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhc2lhbiUyMG1hbiUyMHByb2Zlc3Npb25hbCUyMGhlYWRzaG90fGVufDF8fHx8MTc3NTQ2NTQ0N3ww&ixlib=rb-4.1.0&q=80&w=400",
       rating: 4.9,
       sessionsCompleted: 3,
       nextSession: null,
-      status: "active"
-    }
+      status: "active",
+    },
   ];
 
   const upcomingSessions = [
     {
       id: 1,
       mentor: "Dr. Sarah Chen",
-      mentorImage: "https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHByb2Zlc3Npb25hbCUyMHdvbWFuJTIwaGVhZHNob3R8ZW58MXx8fHwxNzc1NDcwOTI5fDA&ixlib=rb-4.1.0&q=80&w=400",
+      mentorImage:
+        "https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHByb2Zlc3Npb25hbCUyMHdvbWFuJTIwaGVhZHNob3R8ZW58MXx8fHwxNzc1NDcwOTI5fDA&ixlib=rb-4.1.0&q=80&w=400",
       topic: "Leadership Development Strategy",
       date: "Tomorrow",
       time: "2:00 PM - 3:00 PM",
       type: "video",
-      status: "confirmed"
+      status: "confirmed",
     },
     {
       id: 2,
       mentor: "Marcus Williams",
-      mentorImage: "https://images.unsplash.com/photo-1543132220-7bc04a0e790a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYW4lMjBidXNpbmVzcyUyMHByb2Zlc3Npb25hbCUyMHBvcnRyYWl0fGVufDF8fHx8MTc3NTU0OTA0OXww&ixlib=rb-4.1.0&q=80&w=400",
+      mentorImage:
+        "https://images.unsplash.com/photo-1543132220-7bc04a0e790a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYW4lMjBidXNpbmVzcyUyMHByb2Zlc3Npb25hbCUyMHBvcnRyYWl0fGVufDF8fHx8MTc3NTU0OTA0OXww&ixlib=rb-4.1.0&q=80&w=400",
       topic: "Product Strategy Session",
       date: "Friday, Apr 11",
       time: "10:00 AM - 10:45 AM",
       type: "video",
-      status: "confirmed"
-    }
+      status: "confirmed",
+    },
   ];
 
   const pastSessions = [
     {
       id: 1,
       mentor: "Dr. Sarah Chen",
-      mentorImage: "https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHByb2Zlc3Npb25hbCUyMHdvbWFuJTIwaGVhZHNob3R8ZW58MXx8fHwxNzc1NDcwOTI5fDA&ixlib=rb-4.1.0&q=80&w=400",
+      mentorImage:
+        "https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHByb2Zlc3Npb25hbCUyMHdvbWFuJTIwaGVhZHNob3R8ZW58MXx8fHwxNzc1NDcwOTI5fDA&ixlib=rb-4.1.0&q=80&w=400",
       topic: "Career Growth Planning",
       date: "Apr 1, 2026",
       duration: "60 min",
-      rating: 5
+      rating: 5,
     },
     {
       id: 2,
       mentor: "Marcus Williams",
-      mentorImage: "https://images.unsplash.com/photo-1543132220-7bc04a0e790a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYW4lMjBidXNpbmVzcyUyMHByb2Zlc3Npb25hbCUyMHBvcnRyYWl0fGVufDF8fHx8MTc3NTU0OTA0OXww&ixlib=rb-4.1.0&q=80&w=400",
+      mentorImage:
+        "https://images.unsplash.com/photo-1543132220-7bc04a0e790a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYW4lMjBidXNpbmVzcyUyMHByb2Zlc3Npb25hbCUyMHBvcnRyYWl0fGVufDF8fHx8MTc3NTU0OTA0OXww&ixlib=rb-4.1.0&q=80&w=400",
       topic: "Product Metrics Deep Dive",
       date: "Mar 28, 2026",
       duration: "45 min",
-      rating: 5
+      rating: 5,
     },
     {
       id: 3,
       mentor: "James Park",
-      mentorImage: "https://images.unsplash.com/photo-1706025090996-63717544be2d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhc2lhbiUyMG1hbiUyMHByb2Zlc3Npb25hbCUyMGhlYWRzaG90fGVufDF8fHx8MTc3NTQ2NTQ0N3ww&ixlib=rb-4.1.0&q=80&w=400",
+      mentorImage:
+        "https://images.unsplash.com/photo-1706025090996-63717544be2d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhc2lhbiUyMG1hbiUyMHByb2Zlc3Npb25hbCUyMGhlYWRzaG90fGVufDF8fHx8MTc3NTQ2NTQ0N3ww&ixlib=rb-4.1.0&q=80&w=400",
       topic: "System Design Principles",
       date: "Mar 25, 2026",
       duration: "60 min",
-      rating: 5
-    }
+      rating: 5,
+    },
   ];
 
   return (
@@ -101,19 +119,30 @@ export function MyMentors() {
             <div className="flex items-center gap-8">
               <Link to="/" className="flex items-center gap-2">
                 <Users className="w-6 h-6 text-blue-600" />
-                <span className="text-lg font-bold text-slate-900">MentorMatch</span>
+                <span className="text-lg font-bold text-slate-900">
+                  MentorMatch
+                </span>
               </Link>
               <div className="hidden md:flex items-center gap-6">
-                <Link to="/dashboard" className="text-slate-600 hover:text-slate-900">
+                <Link
+                  to="/dashboard"
+                  className="text-slate-600 hover:text-slate-900"
+                >
                   Dashboard
                 </Link>
-                <Link to="/find-mentors" className="text-slate-600 hover:text-slate-900">
+                <Link
+                  to="/find-mentors"
+                  className="text-slate-600 hover:text-slate-900"
+                >
                   Find Mentors
                 </Link>
                 <Link to="/my-mentors" className="text-blue-600 font-medium">
                   My Mentors
                 </Link>
-                <Link to="/progress" className="text-slate-600 hover:text-slate-900">
+                <Link
+                  to="/progress"
+                  className="text-slate-600 hover:text-slate-900"
+                >
                   Progress
                 </Link>
               </div>
@@ -129,9 +158,7 @@ export function MyMentors() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-slate-900 mb-2">
-            My Mentors
-          </h1>
+          <h1 className="text-3xl font-bold text-slate-900 mb-2">My Mentors</h1>
           <p className="text-slate-600">
             Manage your mentoring relationships and sessions
           </p>
@@ -166,19 +193,27 @@ export function MyMentors() {
                             <h3 className="text-lg font-semibold text-slate-900">
                               {mentor.name}
                             </h3>
-                            <p className="text-sm text-slate-600">{mentor.title}</p>
-                            <p className="text-sm text-slate-500">{mentor.company}</p>
+                            <p className="text-sm text-slate-600">
+                              {mentor.title}
+                            </p>
+                            <p className="text-sm text-slate-500">
+                              {mentor.company}
+                            </p>
                           </div>
                           <div className="flex items-center gap-1 text-sm">
                             <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                            <span className="font-semibold">{mentor.rating}</span>
+                            <span className="font-semibold">
+                              {mentor.rating}
+                            </span>
                           </div>
                         </div>
 
                         <div className="flex items-center gap-6 text-sm text-slate-600 mb-4">
                           <div className="flex items-center gap-1">
                             <Calendar className="w-4 h-4" />
-                            <span>{mentor.sessionsCompleted} sessions completed</span>
+                            <span>
+                              {mentor.sessionsCompleted} sessions completed
+                            </span>
                           </div>
                           {mentor.nextSession && (
                             <div className="flex items-center gap-1 text-green-600 font-medium">
@@ -195,9 +230,13 @@ export function MyMentors() {
                           >
                             Book Session
                           </Link>
-                          <button className="px-4 py-2 bg-white border-2 border-slate-300 text-slate-700 rounded-lg text-sm font-medium hover:border-blue-300 transition-colors">
+                          <button
+                            onClick={() => openChat()}
+                            className="px-4 py-2 bg-white border-2 border-slate-300 text-slate-700 rounded-lg text-sm font-medium hover:border-blue-300 transition-colors"
+                          >
                             Send Message
                           </button>
+                          <ChatPortal />
                           <Link
                             to={`/mentor/${mentor.id}`}
                             className="px-4 py-2 bg-white border-2 border-slate-300 text-slate-700 rounded-lg text-sm font-medium hover:border-blue-300 transition-colors"
@@ -229,8 +268,12 @@ export function MyMentors() {
                       <div className="flex-1">
                         <div className="flex items-start justify-between mb-2">
                           <div>
-                            <h4 className="font-semibold text-slate-900">{session.topic}</h4>
-                            <p className="text-sm text-slate-600">{session.mentor}</p>
+                            <h4 className="font-semibold text-slate-900">
+                              {session.topic}
+                            </h4>
+                            <p className="text-sm text-slate-600">
+                              {session.mentor}
+                            </p>
                           </div>
                           <div className="flex items-center gap-1">
                             {[...Array(session.rating)].map((_, i) => (
@@ -277,7 +320,9 @@ export function MyMentors() {
                         <div className="font-semibold text-slate-900 text-sm">
                           {session.mentor}
                         </div>
-                        <div className="text-xs text-slate-600">{session.topic}</div>
+                        <div className="text-xs text-slate-600">
+                          {session.topic}
+                        </div>
                       </div>
                     </div>
                     <div className="flex items-center gap-2 text-xs text-slate-600 mb-3">
@@ -316,7 +361,9 @@ export function MyMentors() {
 
             {/* Stats */}
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-              <h3 className="text-lg font-bold text-slate-900 mb-4">Your Stats</h3>
+              <h3 className="text-lg font-bold text-slate-900 mb-4">
+                Your Stats
+              </h3>
               <div className="space-y-3">
                 <div className="flex items-center justify-between">
                   <span className="text-slate-600">Total Sessions</span>
