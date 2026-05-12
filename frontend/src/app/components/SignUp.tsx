@@ -15,7 +15,7 @@ export function SignUp() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4 py-12">
       <div className="max-w-4xl w-full">
         {/* Header */}
         <div className="text-center mb-12">
@@ -40,11 +40,11 @@ export function SignUp() {
             className={`p-8 rounded-2xl border-2 text-left transition-all ${
               role === "mentee"
                 ? "border-blue-600 bg-blue-50"
-                : "border-slate-200 bg-white hover:border-blue-300"
+                : "border-slate-200 bg-white hover:border-blue-300 shadow-lg"
             }`}
           >
             <div className="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
-              <GraduationCap className="w-8 h-8 text-blue-600" />
+              < GraduationCap className="w-8 h-8 text-blue-600" />
             </div>
             <h2 className="text-2xl font-bold text-slate-900 mb-3">
               I'm a Mentee
@@ -75,7 +75,7 @@ export function SignUp() {
             className={`p-8 rounded-2xl border-2 text-left transition-all ${
               role === "mentor"
                 ? "border-indigo-600 bg-indigo-50"
-                : "border-slate-200 bg-white hover:border-indigo-300"
+                : "border-slate-200 bg-white hover:border-indigo-300 shadow-lg"
             }`}
           >
             <div className="w-16 h-16 bg-indigo-100 rounded-xl flex items-center justify-center mb-6">

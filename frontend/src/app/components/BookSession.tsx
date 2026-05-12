@@ -42,13 +42,11 @@ export function BookSession() {
   ];
 
   const handleBooking = () => {
-    // In a real app, this would make an API call
     navigate("/my-mentors");
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      {/* Navigation */}
+    <div className="min-h-screen bg-background">
       <nav className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
@@ -68,7 +66,6 @@ export function BookSession() {
       </nav>
 
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Back Button */}
         <Link 
           to={`/mentor/${id}`}
           className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-6"
@@ -78,7 +75,6 @@ export function BookSession() {
         </Link>
 
         <div className="grid lg:grid-cols-3 gap-8">
-          {/* Main Form */}
           <div className="lg:col-span-2">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -93,7 +89,6 @@ export function BookSession() {
               </p>
 
               <div className="space-y-6">
-                {/* Session Type */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-3">
                     Session Type
@@ -104,7 +99,7 @@ export function BookSession() {
                       className={`p-4 rounded-lg border-2 text-left transition-all ${
                         sessionType === "video"
                           ? "border-blue-600 bg-blue-50"
-                          : "border-slate-200 hover:border-blue-300"
+                          : "border-slate-200 bg-white hover:border-blue-300"
                       }`}
                     >
                       <Video className="w-5 h-5 text-blue-600 mb-2" />
@@ -116,7 +111,7 @@ export function BookSession() {
                       className={`p-4 rounded-lg border-2 text-left transition-all ${
                         sessionType === "chat"
                           ? "border-blue-600 bg-blue-50"
-                          : "border-slate-200 hover:border-blue-300"
+                          : "border-slate-200 bg-white hover:border-blue-300"
                       }`}
                     >
                       <MessageSquare className="w-5 h-5 text-blue-600 mb-2" />
@@ -126,7 +121,6 @@ export function BookSession() {
                   </div>
                 </div>
 
-                {/* Topic Selection */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-3">
                     What would you like to discuss?
@@ -139,7 +133,7 @@ export function BookSession() {
                         className={`p-3 rounded-lg border-2 text-sm font-medium transition-all ${
                           topic === t
                             ? "border-blue-600 bg-blue-50 text-blue-700"
-                            : "border-slate-200 text-slate-700 hover:border-blue-300"
+                            : "border-slate-200 bg-white text-slate-700 hover:border-blue-300"
                         }`}
                       >
                         {t}
@@ -148,7 +142,6 @@ export function BookSession() {
                   </div>
                 </div>
 
-                {/* Date Selection */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-3">
                     Select a Date
@@ -160,8 +153,8 @@ export function BookSession() {
                         onClick={() => setSelectedDate(dateOption.date)}
                         className={`p-4 rounded-lg border-2 text-center transition-all ${
                           selectedDate === dateOption.date
-                            ? "border-blue-600 bg-blue-50"
-                            : "border-slate-200 hover:border-blue-300"
+                            ? "border-blue-600 bg-blue-50 shadow-inner"
+                            : "border-slate-200 bg-white hover:border-blue-300"
                         }`}
                       >
                         <Calendar className="w-5 h-5 text-blue-600 mx-auto mb-2" />
@@ -173,7 +166,6 @@ export function BookSession() {
                   </div>
                 </div>
 
-                {/* Time Selection */}
                 {selectedDate && (
                   <motion.div
                     initial={{ opacity: 0, height: 0 }}
@@ -189,8 +181,8 @@ export function BookSession() {
                           onClick={() => setSelectedTime(time)}
                           className={`p-3 rounded-lg border-2 text-sm font-medium transition-all ${
                             selectedTime === time
-                              ? "border-blue-600 bg-blue-50 text-blue-700"
-                              : "border-slate-200 text-slate-700 hover:border-blue-300"
+                              ? "border-blue-600 bg-blue-50 text-blue-700 shadow-inner"
+                              : "border-slate-200 bg-white text-slate-700 hover:border-blue-300"
                           }`}
                         >
                           {time}
@@ -200,7 +192,6 @@ export function BookSession() {
                   </motion.div>
                 )}
 
-                {/* Additional Notes */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-3">
                     Additional Notes (Optional)
@@ -209,16 +200,15 @@ export function BookSession() {
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
                     rows={4}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none bg-white"
                     placeholder="Share any specific topics or questions you'd like to cover..."
                   />
                 </div>
 
-                {/* Submit Button */}
                 <button
                   onClick={handleBooking}
                   disabled={!selectedDate || !selectedTime || !topic}
-                  className={`w-full py-4 rounded-lg font-medium transition-all ${
+                  className={`w-full py-4 rounded-lg font-medium transition-all shadow-sm ${
                     selectedDate && selectedTime && topic
                       ? "bg-blue-600 text-white hover:bg-blue-700"
                       : "bg-slate-200 text-slate-400 cursor-not-allowed"
@@ -230,17 +220,15 @@ export function BookSession() {
             </motion.div>
           </div>
 
-          {/* Sidebar Summary */}
           <div>
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sticky top-8"
+              className="bg-white rounded-xl shadow-lg border border-slate-200 p-6 sticky top-8"
             >
               <h3 className="font-semibold text-slate-900 mb-4">Booking Summary</h3>
               
-              {/* Mentor Info */}
               <div className="flex items-center gap-3 mb-6 pb-6 border-b border-slate-200">
                 <img
                   src={mentor.image}
@@ -253,7 +241,6 @@ export function BookSession() {
                 </div>
               </div>
 
-              {/* Booking Details */}
               <div className="space-y-4">
                 <div>
                   <div className="text-sm text-slate-600 mb-1">Session Type</div>
@@ -297,7 +284,6 @@ export function BookSession() {
                 </div>
               </div>
 
-              {/* Info Box */}
               <div className="mt-6 p-4 bg-blue-50 rounded-lg">
                 <div className="flex gap-2">
                   <Clock className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />

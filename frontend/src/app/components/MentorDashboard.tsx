@@ -122,7 +122,7 @@ export function MentorDashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background">
       {/* Navigation */}
       <nav className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -173,7 +173,7 @@ export function MentorDashboard() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white p-6 rounded-xl shadow-sm border border-slate-200"
+            className="bg-white p-6 rounded-xl shadow-md border border-slate-200"
           >
             <div className="flex items-center justify-between mb-2">
               <span className="text-slate-600 text-sm">Total Sessions</span>
@@ -187,7 +187,7 @@ export function MentorDashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-white p-6 rounded-xl shadow-sm border border-slate-200"
+            className="bg-white p-6 rounded-xl shadow-md border border-slate-200"
           >
             <div className="flex items-center justify-between mb-2">
               <span className="text-slate-600 text-sm">Active Mentees</span>
@@ -201,7 +201,7 @@ export function MentorDashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-white p-6 rounded-xl shadow-sm border border-slate-200"
+            className="bg-white p-6 rounded-xl shadow-md border border-slate-200"
           >
             <div className="flex items-center justify-between mb-2">
               <span className="text-slate-600 text-sm">Average Rating</span>
@@ -215,7 +215,7 @@ export function MentorDashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-white p-6 rounded-xl shadow-sm border border-slate-200"
+            className="bg-white p-6 rounded-xl shadow-md border border-slate-200"
           >
             <div className="flex items-center justify-between mb-2">
               <span className="text-slate-600 text-sm">Impact Hours</span>
@@ -230,7 +230,7 @@ export function MentorDashboard() {
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
             {/* Upcoming Sessions */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div className="bg-white rounded-xl shadow-md border border-slate-200 p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold text-slate-900">Upcoming Sessions</h2>
                 <Link to="#" className="text-indigo-600 text-sm font-medium hover:underline">
@@ -241,18 +241,18 @@ export function MentorDashboard() {
                 {upcomingSessions.map((session) => (
                   <div
                     key={session.id}
-                    className="flex items-center gap-4 p-4 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors"
+                    className="flex items-center gap-4 p-4 rounded-lg bg-slate-50 border border-slate-100 hover:bg-slate-100 transition-colors"
                   >
                     <img
                       src={session.menteeImage}
                       alt={session.mentee}
-                      className="w-12 h-12 rounded-full object-cover"
+                      className="w-12 h-12 rounded-full object-cover border border-white"
                     />
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
                         <span className="font-semibold text-slate-900">{session.mentee}</span>
                         {session.isFirstSession && (
-                          <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-medium rounded-full">
+                          <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-medium rounded-full border border-blue-200">
                             First Session
                           </span>
                         )}
@@ -263,7 +263,7 @@ export function MentorDashboard() {
                       <div className="text-sm font-medium text-slate-900">{session.date}</div>
                       <div className="text-sm text-slate-600">{session.time}</div>
                     </div>
-                    <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm hover:bg-indigo-700 flex items-center gap-2">
+                    <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm hover:bg-indigo-700 flex items-center gap-2 shadow-sm">
                       <Video className="w-4 h-4" />
                       Join
                     </button>
@@ -273,7 +273,7 @@ export function MentorDashboard() {
             </div>
 
             {/* Active Mentees */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div className="bg-white rounded-xl shadow-md border border-slate-200 p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold text-slate-900">Active Mentees</h2>
                 <Link to="#" className="text-indigo-600 text-sm font-medium hover:underline">
@@ -284,22 +284,22 @@ export function MentorDashboard() {
                 {activeMentees.map((mentee) => (
                   <div
                     key={mentee.id}
-                    className="p-4 rounded-lg border border-slate-200 hover:border-indigo-300 transition-colors"
+                    className="p-4 rounded-lg border border-slate-200 hover:border-indigo-300 transition-colors bg-white"
                   >
                     <div className="flex items-start gap-4 mb-3">
                       <img
                         src={mentee.image}
                         alt={mentee.name}
-                        className="w-12 h-12 rounded-full object-cover"
+                        className="w-12 h-12 rounded-full object-cover border-2 border-slate-50"
                       />
                       <div className="flex-1">
                         <div className="font-semibold text-slate-900">{mentee.name}</div>
-                        <div className="text-sm text-slate-600">{mentee.goal}</div>
+                        <div className="text-sm text-slate-600 line-clamp-1">{mentee.goal}</div>
                         <div className="text-xs text-slate-500 mt-1">
                           {mentee.sessionsCompleted} sessions • Next: {mentee.nextSession}
                         </div>
                       </div>
-                      <button className="text-slate-600 hover:text-slate-900">
+                      <button className="text-slate-400 hover:text-indigo-600 transition-colors">
                         <MessageSquare className="w-5 h-5" />
                       </button>
                     </div>
@@ -308,7 +308,7 @@ export function MentorDashboard() {
                         <span className="text-sm text-slate-600">Progress</span>
                         <span className="text-sm font-semibold text-slate-900">{mentee.progress}%</span>
                       </div>
-                      <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
+                      <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                         <motion.div
                           className="h-full bg-indigo-600"
                           initial={{ width: 0 }}
@@ -323,11 +323,11 @@ export function MentorDashboard() {
             </div>
 
             {/* Recent Feedback */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div className="bg-white rounded-xl shadow-md border border-slate-200 p-6">
               <h2 className="text-xl font-bold text-slate-900 mb-6">Recent Feedback</h2>
               <div className="space-y-4">
                 {recentFeedback.map((feedback) => (
-                  <div key={feedback.id} className="pb-4 border-b border-slate-200 last:border-0 last:pb-0">
+                  <div key={feedback.id} className="pb-4 border-b border-slate-100 last:border-0 last:pb-0">
                     <div className="flex items-start justify-between mb-2">
                       <div className="font-semibold text-slate-900">{feedback.mentee}</div>
                       <div className="flex items-center gap-1">
@@ -336,7 +336,7 @@ export function MentorDashboard() {
                         ))}
                       </div>
                     </div>
-                    <p className="text-slate-600 text-sm mb-2">"{feedback.comment}"</p>
+                    <p className="text-slate-600 text-sm mb-2 italic">"{feedback.comment}"</p>
                     <div className="text-xs text-slate-500">{feedback.date}</div>
                   </div>
                 ))}
@@ -347,22 +347,22 @@ export function MentorDashboard() {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Pending Requests */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div className="bg-white rounded-xl shadow-md border border-slate-200 p-6">
               <h3 className="text-lg font-bold text-slate-900 mb-4">
                 New Requests ({pendingRequests.length})
               </h3>
               <div className="space-y-4">
                 {pendingRequests.map((request) => (
-                  <div key={request.id} className="p-4 rounded-lg bg-indigo-50 border border-indigo-200">
+                  <div key={request.id} className="p-4 rounded-lg bg-indigo-50 border border-indigo-100">
                     <div className="flex items-start gap-3 mb-3">
                       <img
                         src={request.image}
                         alt={request.name}
-                        className="w-10 h-10 rounded-full object-cover"
+                        className="w-10 h-10 rounded-full object-cover border border-white"
                       />
                       <div className="flex-1">
                         <div className="font-semibold text-slate-900 text-sm">{request.name}</div>
-                        <div className="text-xs text-slate-600">{request.goal}</div>
+                        <div className="text-xs text-slate-600 line-clamp-1">{request.goal}</div>
                         <div className="flex items-center gap-1 mt-1">
                           <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-medium rounded-full">
                             {request.matchScore}% match
@@ -370,12 +370,12 @@ export function MentorDashboard() {
                         </div>
                       </div>
                     </div>
-                    <p className="text-sm text-slate-600 mb-3 line-clamp-2">{request.message}</p>
+                    <p className="text-sm text-slate-600 mb-3 line-clamp-2 italic">{request.message}</p>
                     <div className="flex gap-2">
-                      <button className="flex-1 px-3 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700">
+                      <button className="flex-1 px-3 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 shadow-sm transition-all">
                         Accept
                       </button>
-                      <button className="px-3 py-2 bg-white border border-slate-300 text-slate-700 rounded-lg text-sm font-medium hover:border-indigo-300">
+                      <button className="px-3 py-2 bg-white border border-slate-300 text-slate-700 rounded-lg text-sm font-medium hover:border-indigo-300 hover:bg-indigo-50 transition-all">
                         View
                       </button>
                     </div>
@@ -385,7 +385,7 @@ export function MentorDashboard() {
             </div>
 
             {/* Impact Stats */}
-            <div className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-xl shadow-lg p-6 text-white">
+            <div className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-xl shadow-lg p-6 text-white transform hover:scale-[1.02] transition-transform">
               <Award className="w-10 h-10 mb-4" />
               <h3 className="text-lg font-bold mb-2">Your Impact</h3>
               <div className="space-y-3 mb-4">
@@ -410,7 +410,7 @@ export function MentorDashboard() {
             </div>
 
             {/* Quick Actions */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div className="bg-white rounded-xl shadow-md border border-slate-200 p-6">
               <h3 className="text-lg font-bold text-slate-900 mb-4">Quick Actions</h3>
               <div className="space-y-2">
                 <button className="w-full px-4 py-3 bg-indigo-50 text-indigo-700 rounded-lg font-medium hover:bg-indigo-100 transition-colors flex items-center gap-2">

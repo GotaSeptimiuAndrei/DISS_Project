@@ -81,7 +81,7 @@ export function OnboardingMentee() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4 py-12">
       <div className="max-w-2xl w-full">
         {/* Header */}
         <div className="text-center mb-8">
@@ -131,7 +131,7 @@ export function OnboardingMentee() {
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
                     placeholder="John Doe"
                   />
                 </div>
@@ -143,7 +143,7 @@ export function OnboardingMentee() {
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
                     placeholder="john@example.com"
                   />
                 </div>
@@ -159,7 +159,7 @@ export function OnboardingMentee() {
                         className={`w-full p-4 rounded-lg border-2 text-left transition-all ${
                           formData.experience === level.value
                             ? "border-blue-600 bg-blue-50"
-                            : "border-slate-200 hover:border-blue-300"
+                            : "border-slate-200 bg-white hover:border-blue-300"
                         }`}
                       >
                         <div className="font-semibold text-slate-900">{level.label}</div>
@@ -191,7 +191,7 @@ export function OnboardingMentee() {
                       addCustomGoal();
                     }
                   }}
-                  className="flex-1 px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="flex-1 px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
                   placeholder="Add a custom learning goal"
                 />
                 <button
@@ -210,7 +210,7 @@ export function OnboardingMentee() {
                     className={`p-4 rounded-lg border-2 text-sm font-medium transition-all ${
                       formData.goals.includes(goal)
                         ? "border-blue-600 bg-blue-50 text-blue-700"
-                        : "border-slate-200 text-slate-700 hover:border-blue-300"
+                        : "border-slate-200 bg-white text-slate-700 hover:border-blue-300"
                     }`}
                   >
                     {goal}
@@ -225,7 +225,7 @@ export function OnboardingMentee() {
                       className={`p-4 rounded-lg border-2 text-sm font-medium transition-all ${
                         formData.goals.includes(goal)
                           ? "border-blue-600 bg-blue-50 text-blue-700"
-                          : "border-slate-200 text-slate-700 hover:border-blue-300"
+                          : "border-slate-200 bg-white text-slate-700 hover:border-blue-300"
                       }`}
                     >
                       {goal}
@@ -251,7 +251,7 @@ export function OnboardingMentee() {
                     className={`w-full p-4 rounded-lg border-2 text-left transition-all ${
                       formData.learningStyle === style.value
                         ? "border-blue-600 bg-blue-50"
-                        : "border-slate-200 hover:border-blue-300"
+                        : "border-slate-200 bg-white hover:border-blue-300"
                     }`}
                   >
                     <div className="font-semibold text-slate-900">{style.label}</div>
@@ -283,7 +283,7 @@ export function OnboardingMentee() {
                     className={`w-full p-4 rounded-lg border-2 text-left transition-all ${
                       formData.availability === slot.value
                         ? "border-blue-600 bg-blue-50"
-                        : "border-slate-200 hover:border-blue-300"
+                        : "border-slate-200 bg-white hover:border-blue-300"
                     }`}
                   >
                     <div className="font-semibold text-slate-900">{slot.label}</div>
@@ -303,7 +303,7 @@ export function OnboardingMentee() {
             className={`px-6 py-3 rounded-lg font-medium transition-all flex items-center gap-2 ${
               step === 1
                 ? "bg-slate-200 text-slate-400 cursor-not-allowed"
-                : "bg-white border-2 border-slate-300 text-slate-700 hover:border-slate-400"
+                : "bg-white border-2 border-slate-300 text-slate-700 hover:border-slate-400 shadow-sm"
             }`}
           >
             <ArrowLeft className="w-5 h-5" />
@@ -311,7 +311,7 @@ export function OnboardingMentee() {
           </button>
           <button
             onClick={handleNext}
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-all flex items-center gap-2"
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-all flex items-center gap-2 shadow-sm"
           >
             {step === totalSteps ? "Complete" : "Continue"}
             <ArrowRight className="w-5 h-5" />

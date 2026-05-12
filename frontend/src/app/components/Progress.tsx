@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { motion } from "motion/react";
-import { Users, Target, TrendingUp, Award, Calendar, CheckCircle, Star } from "lucide-react";
+import { Users, Target, TrendingUp, Award, Calendar, CheckCircle } from "lucide-react";
 
 export function Progress() {
   const goals = [
@@ -94,7 +94,7 @@ export function Progress() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background">
       {/* Navigation */}
       <nav className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -143,7 +143,7 @@ export function Progress() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white p-6 rounded-xl shadow-sm border border-slate-200"
+            className="bg-white p-6 rounded-xl shadow-md border border-slate-200"
           >
             <div className="flex items-center justify-between mb-2">
               <span className="text-slate-600 text-sm">Overall Progress</span>
@@ -157,7 +157,7 @@ export function Progress() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-white p-6 rounded-xl shadow-sm border border-slate-200"
+            className="bg-white p-6 rounded-xl shadow-md border border-slate-200"
           >
             <div className="flex items-center justify-between mb-2">
               <span className="text-slate-600 text-sm">Active Goals</span>
@@ -171,7 +171,7 @@ export function Progress() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-white p-6 rounded-xl shadow-sm border border-slate-200"
+            className="bg-white p-6 rounded-xl shadow-md border border-slate-200"
           >
             <div className="flex items-center justify-between mb-2">
               <span className="text-slate-600 text-sm">Total Sessions</span>
@@ -185,7 +185,7 @@ export function Progress() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-white p-6 rounded-xl shadow-sm border border-slate-200"
+            className="bg-white p-6 rounded-xl shadow-md border border-slate-200"
           >
             <div className="flex items-center justify-between mb-2">
               <span className="text-slate-600 text-sm">Achievements</span>
@@ -209,7 +209,7 @@ export function Progress() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className="bg-white rounded-xl shadow-sm border border-slate-200 p-6"
+                    className="bg-white rounded-xl shadow-md border border-slate-200 p-6"
                   >
                     <div className="flex items-start justify-between mb-4">
                       <div>
@@ -256,10 +256,10 @@ export function Progress() {
                         {goal.milestones.map((milestone, idx) => (
                           <div
                             key={idx}
-                            className={`flex items-center gap-2 p-2 rounded-lg ${
+                            className={`flex items-center gap-2 p-2 rounded-lg border ${
                               milestone.completed
-                                ? "bg-green-50 text-green-700"
-                                : "bg-slate-50 text-slate-600"
+                                ? "bg-green-50 border-green-100 text-green-700"
+                                : "bg-slate-50 border-slate-100 text-slate-600"
                             }`}
                           >
                             <CheckCircle
@@ -278,7 +278,7 @@ export function Progress() {
             </div>
 
             {/* Learning Path Chart */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div className="bg-white rounded-xl shadow-md border border-slate-200 p-6">
               <h3 className="text-xl font-bold text-slate-900 mb-6">Learning Journey</h3>
               <div className="space-y-4">
                 {learningPath.map((month, index) => (
@@ -306,7 +306,7 @@ export function Progress() {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Skill Development */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div className="bg-white rounded-xl shadow-md border border-slate-200 p-6">
               <h3 className="text-lg font-bold text-slate-900 mb-4">Skill Development</h3>
               <div className="space-y-4">
                 {skills.map((skill, index) => (
@@ -332,7 +332,7 @@ export function Progress() {
             </div>
 
             {/* Achievements */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div className="bg-white rounded-xl shadow-md border border-slate-200 p-6">
               <h3 className="text-lg font-bold text-slate-900 mb-4">Achievements</h3>
               <div className="space-y-4">
                 {achievements.map((achievement, index) => (
@@ -341,7 +341,7 @@ export function Progress() {
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ delay: index * 0.1 }}
-                    className="flex items-start gap-3 p-3 rounded-lg bg-gradient-to-br from-yellow-50 to-orange-50 border border-yellow-200"
+                    className="flex items-start gap-3 p-3 rounded-lg bg-gradient-to-br from-yellow-50 to-orange-50 border border-yellow-200 shadow-sm"
                   >
                     <div className="text-2xl">{achievement.icon}</div>
                     <div className="flex-1">
@@ -367,7 +367,7 @@ export function Progress() {
               </p>
               <Link
                 to="/find-mentors"
-                className="block w-full px-4 py-3 bg-white text-blue-600 rounded-lg font-medium text-center hover:bg-blue-50 transition-colors"
+                className="block w-full px-4 py-3 bg-white text-blue-600 rounded-lg font-medium text-center hover:bg-blue-50 transition-all transform hover:scale-105"
               >
                 Find a Mentor
               </Link>

@@ -111,7 +111,7 @@ export function MyMentors() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background">
       {/* Navigation */}
       <nav className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -179,13 +179,13 @@ export function MyMentors() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className="bg-white rounded-xl shadow-sm border border-slate-200 p-6"
+                    className="bg-white rounded-xl shadow-md border border-slate-200 p-6"
                   >
                     <div className="flex items-start gap-4">
                       <img
                         src={mentor.image}
                         alt={mentor.name}
-                        className="w-16 h-16 rounded-full object-cover"
+                        className="w-16 h-16 rounded-full object-cover border-2 border-slate-100"
                       />
                       <div className="flex-1">
                         <div className="flex items-start justify-between mb-2">
@@ -200,7 +200,7 @@ export function MyMentors() {
                               {mentor.company}
                             </p>
                           </div>
-                          <div className="flex items-center gap-1 text-sm">
+                          <div className="flex items-center gap-1 text-sm bg-slate-50 px-2 py-1 rounded">
                             <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                             <span className="font-semibold">
                               {mentor.rating}
@@ -226,20 +226,20 @@ export function MyMentors() {
                         <div className="flex gap-3">
                           <Link
                             to={`/book/${mentor.id}`}
-                            className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors"
+                            className="px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors shadow-sm"
                           >
                             Book Session
                           </Link>
                           <button
                             onClick={() => openChat()}
-                            className="px-4 py-2 bg-white border-2 border-slate-300 text-slate-700 rounded-lg text-sm font-medium hover:border-blue-300 transition-colors"
+                            className="px-4 py-2 bg-white border-2 border-slate-200 text-slate-700 rounded-lg text-sm font-medium hover:border-blue-300 hover:text-blue-600 transition-colors"
                           >
                             Send Message
                           </button>
                           <ChatPortal />
                           <Link
                             to={`/mentor/${mentor.id}`}
-                            className="px-4 py-2 bg-white border-2 border-slate-300 text-slate-700 rounded-lg text-sm font-medium hover:border-blue-300 transition-colors"
+                            className="px-4 py-2 bg-white border-2 border-slate-200 text-slate-700 rounded-lg text-sm font-medium hover:border-blue-300 hover:text-blue-600 transition-colors"
                           >
                             View Profile
                           </Link>
@@ -256,9 +256,9 @@ export function MyMentors() {
               <h2 className="text-xl font-bold text-slate-900 mb-4">
                 Past Sessions
               </h2>
-              <div className="bg-white rounded-xl shadow-sm border border-slate-200 divide-y divide-slate-200">
+              <div className="bg-white rounded-xl shadow-md border border-slate-200 divide-y divide-slate-200 overflow-hidden">
                 {pastSessions.map((session) => (
-                  <div key={session.id} className="p-6">
+                  <div key={session.id} className="p-6 hover:bg-slate-50 transition-colors">
                     <div className="flex items-start gap-4">
                       <img
                         src={session.mentorImage}
@@ -285,9 +285,15 @@ export function MyMentors() {
                           </div>
                         </div>
                         <div className="flex items-center gap-4 text-sm text-slate-600">
-                          <span>{session.date}</span>
+                          <span className="flex items-center gap-1">
+                            <Calendar className="w-3 h-3" />
+                            {session.date}
+                          </span>
                           <span>•</span>
-                          <span>{session.duration}</span>
+                          <span className="flex items-center gap-1">
+                            <Clock className="w-3 h-3" />
+                            {session.duration}
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -300,7 +306,7 @@ export function MyMentors() {
           {/* Sidebar */}
           <div className="space-y-6">
             {/* Upcoming Sessions */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div className="bg-white rounded-xl shadow-md border border-slate-200 p-6">
               <h3 className="text-lg font-bold text-slate-900 mb-4">
                 Upcoming Sessions
               </h3>
@@ -308,19 +314,19 @@ export function MyMentors() {
                 {upcomingSessions.map((session) => (
                   <div
                     key={session.id}
-                    className="p-4 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200"
+                    className="p-4 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 shadow-sm"
                   >
                     <div className="flex items-center gap-3 mb-3">
                       <img
                         src={session.mentorImage}
                         alt={session.mentor}
-                        className="w-10 h-10 rounded-full object-cover"
+                        className="w-10 h-10 rounded-full object-cover border border-white"
                       />
                       <div className="flex-1">
                         <div className="font-semibold text-slate-900 text-sm">
                           {session.mentor}
                         </div>
-                        <div className="text-xs text-slate-600">
+                        <div className="text-xs text-slate-600 line-clamp-1">
                           {session.topic}
                         </div>
                       </div>
@@ -332,11 +338,11 @@ export function MyMentors() {
                       <span>{session.time}</span>
                     </div>
                     <div className="flex gap-2">
-                      <button className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 flex items-center justify-center gap-1">
+                      <button className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 flex items-center justify-center gap-1 shadow-sm">
                         <Video className="w-4 h-4" />
                         Join
                       </button>
-                      <button className="px-3 py-2 bg-white border border-slate-300 text-slate-700 rounded-lg text-sm font-medium hover:border-blue-300">
+                      <button className="px-3 py-2 bg-white border border-slate-300 text-slate-700 rounded-lg text-sm font-medium hover:border-blue-300 transition-colors">
                         Reschedule
                       </button>
                     </div>
@@ -353,32 +359,32 @@ export function MyMentors() {
               </p>
               <Link
                 to="/find-mentors"
-                className="block w-full px-4 py-3 bg-white text-blue-600 rounded-lg font-medium text-center hover:bg-blue-50 transition-colors"
+                className="block w-full px-4 py-3 bg-white text-blue-600 rounded-lg font-medium text-center hover:bg-blue-50 transition-all transform hover:scale-105"
               >
                 Find More Mentors
               </Link>
             </div>
 
             {/* Stats */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+            <div className="bg-white rounded-xl shadow-md border border-slate-200 p-6">
               <h3 className="text-lg font-bold text-slate-900 mb-4">
                 Your Stats
               </h3>
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-600">Total Sessions</span>
+                  <span className="text-slate-600 text-sm">Total Sessions</span>
                   <span className="font-bold text-slate-900">23</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-600">Hours of Learning</span>
+                  <span className="text-slate-600 text-sm">Hours of Learning</span>
                   <span className="font-bold text-slate-900">18.5</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-600">Active Mentors</span>
+                  <span className="text-slate-600 text-sm">Active Mentors</span>
                   <span className="font-bold text-slate-900">3</span>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-slate-600">Goals Completed</span>
+                <div className="flex items-center justify-between pt-2 border-t border-slate-100">
+                  <span className="text-slate-600 text-sm">Goals Completed</span>
                   <span className="font-bold text-green-600">5</span>
                 </div>
               </div>

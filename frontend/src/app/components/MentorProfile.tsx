@@ -19,7 +19,6 @@ export function MentorProfile() {
 
   const { openChat, ChatPortal } = useChatPanel();
 
-  // Mock data - in real app, fetch based on id
   const mentor = {
     name: "Dr. Sarah Chen",
     title: "Chief Technology Officer",
@@ -101,8 +100,7 @@ export function MentorProfile() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      {/* Navigation */}
+    <div className="min-h-screen bg-background">
       <nav className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
@@ -124,7 +122,6 @@ export function MentorProfile() {
       </nav>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Back Button */}
         <Link
           to="/find-mentors"
           className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-6"
@@ -134,9 +131,7 @@ export function MentorProfile() {
         </Link>
 
         <div className="grid lg:grid-cols-3 gap-8">
-          {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Profile Header */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -192,7 +187,6 @@ export function MentorProfile() {
               </div>
             </motion.div>
 
-            {/* About */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -203,7 +197,6 @@ export function MentorProfile() {
               <p className="text-slate-600 leading-relaxed">{mentor.bio}</p>
             </motion.div>
 
-            {/* Expertise */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -225,7 +218,6 @@ export function MentorProfile() {
               </div>
             </motion.div>
 
-            {/* Experience */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -260,7 +252,6 @@ export function MentorProfile() {
               </div>
             </motion.div>
 
-            {/* Education */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -290,7 +281,6 @@ export function MentorProfile() {
               </div>
             </motion.div>
 
-            {/* Reviews */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -341,9 +331,7 @@ export function MentorProfile() {
             </motion.div>
           </div>
 
-          {/* Sidebar */}
           <div className="space-y-6">
-            {/* Booking Card */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
@@ -393,7 +381,6 @@ export function MentorProfile() {
               </button>
               <ChatPortal />
 
-              {/* Quick Stats */}
               <div className="mt-6 pt-6 border-t border-slate-200">
                 <h3 className="font-semibold text-slate-900 mb-3">
                   Why mentees choose Sarah

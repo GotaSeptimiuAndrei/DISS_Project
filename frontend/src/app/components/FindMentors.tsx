@@ -95,7 +95,7 @@ export function FindMentors() {
       matchScore: 85,
       hourlyRate: "Free",
       availability: "Available next week",
-      image: "https://images.unsplash.com/photo-1770058428154-9eee8a6a1fbb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaWRkbGUlMjBhZ2VkJTIwd29tYW4lMjBwcm9mZXNzaW9uYWx8ZW58MXx8fHwxNzc1NTQ5MTc4fDA&ixlib=rb-4.1.0&q=80&w=400",
+      image: "https://images.unsplash.com/photo-1770058428154-9eee8a6a1fbb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaWRkbGUlMjBhZ2VkJTIwd29tYW4lMjBwcm9mZXNzaW9uYWx8ZW58MXx8fHwxNzc1NTQ5MTc3fDA&ixlib=rb-4.1.0&q=80&w=400",
       bio: "Design leader committed to mentoring designers at all career stages."
     }
   ];
@@ -108,7 +108,7 @@ export function FindMentors() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background">
       {/* Navigation */}
       <nav className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -173,14 +173,14 @@ export function FindMentors() {
                 onClick={() => setSelectedFilter(filter.id)}
                 className={`px-4 py-2 rounded-lg font-medium transition-all ${
                   selectedFilter === filter.id
-                    ? "bg-blue-600 text-white"
-                    : "bg-white text-slate-700 border border-slate-300 hover:border-blue-300"
+                    ? "bg-blue-600 text-white shadow-sm"
+                    : "bg-white text-slate-700 border border-slate-300 hover:border-blue-300 shadow-sm"
                 }`}
               >
                 {filter.label}
               </button>
             ))}
-            <button className="px-4 py-2 rounded-lg font-medium bg-white text-slate-700 border border-slate-300 hover:border-blue-300 flex items-center gap-2">
+            <button className="px-4 py-2 rounded-lg font-medium bg-white text-slate-700 border border-slate-300 hover:border-blue-300 flex items-center gap-2 shadow-sm">
               <Filter className="w-4 h-4" />
               More Filters
             </button>
@@ -200,12 +200,13 @@ export function FindMentors() {
             <motion.div
               key={mentor.id}
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
+              viewport={{ once: true }}
             >
               <Link
                 to={`/mentor/${mentor.id}`}
-                className="block bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-lg hover:border-blue-300 transition-all"
+                className="block bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden hover:shadow-xl hover:border-blue-300 transition-all"
               >
                 {/* Match Score Badge */}
                 <div className="relative">
@@ -214,7 +215,7 @@ export function FindMentors() {
                     alt={mentor.name}
                     className="w-full h-48 object-cover"
                   />
-                  <div className="absolute top-3 right-3 px-3 py-1 bg-green-500 text-white rounded-full text-sm font-semibold">
+                  <div className="absolute top-3 right-3 px-3 py-1 bg-green-500 text-white rounded-full text-sm font-semibold shadow-sm">
                     {mentor.matchScore}% Match
                   </div>
                 </div>
@@ -239,7 +240,7 @@ export function FindMentors() {
                   </div>
 
                   {/* Bio */}
-                  <p className="text-sm text-slate-600 mb-3 line-clamp-2">
+                  <p className="text-sm text-slate-600 mb-3 line-clamp-2 italic">
                     {mentor.bio}
                   </p>
 
@@ -248,13 +249,13 @@ export function FindMentors() {
                     {mentor.expertise.slice(0, 2).map((skill, idx) => (
                       <span
                         key={idx}
-                        className="px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs font-medium"
+                        className="px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs font-medium border border-blue-100"
                       >
                         {skill}
                       </span>
                     ))}
                     {mentor.expertise.length > 2 && (
-                      <span className="px-2 py-1 bg-slate-100 text-slate-600 rounded text-xs font-medium">
+                      <span className="px-2 py-1 bg-slate-100 text-slate-600 rounded text-xs font-medium border border-slate-200">
                         +{mentor.expertise.length - 2}
                       </span>
                     )}
@@ -267,7 +268,7 @@ export function FindMentors() {
                       <span className="font-semibold text-slate-900">{mentor.rating}</span>
                       <span className="text-slate-600">({mentor.sessions})</span>
                     </div>
-                    <span className="text-sm text-green-600 font-medium">
+                    <span className="text-sm text-green-600 font-medium bg-green-50 px-2 py-0.5 rounded">
                       {mentor.availability}
                     </span>
                   </div>

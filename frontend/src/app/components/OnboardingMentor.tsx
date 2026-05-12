@@ -85,7 +85,7 @@ export function OnboardingMentor() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4 py-12">
       <div className="max-w-2xl w-full">
         {/* Header */}
         <div className="text-center mb-8">
@@ -135,7 +135,7 @@ export function OnboardingMentor() {
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white"
                     placeholder="Jane Smith"
                   />
                 </div>
@@ -147,7 +147,7 @@ export function OnboardingMentor() {
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white"
                     placeholder="jane@company.com"
                   />
                 </div>
@@ -159,7 +159,7 @@ export function OnboardingMentor() {
                     type="text"
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white"
                     placeholder="Senior Product Manager"
                   />
                 </div>
@@ -171,7 +171,7 @@ export function OnboardingMentor() {
                     type="text"
                     value={formData.company}
                     onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white"
                     placeholder="Tech Company Inc."
                   />
                 </div>
@@ -182,7 +182,7 @@ export function OnboardingMentor() {
                   <select
                     value={formData.experience}
                     onChange={(e) => setFormData({ ...formData, experience: e.target.value })}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white"
                   >
                     <option value="">Select experience</option>
                     <option value="5-7">5-7 years</option>
@@ -214,7 +214,7 @@ export function OnboardingMentor() {
                       addCustomExpertise();
                     }
                   }}
-                  className="flex-1 px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                  className="flex-1 px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white"
                   placeholder="Add a custom expertise area"
                 />
                 <button
@@ -233,7 +233,7 @@ export function OnboardingMentor() {
                     className={`p-4 rounded-lg border-2 text-sm font-medium transition-all ${
                       formData.expertise.includes(item)
                         ? "border-indigo-600 bg-indigo-50 text-indigo-700"
-                        : "border-slate-200 text-slate-700 hover:border-indigo-300"
+                        : "border-slate-200 bg-white text-slate-700 hover:border-indigo-300"
                     }`}
                   >
                     {item}
@@ -248,7 +248,7 @@ export function OnboardingMentor() {
                       className={`p-4 rounded-lg border-2 text-sm font-medium transition-all ${
                         formData.expertise.includes(item)
                           ? "border-indigo-600 bg-indigo-50 text-indigo-700"
-                          : "border-slate-200 text-slate-700 hover:border-indigo-300"
+                          : "border-slate-200 bg-white text-slate-700 hover:border-indigo-300"
                       }`}
                     >
                       {item}
@@ -274,7 +274,7 @@ export function OnboardingMentor() {
                     className={`w-full p-4 rounded-lg border-2 text-left transition-all ${
                       formData.sessionTypes.includes(type.value)
                         ? "border-indigo-600 bg-indigo-50"
-                        : "border-slate-200 hover:border-indigo-300"
+                        : "border-slate-200 bg-white hover:border-indigo-300"
                     }`}
                   >
                     <div className="font-semibold text-slate-900">{type.label}</div>
@@ -311,7 +311,7 @@ export function OnboardingMentor() {
                     className={`w-full p-4 rounded-lg border-2 text-left transition-all ${
                       formData.availability.includes(slot.value)
                         ? "border-indigo-600 bg-indigo-50"
-                        : "border-slate-200 hover:border-indigo-300"
+                        : "border-slate-200 bg-white hover:border-indigo-300"
                     }`}
                   >
                     <div className="font-semibold text-slate-900">{slot.label}</div>
@@ -331,7 +331,7 @@ export function OnboardingMentor() {
             className={`px-6 py-3 rounded-lg font-medium transition-all flex items-center gap-2 ${
               step === 1
                 ? "bg-slate-200 text-slate-400 cursor-not-allowed"
-                : "bg-white border-2 border-slate-300 text-slate-700 hover:border-slate-400"
+                : "bg-white border-2 border-slate-300 text-slate-700 hover:border-slate-400 shadow-sm"
             }`}
           >
             <ArrowLeft className="w-5 h-5" />
@@ -339,7 +339,7 @@ export function OnboardingMentor() {
           </button>
           <button
             onClick={handleNext}
-            className="px-6 py-3 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-all flex items-center gap-2"
+            className="px-6 py-3 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-all flex items-center gap-2 shadow-sm"
           >
             {step === totalSteps ? "Complete" : "Continue"}
             <ArrowRight className="w-5 h-5" />
