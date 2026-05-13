@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import { motion } from "motion/react";
 import {
@@ -14,8 +15,55 @@ import {
 } from "lucide-react";
 import { useChatPanel } from "./ChatPanel";
 
+// Interface matching the mapped data from FindMentors
+interface Mentor {
+  id: number;
+  name: string;
+  title: string;
+  company: string;
+  rating: number;
+  sessions: number;
+  bio: string;
+  expertise: string[];
+  image: string;
+  matchScore: number;
+  location: string;
+  availability: string;
+}
+
 export function Dashboard() {
   const { openChat, ChatPortal } = useChatPanel();
+  const [recommendedMentors, setRecommendedMentors] = useState<Mentor[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("http://localhost:8080/api/mentors")
+      .then((res) => res.json())
+      .then((data) => {
+        const populatedData = data.map((m: any, index: number) => ({
+          id: m.id,
+          name: m.name,
+          title: m.title,
+          company: m.company,
+          rating: m.rating || 4.8,
+          sessions: m.reviewCount || 15,
+          bio: m.profileBio || "Experienced professional passionate about mentoring.",
+          expertise: m.skills || [],
+          image: `https://images.unsplash.com/photo-${1573496359142 + index}?auto=format&fit=crop&w=400&q=80`,
+          matchScore: Math.floor(Math.random() * 20) + 80,
+          location: "Cluj-Napoca, RO",
+          availability: "Available this week",
+        }));
+        
+        // Only show the top 3 recommendations on the dashboard
+        setRecommendedMentors(populatedData.slice(0, 3));
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch recommended mentors:", err);
+        setLoading(false);
+      });
+  }, []);
 
   const upcomingSessions = [
     {
@@ -38,45 +86,6 @@ export function Dashboard() {
     },
   ];
 
-  const recommendedMentors = [
-    {
-      id: 1,
-      name: "James Park",
-      title: "Senior Software Architect",
-      company: "Amazon",
-      expertise: ["Technical Leadership", "System Design"],
-      matchScore: 95,
-      rating: 4.9,
-      sessions: 127,
-      image:
-        "https://images.unsplash.com/photo-1706025090996-63717544be2d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhc2lhbiUyMG1hbiUyMHByb2Zlc3Npb25hbCUyMGhlYWRzaG90fGVufDF8fHx8MTc3NTQ2NTQ0N3ww&ixlib=rb-4.1.0&q=80&w=400",
-    },
-    {
-      id: 2,
-      name: "Angela Rodriguez",
-      title: "VP of Product",
-      company: "Amazon",
-      expertise: ["Product Management", "Strategy"],
-      matchScore: 92,
-      rating: 4.8,
-      sessions: 89,
-      image:
-        "https://images.unsplash.com/photo-1652471949169-9c587e8898cd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxibGFjayUyMHdvbWFuJTIwYnVzaW5lc3MlMjBwcm9mZXNzaW9uYWx8ZW58MXx8fHwxNzc1NTQ5MTc3fDA&ixlib=rb-4.1.0&q=80&w=400",
-    },
-    {
-      id: 3,
-      name: "David Martinez",
-      title: "Director of Engineering",
-      company: "Amazon",
-      expertise: ["Team Leadership", "Career Growth"],
-      matchScore: 88,
-      rating: 4.9,
-      sessions: 156,
-      image:
-        "https://images.unsplash.com/photo-1648757766966-43d24bf7a264?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsYXRpbm8lMjBtYW4lMjBidXNpbmVzcyUyMHBvcnRyYWl0fGVufDF8fHx8MTc3NTU0OTE3N3ww&ixlib=rb-4.1.0&q=80&w=400",
-    },
-  ];
-
   const goals = [
     { name: "Leadership Skills", progress: 65, sessions: 8 },
     { name: "Technical Skills", progress: 45, sessions: 5 },
@@ -84,7 +93,7 @@ export function Dashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       {/* Navigation */}
       <nav className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -129,7 +138,7 @@ export function Dashboard() {
                 <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
               </button>
               <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
-                JD
+                AI {/* Initial for Alex Ionescu */}
               </div>
             </div>
           </div>
@@ -141,7 +150,7 @@ export function Dashboard() {
         {/* Welcome Section */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-slate-900 mb-2">
-            Welcome back, John! 👋
+            Welcome back, Alex! 👋
           </h1>
           <p className="text-slate-600">
             You have 2 upcoming sessions this week
@@ -330,42 +339,51 @@ export function Dashboard() {
               <h3 className="text-lg font-bold text-slate-900 mb-4">
                 Recommended for You
               </h3>
-              <div className="space-y-4">
-                {recommendedMentors.map((mentor) => (
-                  <Link
-                    key={mentor.id}
-                    to={`/mentor/${mentor.id}`}
-                    className="block p-4 rounded-lg border border-slate-200 hover:border-blue-300 hover:bg-blue-50 transition-all bg-white"
-                  >
-                    <div className="flex items-start gap-3 mb-3">
-                      <img
-                        src={mentor.image}
-                        alt={mentor.name}
-                        className="w-12 h-12 rounded-full object-cover"
-                      />
-                      <div className="flex-1">
-                        <div className="font-semibold text-slate-900 text-sm">
-                          {mentor.name}
+              
+              {loading ? (
+                <div className="text-center py-4 text-slate-500 text-sm">
+                  Loading recommendations...
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {recommendedMentors.map((mentor) => (
+                    <Link
+                      key={mentor.id}
+                      to={`/mentor/${mentor.id}`}
+                      state={{ mentor }}
+                      className="block p-4 rounded-lg border border-slate-200 hover:border-blue-300 hover:bg-blue-50 transition-all bg-white"
+                    >
+                      <div className="flex items-start gap-3 mb-3">
+                        <img
+                          src={mentor.image}
+                          alt={mentor.name}
+                          className="w-12 h-12 rounded-full object-cover bg-slate-100"
+                        />
+                        <div className="flex-1">
+                          <div className="font-semibold text-slate-900 text-sm">
+                            {mentor.name}
+                          </div>
+                          <div className="text-xs text-slate-600">
+                            {mentor.title}
+                          </div>
                         </div>
-                        <div className="text-xs text-slate-600">
-                          {mentor.title}
+                        <div className="flex items-center gap-1 text-xs">
+                          <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full font-medium">
+                            {mentor.matchScore}% match
+                          </span>
                         </div>
                       </div>
-                      <div className="flex items-center gap-1 text-xs">
-                        <span className="px-2 py-1 bg-green-100 text-green-700 rounded-full font-medium">
-                          {mentor.matchScore}% match
-                        </span>
+                      <div className="flex items-center gap-2 text-xs text-slate-600">
+                        <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                        <span>{mentor.rating}</span>
+                        <span>•</span>
+                        <span>{mentor.sessions} sessions</span>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-2 text-xs text-slate-600">
-                      <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                      <span>{mentor.rating}</span>
-                      <span>•</span>
-                      <span>{mentor.sessions} sessions</span>
-                    </div>
-                  </Link>
-                ))}
-              </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
+              
               <Link
                 to="/find-mentors"
                 className="block mt-4 text-center text-blue-600 text-sm font-medium hover:underline"

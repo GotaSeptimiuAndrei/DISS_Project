@@ -25,7 +25,7 @@ public class MentorProfile {
     @Column(columnDefinition = "TEXT")
     private String experienceSummary;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER) // <--- ADD fetch = FetchType.EAGER
     @CollectionTable(name = "mentor_skills", joinColumns = @JoinColumn(name = "mentor_id"))
     @Column(name = "skill_name")
     private List<String> skills;
