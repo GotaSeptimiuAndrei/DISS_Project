@@ -21,7 +21,9 @@ export function SignUp() {
         <div className="text-center mb-12">
           <Link to="/" className="inline-flex items-center gap-2 mb-8 group">
             <Users className="w-8 h-8 text-blue-600 group-hover:scale-110 transition-transform" />
-            <span className="text-2xl font-bold text-slate-900">MentorMatch</span>
+            <span className="text-2xl font-bold text-slate-900">
+              MentorMatch
+            </span>
           </Link>
           <h1 className="text-4xl font-bold text-slate-900 mb-4">
             Welcome! How would you like to get started?
@@ -44,7 +46,7 @@ export function SignUp() {
             }`}
           >
             <div className="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center mb-6">
-              < GraduationCap className="w-8 h-8 text-blue-600" />
+              <GraduationCap className="w-8 h-8 text-blue-600" />
             </div>
             <h2 className="text-2xl font-bold text-slate-900 mb-3">
               I'm a Mentee
@@ -106,7 +108,7 @@ export function SignUp() {
 
         <div className="text-center text-sm text-slate-600">
           Already have an account?{" "}
-          <Link to="/dashboard" className="text-blue-600 hover:underline">
+          <Link to="/login" className="text-blue-600 hover:underline">
             Sign in
           </Link>
         </div>

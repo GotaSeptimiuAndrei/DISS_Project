@@ -62,14 +62,19 @@ export function Home() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-2">
               <Users className="w-8 h-8 text-blue-600" />
-              <span className="text-xl font-bold text-slate-900">MentorMatch</span>
+              <span className="text-xl font-bold text-slate-900">
+                MentorMatch
+              </span>
             </div>
             <div className="flex items-center gap-4">
-              <Link to="/signup" className="text-slate-600 hover:text-slate-900 transition-colors">
+              <Link
+                to="/login"
+                className="text-slate-600 hover:text-slate-900 transition-colors"
+              >
                 Sign In
               </Link>
-              <Link 
-                to="/signup" 
+              <Link
+                to="/signup"
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
               >
                 Get Started
@@ -93,17 +98,17 @@ export function Home() {
                 <span className="text-blue-600"> Mentor</span>
               </h1>
               <p className="text-xl text-slate-600 mb-8 leading-relaxed">
-                Connect with experienced professionals who understand your goals. 
-                Accelerate your career growth with personalized guidance and structured mentorship.
+                Connect with experienced professionals who understand your
+                goals. Accelerate your career growth with personalized guidance
+                and structured mentorship.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link 
+                <Link
                   to="/signup"
                   className="px-8 py-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-all transform hover:scale-105 text-center"
                 >
                   Sign Up
                 </Link>
-                
               </div>
             </motion.div>
 
@@ -114,7 +119,7 @@ export function Home() {
               className="relative"
             >
               <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-                <img 
+                <img
                   src="https://images.unsplash.com/photo-1574966390692-5140d4310743?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwcm9mZXNzaW9uYWwlMjBtZW50b3IlMjB0ZWFjaGluZyUyMHN0dWRlbnR8ZW58MXx8fHwxNzc1NTQ5MDQ4fDA&ixlib=rb-4.1.0&q=80&w=1080"
                   alt="Mentor teaching student"
                   className="w-full h-[500px] object-cover"
@@ -132,8 +137,12 @@ export function Home() {
                     <CheckCircle className="w-6 h-6 text-green-600" />
                   </div>
                   <div>
-                    <div className="font-semibold text-slate-900">95% Match Rate</div>
-                    <div className="text-sm text-slate-600">Successful connections</div>
+                    <div className="font-semibold text-slate-900">
+                      95% Match Rate
+                    </div>
+                    <div className="text-sm text-slate-600">
+                      Successful connections
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -155,7 +164,9 @@ export function Home() {
                 viewport={{ once: true }}
                 className="text-center"
               >
-                <div className="text-4xl font-bold text-blue-600 mb-2">{stat.value}</div>
+                <div className="text-4xl font-bold text-blue-600 mb-2">
+                  {stat.value}
+                </div>
                 <div className="text-slate-600">{stat.label}</div>
               </motion.div>
             ))}
@@ -171,7 +182,8 @@ export function Home() {
               Why Choose MentorMatch?
             </h2>
             <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-              We've built the most comprehensive mentorship platform to support your professional growth
+              We've built the most comprehensive mentorship platform to support
+              your professional growth
             </p>
           </div>
 
@@ -191,9 +203,7 @@ export function Home() {
                 <h3 className="text-xl font-semibold text-slate-900 mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-slate-600">
-                  {feature.description}
-                </p>
+                <p className="text-slate-600">{feature.description}</p>
               </motion.div>
             ))}
           </div>
@@ -217,18 +227,21 @@ export function Home() {
               {
                 step: "01",
                 title: "Create Your Profile",
-                description: "Share your goals, skills, and preferences. Our onboarding takes just 10 minutes."
+                description:
+                  "Share your goals, skills, and preferences. Our onboarding takes just 10 minutes.",
               },
               {
                 step: "02",
                 title: "Get Matched",
-                description: "Our smart algorithm finds mentors who align with your learning style and career objectives."
+                description:
+                  "Our smart algorithm finds mentors who align with your learning style and career objectives.",
               },
               {
                 step: "03",
                 title: "Start Learning",
-                description: "Book sessions, track progress, and achieve your goals with expert guidance."
-              }
+                description:
+                  "Book sessions, track progress, and achieve your goals with expert guidance.",
+              },
             ].map((item, index) => (
               <motion.div
                 key={index}
@@ -239,13 +252,13 @@ export function Home() {
                 className="relative"
               >
                 <div className="bg-white p-8 rounded-xl shadow-lg">
-                  <div className="text-6xl font-bold text-blue-100 mb-4">{item.step}</div>
+                  <div className="text-6xl font-bold text-blue-100 mb-4">
+                    {item.step}
+                  </div>
                   <h3 className="text-2xl font-semibold text-slate-900 mb-3">
                     {item.title}
                   </h3>
-                  <p className="text-slate-600">
-                    {item.description}
-                  </p>
+                  <p className="text-slate-600">{item.description}</p>
                 </div>
                 {index < 2 && (
                   <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-blue-300" />
@@ -280,21 +293,28 @@ export function Home() {
               >
                 <div className="flex items-center gap-1 mb-4">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                    <Star
+                      key={i}
+                      className="w-5 h-5 fill-yellow-400 text-yellow-400"
+                    />
                   ))}
                 </div>
                 <p className="text-slate-600 mb-6 italic">
                   "{testimonial.quote}"
                 </p>
                 <div className="flex items-center gap-3">
-                  <img 
+                  <img
                     src={testimonial.image}
                     alt={testimonial.name}
                     className="w-12 h-12 rounded-full object-cover"
                   />
                   <div>
-                    <div className="font-semibold text-slate-900">{testimonial.name}</div>
-                    <div className="text-sm text-slate-600">{testimonial.role}</div>
+                    <div className="font-semibold text-slate-900">
+                      {testimonial.name}
+                    </div>
+                    <div className="text-sm text-slate-600">
+                      {testimonial.role}
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -315,9 +335,10 @@ export function Home() {
               Ready to Accelerate Your Career?
             </h2>
             <p className="text-xl text-blue-100 mb-8">
-              Join thousands of professionals who are achieving their goals with MentorMatch
+              Join thousands of professionals who are achieving their goals with
+              MentorMatch
             </p>
-            <Link 
+            <Link
               to="/signup"
               className="inline-block px-8 py-4 bg-white text-blue-600 rounded-lg hover:bg-blue-50 transition-all transform hover:scale-105"
             >
