@@ -32,6 +32,14 @@ export function FindMentors() {
     { id: "popular", label: "Most Popular" }
   ];
 
+  const imageUrls = [
+    "https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHByb2Zlc3Npb25hbCUyMHdvbWFuJTIwaGVhZHNob3R8ZW58MXx8fHwxNzc1NDcwOTI5fDA&ixlib=rb-4.1.0&q=80&w=400",
+    "https://images.unsplash.com/photo-1652471949169-9c587e8898cd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxibGFjayUyMHdvbWFuJTIwYnVzaW5lc3MlMjBwcm9mZXNzaW9uYWx8ZW58MXx8fHwxNzc1NTQ5MTc3fDA&ixlib=rb-4.1.0&q=80&w=400",
+    "https://images.unsplash.com/photo-1770058428154-9eee8a6a1fbb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaWRkbGUlMjBhZ2VkJTIwd29tYW4lMjBwcm9mZXNzaW9uYWx8ZW58MXx8fHwxNzc1NTQ5MTc3fDA&ixlib=rb-4.1.0&q=80&w=400",
+    "https://images.unsplash.com/photo-1543132220-7bc04a0e790a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYW4lMjBidXNpbmVzcyUyMHByb2Zlc3Npb25hbCUyMHBvcnRyYWl0fGVufDF8fHx8MTc3NTU0OTA0OXww&ixlib=rb-4.1.0&q=80&w=400",
+    "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtZW50b3J8ZW58MXx8fHwxNzc1NTQ5MTc3fDA&ixlib=rb-4.1.0&q=80&w=400",
+  ];
+
   useEffect(() => {
     // Build query for skills if we implement the backend filter later
     // fetch(`http://localhost:8080/api/mentors?skill=${searchQuery}`)
@@ -46,15 +54,17 @@ export function FindMentors() {
           company: m.company,
           rating: m.rating || 4.8,
           sessions: m.reviewCount || 15,
-          bio: m.profileBio || "Experienced professional passionate about mentoring.",
+          bio:
+            m.profileBio ||
+            "Experienced professional passionate about mentoring.",
           expertise: m.skills || [],
           // Mocking the fields the backend DTO doesn't have yet:
-          image: `https://images.unsplash.com/photo-${1573496359142 + index}?auto=format&fit=crop&w=400&q=80`, 
+          image: imageUrls[index],
           matchScore: Math.floor(Math.random() * 20) + 80, // Generates a random score between 80-99%
           location: "Cluj-Napoca, RO",
           availability: "Available this week",
         }));
-        
+
         setMentors(populatedData);
         setLoading(false);
       })

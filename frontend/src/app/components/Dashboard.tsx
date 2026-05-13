@@ -36,6 +36,12 @@ export function Dashboard() {
   const [recommendedMentors, setRecommendedMentors] = useState<Mentor[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const imageUrls = [
+    "https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHByb2Zlc3Npb25hbCUyMHdvbWFuJTIwaGVhZHNob3R8ZW58MXx8fHwxNzc1NDcwOTI5fDA&ixlib=rb-4.1.0&q=80&w=400",
+    "https://images.unsplash.com/photo-1652471949169-9c587e8898cd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxibGFjayUyMHdvbWFuJTIwYnVzaW5lc3MlMjBwcm9mZXNzaW9uYWx8ZW58MXx8fHwxNzc1NTQ5MTc3fDA&ixlib=rb-4.1.0&q=80&w=400",
+    "https://images.unsplash.com/photo-1770058428154-9eee8a6a1fbb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaWRkbGUlMjBhZ2VkJTIwd29tYW4lMjBwcm9mZXNzaW9uYWx8ZW58MXx8fHwxNzc1NTQ5MTc3fDA&ixlib=rb-4.1.0&q=80&w=400",
+  ];
+
   useEffect(() => {
     fetch("http://localhost:8080/api/mentors")
       .then((res) => res.json())
@@ -47,14 +53,16 @@ export function Dashboard() {
           company: m.company,
           rating: m.rating || 4.8,
           sessions: m.reviewCount || 15,
-          bio: m.profileBio || "Experienced professional passionate about mentoring.",
+          bio:
+            m.profileBio ||
+            "Experienced professional passionate about mentoring.",
           expertise: m.skills || [],
           image: `https://images.unsplash.com/photo-${1573496359142 + index}?auto=format&fit=crop&w=400&q=80`,
           matchScore: Math.floor(Math.random() * 20) + 80,
           location: "Cluj-Napoca, RO",
           availability: "Available this week",
         }));
-        
+
         // Only show the top 3 recommendations on the dashboard
         setRecommendedMentors(populatedData.slice(0, 3));
         setLoading(false);
@@ -339,14 +347,14 @@ export function Dashboard() {
               <h3 className="text-lg font-bold text-slate-900 mb-4">
                 Recommended for You
               </h3>
-              
+
               {loading ? (
                 <div className="text-center py-4 text-slate-500 text-sm">
                   Loading recommendations...
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {recommendedMentors.map((mentor) => (
+                  {recommendedMentors.map((mentor, index: number) => (
                     <Link
                       key={mentor.id}
                       to={`/mentor/${mentor.id}`}
@@ -355,7 +363,7 @@ export function Dashboard() {
                     >
                       <div className="flex items-start gap-3 mb-3">
                         <img
-                          src={mentor.image}
+                          src={imageUrls[index]}
                           alt={mentor.name}
                           className="w-12 h-12 rounded-full object-cover bg-slate-100"
                         />
@@ -383,7 +391,7 @@ export function Dashboard() {
                   ))}
                 </div>
               )}
-              
+
               <Link
                 to="/find-mentors"
                 className="block mt-4 text-center text-blue-600 text-sm font-medium hover:underline"
