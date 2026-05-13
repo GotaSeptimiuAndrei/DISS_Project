@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 public class MentorProfile {
     @Id
-    private Long userId;
+    private Long id;
 
     @OneToOne
     @MapsId
