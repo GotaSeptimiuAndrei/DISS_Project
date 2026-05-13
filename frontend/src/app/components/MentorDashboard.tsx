@@ -1,69 +1,76 @@
 import { Link } from "react-router";
 import { motion } from "motion/react";
-import { 
-  Users, 
-  Calendar, 
-  Star, 
-  TrendingUp, 
+import {
+  Users,
+  Calendar,
+  Star,
+  TrendingUp,
   Clock,
   MessageSquare,
   Award,
   CheckCircle,
-  Video
+  Video,
 } from "lucide-react";
+import { useChatPanel } from "./ChatPanel";
 
 export function MentorDashboard() {
+  const { openChat, ChatPortal } = useChatPanel();
   const upcomingSessions = [
     {
       id: 1,
       mentee: "Alex Johnson",
-      menteeImage: "https://images.unsplash.com/photo-1706025090996-63717544be2d?w=100",
+      menteeImage:
+        "https://images.unsplash.com/photo-1706025090996-63717544be2d?w=100",
       topic: "Career Transition Strategy",
       date: "Tomorrow",
       time: "2:00 PM - 3:00 PM",
       type: "video",
-      isFirstSession: false
+      isFirstSession: false,
     },
     {
       id: 2,
       mentee: "Maria Garcia",
-      menteeImage: "https://images.unsplash.com/photo-1652471949169-9c587e8898cd?w=100",
+      menteeImage:
+        "https://images.unsplash.com/photo-1652471949169-9c587e8898cd?w=100",
       topic: "Leadership Development",
       date: "Thursday",
       time: "10:00 AM - 11:00 AM",
       type: "video",
-      isFirstSession: true
+      isFirstSession: true,
     },
     {
       id: 3,
       mentee: "David Chen",
-      menteeImage: "https://images.unsplash.com/photo-1543132220-7bc04a0e790a?w=100",
+      menteeImage:
+        "https://images.unsplash.com/photo-1543132220-7bc04a0e790a?w=100",
       topic: "Technical Skills Guidance",
       date: "Friday",
       time: "3:00 PM - 4:00 PM",
       type: "chat",
-      isFirstSession: false
-    }
+      isFirstSession: false,
+    },
   ];
 
   const activeMentees = [
     {
       id: 1,
       name: "Alex Johnson",
-      image: "https://images.unsplash.com/photo-1706025090996-63717544be2d?w=100",
+      image:
+        "https://images.unsplash.com/photo-1706025090996-63717544be2d?w=100",
       goal: "Software Engineering Leadership",
       sessionsCompleted: 6,
       progress: 75,
-      nextSession: "Tomorrow, 2:00 PM"
+      nextSession: "Tomorrow, 2:00 PM",
     },
     {
       id: 2,
       name: "Maria Garcia",
-      image: "https://images.unsplash.com/photo-1652471949169-9c587e8898cd?w=100",
+      image:
+        "https://images.unsplash.com/photo-1652471949169-9c587e8898cd?w=100",
       goal: "Team Management",
       sessionsCompleted: 3,
       progress: 45,
-      nextSession: "Thursday, 10:00 AM"
+      nextSession: "Thursday, 10:00 AM",
     },
     {
       id: 3,
@@ -72,17 +79,18 @@ export function MentorDashboard() {
       goal: "System Design & Architecture",
       sessionsCompleted: 8,
       progress: 85,
-      nextSession: "Friday, 3:00 PM"
+      nextSession: "Friday, 3:00 PM",
     },
     {
       id: 4,
       name: "Sarah Williams",
-      image: "https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?w=100",
+      image:
+        "https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?w=100",
       goal: "Career Growth Strategy",
       sessionsCompleted: 4,
       progress: 55,
-      nextSession: "Next Monday"
-    }
+      nextSession: "Next Monday",
+    },
   ];
 
   const recentFeedback = [
@@ -90,35 +98,41 @@ export function MentorDashboard() {
       id: 1,
       mentee: "Alex Johnson",
       rating: 5,
-      comment: "Incredible session! Sarah's insights on leadership transitions were exactly what I needed.",
-      date: "2 days ago"
+      comment:
+        "Incredible session! Sarah's insights on leadership transitions were exactly what I needed.",
+      date: "2 days ago",
     },
     {
       id: 2,
       mentee: "David Chen",
       rating: 5,
-      comment: "Very helpful system design guidance. Practical examples made complex concepts clear.",
-      date: "1 week ago"
-    }
+      comment:
+        "Very helpful system design guidance. Practical examples made complex concepts clear.",
+      date: "1 week ago",
+    },
   ];
 
   const pendingRequests = [
     {
       id: 1,
       name: "Emily Rodriguez",
-      image: "https://images.unsplash.com/photo-1765648684613-b77086065bc1?w=100",
+      image:
+        "https://images.unsplash.com/photo-1765648684613-b77086065bc1?w=100",
       goal: "Product Management Transition",
       matchScore: 95,
-      message: "I'm transitioning from engineering to product management and would love your guidance..."
+      message:
+        "I'm transitioning from engineering to product management and would love your guidance...",
     },
     {
       id: 2,
       name: "Michael Thompson",
-      image: "https://images.unsplash.com/photo-1648757766966-43d24bf7a264?w=100",
+      image:
+        "https://images.unsplash.com/photo-1648757766966-43d24bf7a264?w=100",
       goal: "Engineering Leadership",
       matchScore: 88,
-      message: "Looking to develop leadership skills to move into a management role..."
-    }
+      message:
+        "Looking to develop leadership skills to move into a management role...",
+    },
   ];
 
   return (
@@ -130,22 +144,36 @@ export function MentorDashboard() {
             <div className="flex items-center gap-8">
               <Link to="/" className="flex items-center gap-2">
                 <Users className="w-6 h-6 text-indigo-600" />
-                <span className="text-lg font-bold text-slate-900">MentorMatch</span>
+                <span className="text-lg font-bold text-slate-900">
+                  MentorMatch
+                </span>
               </Link>
               <div className="hidden md:flex items-center gap-6">
-                <Link to="/mentor-dashboard" className="text-indigo-600 font-medium">
+                <Link
+                  to="/mentor-dashboard"
+                  className="text-indigo-600 font-medium"
+                >
                   Dashboard
                 </Link>
-                <Link to="/mentor-dashboard" className="text-slate-600 hover:text-slate-900">
+                <Link
+                  to="/mentor-dashboard"
+                  className="text-slate-600 hover:text-slate-900"
+                >
                   My Mentees
                 </Link>
-                <Link to="/mentor-dashboard" className="text-slate-600 hover:text-slate-900">
+                <Link
+                  to="/mentor-dashboard"
+                  className="text-slate-600 hover:text-slate-900"
+                >
                   Availability
                 </Link>
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <button className="p-2 text-slate-600 hover:text-slate-900 relative">
+              <button
+                onClick={() => openChat()}
+                className="p-2 text-slate-600 hover:text-slate-900 relative"
+              >
                 <MessageSquare className="w-5 h-5" />
                 <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
               </button>
@@ -154,6 +182,7 @@ export function MentorDashboard() {
               </div>
             </div>
           </div>
+          <ChatPortal />
         </div>
       </nav>
 
@@ -193,8 +222,12 @@ export function MentorDashboard() {
               <span className="text-slate-600 text-sm">Active Mentees</span>
               <Users className="w-5 h-5 text-blue-600" />
             </div>
-            <div className="text-3xl font-bold text-slate-900">{activeMentees.length}</div>
-            <div className="text-sm text-slate-600 mt-1">Currently mentoring</div>
+            <div className="text-3xl font-bold text-slate-900">
+              {activeMentees.length}
+            </div>
+            <div className="text-sm text-slate-600 mt-1">
+              Currently mentoring
+            </div>
           </motion.div>
 
           <motion.div
@@ -222,7 +255,9 @@ export function MentorDashboard() {
               <Clock className="w-5 h-5 text-green-600" />
             </div>
             <div className="text-3xl font-bold text-slate-900">195</div>
-            <div className="text-sm text-green-600 mt-1">Hours of mentoring</div>
+            <div className="text-sm text-green-600 mt-1">
+              Hours of mentoring
+            </div>
           </motion.div>
         </div>
 
@@ -232,8 +267,13 @@ export function MentorDashboard() {
             {/* Upcoming Sessions */}
             <div className="bg-white rounded-xl shadow-md border border-slate-200 p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-slate-900">Upcoming Sessions</h2>
-                <Link to="#" className="text-indigo-600 text-sm font-medium hover:underline">
+                <h2 className="text-xl font-bold text-slate-900">
+                  Upcoming Sessions
+                </h2>
+                <Link
+                  to="#"
+                  className="text-indigo-600 text-sm font-medium hover:underline"
+                >
                   View calendar
                 </Link>
               </div>
@@ -250,18 +290,26 @@ export function MentorDashboard() {
                     />
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="font-semibold text-slate-900">{session.mentee}</span>
+                        <span className="font-semibold text-slate-900">
+                          {session.mentee}
+                        </span>
                         {session.isFirstSession && (
                           <span className="px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-medium rounded-full border border-blue-200">
                             First Session
                           </span>
                         )}
                       </div>
-                      <div className="text-sm text-slate-600">{session.topic}</div>
+                      <div className="text-sm text-slate-600">
+                        {session.topic}
+                      </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-sm font-medium text-slate-900">{session.date}</div>
-                      <div className="text-sm text-slate-600">{session.time}</div>
+                      <div className="text-sm font-medium text-slate-900">
+                        {session.date}
+                      </div>
+                      <div className="text-sm text-slate-600">
+                        {session.time}
+                      </div>
                     </div>
                     <button className="px-4 py-2 bg-indigo-600 text-white rounded-lg text-sm hover:bg-indigo-700 flex items-center gap-2 shadow-sm">
                       <Video className="w-4 h-4" />
@@ -275,8 +323,13 @@ export function MentorDashboard() {
             {/* Active Mentees */}
             <div className="bg-white rounded-xl shadow-md border border-slate-200 p-6">
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-slate-900">Active Mentees</h2>
-                <Link to="#" className="text-indigo-600 text-sm font-medium hover:underline">
+                <h2 className="text-xl font-bold text-slate-900">
+                  Active Mentees
+                </h2>
+                <Link
+                  to="#"
+                  className="text-indigo-600 text-sm font-medium hover:underline"
+                >
                   View all
                 </Link>
               </div>
@@ -293,20 +346,31 @@ export function MentorDashboard() {
                         className="w-12 h-12 rounded-full object-cover border-2 border-slate-50"
                       />
                       <div className="flex-1">
-                        <div className="font-semibold text-slate-900">{mentee.name}</div>
-                        <div className="text-sm text-slate-600 line-clamp-1">{mentee.goal}</div>
+                        <div className="font-semibold text-slate-900">
+                          {mentee.name}
+                        </div>
+                        <div className="text-sm text-slate-600 line-clamp-1">
+                          {mentee.goal}
+                        </div>
                         <div className="text-xs text-slate-500 mt-1">
-                          {mentee.sessionsCompleted} sessions • Next: {mentee.nextSession}
+                          {mentee.sessionsCompleted} sessions • Next:{" "}
+                          {mentee.nextSession}
                         </div>
                       </div>
-                      <button className="text-slate-400 hover:text-indigo-600 transition-colors">
+                      <button
+                        onClick={() => openChat()}
+                        className="text-slate-400 hover:text-indigo-600 transition-colors"
+                      >
                         <MessageSquare className="w-5 h-5" />
                       </button>
+                      <ChatPortal />
                     </div>
                     <div>
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-sm text-slate-600">Progress</span>
-                        <span className="text-sm font-semibold text-slate-900">{mentee.progress}%</span>
+                        <span className="text-sm font-semibold text-slate-900">
+                          {mentee.progress}%
+                        </span>
                       </div>
                       <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
                         <motion.div
@@ -324,20 +388,34 @@ export function MentorDashboard() {
 
             {/* Recent Feedback */}
             <div className="bg-white rounded-xl shadow-md border border-slate-200 p-6">
-              <h2 className="text-xl font-bold text-slate-900 mb-6">Recent Feedback</h2>
+              <h2 className="text-xl font-bold text-slate-900 mb-6">
+                Recent Feedback
+              </h2>
               <div className="space-y-4">
                 {recentFeedback.map((feedback) => (
-                  <div key={feedback.id} className="pb-4 border-b border-slate-100 last:border-0 last:pb-0">
+                  <div
+                    key={feedback.id}
+                    className="pb-4 border-b border-slate-100 last:border-0 last:pb-0"
+                  >
                     <div className="flex items-start justify-between mb-2">
-                      <div className="font-semibold text-slate-900">{feedback.mentee}</div>
+                      <div className="font-semibold text-slate-900">
+                        {feedback.mentee}
+                      </div>
                       <div className="flex items-center gap-1">
                         {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                          <Star
+                            key={i}
+                            className="w-4 h-4 fill-yellow-400 text-yellow-400"
+                          />
                         ))}
                       </div>
                     </div>
-                    <p className="text-slate-600 text-sm mb-2 italic">"{feedback.comment}"</p>
-                    <div className="text-xs text-slate-500">{feedback.date}</div>
+                    <p className="text-slate-600 text-sm mb-2 italic">
+                      "{feedback.comment}"
+                    </p>
+                    <div className="text-xs text-slate-500">
+                      {feedback.date}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -353,7 +431,10 @@ export function MentorDashboard() {
               </h3>
               <div className="space-y-4">
                 {pendingRequests.map((request) => (
-                  <div key={request.id} className="p-4 rounded-lg bg-indigo-50 border border-indigo-100">
+                  <div
+                    key={request.id}
+                    className="p-4 rounded-lg bg-indigo-50 border border-indigo-100"
+                  >
                     <div className="flex items-start gap-3 mb-3">
                       <img
                         src={request.image}
@@ -361,8 +442,12 @@ export function MentorDashboard() {
                         className="w-10 h-10 rounded-full object-cover border border-white"
                       />
                       <div className="flex-1">
-                        <div className="font-semibold text-slate-900 text-sm">{request.name}</div>
-                        <div className="text-xs text-slate-600 line-clamp-1">{request.goal}</div>
+                        <div className="font-semibold text-slate-900 text-sm">
+                          {request.name}
+                        </div>
+                        <div className="text-xs text-slate-600 line-clamp-1">
+                          {request.goal}
+                        </div>
                         <div className="flex items-center gap-1 mt-1">
                           <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-medium rounded-full">
                             {request.matchScore}% match
@@ -370,7 +455,9 @@ export function MentorDashboard() {
                         </div>
                       </div>
                     </div>
-                    <p className="text-sm text-slate-600 mb-3 line-clamp-2 italic">{request.message}</p>
+                    <p className="text-sm text-slate-600 mb-3 line-clamp-2 italic">
+                      {request.message}
+                    </p>
                     <div className="flex gap-2">
                       <button className="flex-1 px-3 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 shadow-sm transition-all">
                         Accept
@@ -390,11 +477,15 @@ export function MentorDashboard() {
               <h3 className="text-lg font-bold mb-2">Your Impact</h3>
               <div className="space-y-3 mb-4">
                 <div className="flex items-center justify-between">
-                  <span className="text-indigo-100 text-sm">Mentees helped</span>
+                  <span className="text-indigo-100 text-sm">
+                    Mentees helped
+                  </span>
                   <span className="font-bold text-xl">47</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-indigo-100 text-sm">Goals achieved</span>
+                  <span className="text-indigo-100 text-sm">
+                    Goals achieved
+                  </span>
                   <span className="font-bold text-xl">32</span>
                 </div>
                 <div className="flex items-center justify-between">
@@ -411,7 +502,9 @@ export function MentorDashboard() {
 
             {/* Quick Actions */}
             <div className="bg-white rounded-xl shadow-md border border-slate-200 p-6">
-              <h3 className="text-lg font-bold text-slate-900 mb-4">Quick Actions</h3>
+              <h3 className="text-lg font-bold text-slate-900 mb-4">
+                Quick Actions
+              </h3>
               <div className="space-y-2">
                 <button className="w-full px-4 py-3 bg-indigo-50 text-indigo-700 rounded-lg font-medium hover:bg-indigo-100 transition-colors flex items-center gap-2">
                   <Calendar className="w-5 h-5" />
