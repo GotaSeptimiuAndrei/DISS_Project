@@ -3,7 +3,7 @@ spring:
     name: backend
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/DISS_DB
+    url: jdbc:postgresql://localhost:5432/diss_db
     username: postgres
     password: 123Andrei
     driver-class-name: org.postgresql.Driver
