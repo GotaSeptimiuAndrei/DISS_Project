@@ -156,7 +156,7 @@ export function MentorDashboard() {
                   Dashboard
                 </Link>
                 <Link
-                  to="/mentor-dashboard"
+                  to="/my-mentees"
                   className="text-slate-600 hover:text-slate-900"
                 >
                   My Mentees
