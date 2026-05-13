@@ -632,10 +632,10 @@ export function MyMentees() {
                   My Mentees
                 </Link>
                 <Link
-                  to="/mentor-dashboard"
+                  to="/resources"
                   className="text-slate-600 hover:text-slate-900"
                 >
-                  Availability
+                  Resources
                 </Link>
               </div>
             </div>
