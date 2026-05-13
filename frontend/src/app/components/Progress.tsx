@@ -1,8 +1,19 @@
 import { Link } from "react-router";
 import { motion } from "motion/react";
-import { Users, Target, TrendingUp, Award, Calendar, CheckCircle } from "lucide-react";
+import {
+  Users,
+  Target,
+  TrendingUp,
+  Award,
+  Calendar,
+  CheckCircle,
+  MessageSquare,
+} from "lucide-react";
+import { useChatPanel } from "./ChatPanel";
 
 export function Progress() {
+  const { openChat, ChatPortal } = useChatPanel();
+
   const goals = [
     {
       id: 1,
@@ -16,8 +27,8 @@ export function Progress() {
         { name: "Communication Skills", completed: true },
         { name: "Team Management", completed: true },
         { name: "Strategic Thinking", completed: false },
-        { name: "Decision Making", completed: false }
-      ]
+        { name: "Decision Making", completed: false },
+      ],
     },
     {
       id: 2,
@@ -31,8 +42,8 @@ export function Progress() {
         { name: "System Design Basics", completed: true },
         { name: "Architecture Patterns", completed: true },
         { name: "Scalability", completed: false },
-        { name: "Performance Optimization", completed: false }
-      ]
+        { name: "Performance Optimization", completed: false },
+      ],
     },
     {
       id: 3,
@@ -46,9 +57,9 @@ export function Progress() {
         { name: "Market Analysis", completed: true },
         { name: "User Research", completed: true },
         { name: "Roadmap Planning", completed: true },
-        { name: "Metrics & KPIs", completed: false }
-      ]
-    }
+        { name: "Metrics & KPIs", completed: false },
+      ],
+    },
   ];
 
   const achievements = [
@@ -56,33 +67,33 @@ export function Progress() {
       name: "First Session",
       icon: "🎯",
       date: "Jan 15, 2026",
-      description: "Completed your first mentoring session"
+      description: "Completed your first mentoring session",
     },
     {
       name: "10 Sessions",
       icon: "🏆",
       date: "Feb 28, 2026",
-      description: "Reached 10 mentoring sessions"
+      description: "Reached 10 mentoring sessions",
     },
     {
       name: "Goal Achiever",
       icon: "⭐",
       date: "Mar 20, 2026",
-      description: "Completed your first learning goal"
+      description: "Completed your first learning goal",
     },
     {
       name: "Consistent Learner",
       icon: "🔥",
       date: "Apr 1, 2026",
-      description: "4 weeks streak of weekly sessions"
-    }
+      description: "4 weeks streak of weekly sessions",
+    },
   ];
 
   const learningPath = [
     { month: "Jan", sessions: 3, hours: 2.5 },
     { month: "Feb", sessions: 5, hours: 4.0 },
     { month: "Mar", sessions: 8, hours: 6.5 },
-    { month: "Apr", sessions: 7, hours: 5.5 }
+    { month: "Apr", sessions: 7, hours: 5.5 },
   ];
 
   const skills = [
@@ -90,7 +101,7 @@ export function Progress() {
     { name: "Communication", level: 80, improvement: "+20%" },
     { name: "Technical", level: 45, improvement: "+25%" },
     { name: "Strategy", level: 75, improvement: "+18%" },
-    { name: "Team Building", level: 55, improvement: "+12%" }
+    { name: "Team Building", level: 55, improvement: "+12%" },
   ];
 
   return (
@@ -137,12 +148,20 @@ export function Progress() {
               </div>
             </div>
             <div className="flex items-center gap-4">
+              <button
+                onClick={() => openChat()}
+                className="p-2 text-slate-600 hover:text-slate-900 relative"
+              >
+                <MessageSquare className="w-5 h-5" />
+                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
+              </button>
               <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
                 JD
               </div>
             </div>
           </div>
         </div>
+        <ChatPortal />
       </nav>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

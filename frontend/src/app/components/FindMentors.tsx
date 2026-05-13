@@ -1,7 +1,17 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router";
 import { motion } from "motion/react";
-import { Users, Search, Filter, Star, MapPin, Briefcase, Loader2 } from "lucide-react";
+import {
+  Users,
+  Search,
+  Filter,
+  Star,
+  MapPin,
+  Briefcase,
+  Loader2,
+  MessageSquare,
+} from "lucide-react";
+import { useChatPanel } from "./ChatPanel";
 
 // Matches the data structure from our Spring Boot API + our UI mock fields
 interface Mentor {
@@ -11,7 +21,7 @@ interface Mentor {
   company: string;
   rating: number;
   sessions: number; // mapped from reviewCount
-  bio: string;      // mapped from profileBio
+  bio: string; // mapped from profileBio
   expertise: string[]; // mapped from skills
   image: string;
   matchScore: number;
@@ -20,6 +30,8 @@ interface Mentor {
 }
 
 export function FindMentors() {
+  const { openChat, ChatPortal } = useChatPanel();
+
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("all");
   const [mentors, setMentors] = useState<Mentor[]>([]);
@@ -29,7 +41,7 @@ export function FindMentors() {
     { id: "all", label: "All Mentors" },
     { id: "high-match", label: "Top Matches" },
     { id: "available", label: "Available This Week" },
-    { id: "popular", label: "Most Popular" }
+    { id: "popular", label: "Most Popular" },
   ];
 
   const imageUrls = [
@@ -119,12 +131,20 @@ export function FindMentors() {
               </div>
             </div>
             <div className="flex items-center gap-4">
+              <button
+                onClick={() => openChat()}
+                className="p-2 text-slate-600 hover:text-slate-900 relative"
+              >
+                <MessageSquare className="w-5 h-5" />
+                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
+              </button>
               <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
                 AI {/* Initials for Alex Ionescu */}
               </div>
             </div>
           </div>
         </div>
+        <ChatPortal />
       </nav>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

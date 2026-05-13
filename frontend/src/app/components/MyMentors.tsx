@@ -154,12 +154,20 @@ export function MyMentors() {
               </div>
             </div>
             <div className="flex items-center gap-4">
+              <button
+                onClick={() => openChat()}
+                className="p-2 text-slate-600 hover:text-slate-900 relative"
+              >
+                <MessageSquare className="w-5 h-5" />
+                <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
+              </button>
               <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
                 JD
               </div>
             </div>
           </div>
         </div>
+        <ChatPortal />
       </nav>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

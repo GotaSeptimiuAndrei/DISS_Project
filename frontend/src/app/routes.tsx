@@ -15,7 +15,7 @@ import { Login } from "./components/Login";
 import { MyMentees } from "./components/MyMentees";
 import { MenteeProfile } from "./components/MenteeProfile";
 import { ResourcesPage } from "./components/ResourcesPage";
-import { MenteeResourcesPage } from "./MenteeResourcesPage";
+import { MenteeResourcesPage } from "./components/MenteeResourcesPage";
 
 export const router = createBrowserRouter([
   {
