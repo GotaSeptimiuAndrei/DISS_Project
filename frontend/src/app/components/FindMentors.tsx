@@ -76,7 +76,7 @@ export function FindMentors() {
 
   return (
     // Removed bg-background so it inherits the beautiful light blue gradient from Root.tsx
-    <div className="min-h-screen">
+    <div className="min-h-screen  bg-background">
       {/* Navigation */}
       <nav className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -84,19 +84,30 @@ export function FindMentors() {
             <div className="flex items-center gap-8">
               <Link to="/" className="flex items-center gap-2">
                 <Users className="w-6 h-6 text-blue-600" />
-                <span className="text-lg font-bold text-slate-900">MentorMatch</span>
+                <span className="text-lg font-bold text-slate-900">
+                  MentorMatch
+                </span>
               </Link>
               <div className="hidden md:flex items-center gap-6">
-                <Link to="/dashboard" className="text-slate-600 hover:text-slate-900">
+                <Link
+                  to="/dashboard"
+                  className="text-slate-600 hover:text-slate-900"
+                >
                   Dashboard
                 </Link>
                 <Link to="/find-mentors" className="text-blue-600 font-medium">
                   Find Mentors
                 </Link>
-                <Link to="/my-mentors" className="text-slate-600 hover:text-slate-900">
+                <Link
+                  to="/my-mentors"
+                  className="text-slate-600 hover:text-slate-900"
+                >
                   My Mentors
                 </Link>
-                <Link to="/progress" className="text-slate-600 hover:text-slate-900">
+                <Link
+                  to="/progress"
+                  className="text-slate-600 hover:text-slate-900"
+                >
                   Progress
                 </Link>
               </div>
@@ -117,7 +128,8 @@ export function FindMentors() {
             Find Your Perfect Mentor
           </h1>
           <p className="text-slate-600">
-            Discover experienced professionals matched to your goals and learning style
+            Discover experienced professionals matched to your goals and
+            learning style
           </p>
         </div>
 
@@ -158,7 +170,11 @@ export function FindMentors() {
         {/* Results Count */}
         <div className="mb-6">
           <p className="text-slate-600">
-            Showing <span className="font-semibold text-slate-900">{mentors.length}</span> mentors
+            Showing{" "}
+            <span className="font-semibold text-slate-900">
+              {mentors.length}
+            </span>{" "}
+            mentors
           </p>
         </div>
 
@@ -166,7 +182,9 @@ export function FindMentors() {
         {loading && (
           <div className="flex justify-center items-center py-20">
             <Loader2 className="w-10 h-10 text-blue-600 animate-spin" />
-            <span className="ml-3 text-slate-600 font-medium">Finding the best mentors...</span>
+            <span className="ml-3 text-slate-600 font-medium">
+              Finding the best mentors...
+            </span>
           </div>
         )}
 
@@ -184,7 +202,7 @@ export function FindMentors() {
                 {/* CRITICAL: Passing the mentor object via state so MentorProfile.tsx can read it */}
                 <Link
                   to={`/mentor/${mentor.id}`}
-                  state={{ mentor }} 
+                  state={{ mentor }}
                   className="block bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden hover:shadow-xl hover:border-blue-300 transition-all"
                 >
                   {/* Match Score Badge */}
@@ -204,8 +222,10 @@ export function FindMentors() {
                     <h3 className="text-lg font-bold text-slate-900 mb-1">
                       {mentor.name}
                     </h3>
-                    <p className="text-sm text-slate-600 mb-1">{mentor.title}</p>
-                    
+                    <p className="text-sm text-slate-600 mb-1">
+                      {mentor.title}
+                    </p>
+
                     {/* Company and Location */}
                     <div className="flex items-center gap-4 text-xs text-slate-500 mb-3">
                       <div className="flex items-center gap-1">
@@ -214,7 +234,7 @@ export function FindMentors() {
                       </div>
                       <div className="flex items-center gap-1">
                         <MapPin className="w-3 h-3" />
-                        <span>{mentor.location.split(',')[0]}</span>
+                        <span>{mentor.location.split(",")[0]}</span>
                       </div>
                     </div>
 
@@ -244,8 +264,12 @@ export function FindMentors() {
                     <div className="flex items-center justify-between pt-4 border-t border-slate-200">
                       <div className="flex items-center gap-1 text-sm">
                         <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                        <span className="font-semibold text-slate-900">{mentor.rating}</span>
-                        <span className="text-slate-600">({mentor.sessions})</span>
+                        <span className="font-semibold text-slate-900">
+                          {mentor.rating}
+                        </span>
+                        <span className="text-slate-600">
+                          ({mentor.sessions})
+                        </span>
                       </div>
                       <span className="text-sm text-green-600 font-medium bg-green-50 px-2 py-0.5 rounded">
                         {mentor.availability}

@@ -515,7 +515,7 @@ function MenteeCard({
             View profile
           </Link>
 
-          <button
+          {/*<button
             onClick={() => setExpanded((v) => !v)}
             className="ml-auto flex items-center gap-1 px-3 py-2 text-slate-500 text-xs font-medium rounded-lg hover:bg-slate-50 transition-colors"
           >
@@ -528,7 +528,7 @@ function MenteeCard({
                 More details <ChevronDown className="w-4 h-4" />
               </>
             )}
-          </button>
+          </button>*/}
         </div>
       </div>
 
