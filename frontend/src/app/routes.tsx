@@ -15,6 +15,7 @@ import { Login } from "./components/Login";
 import { MyMentees } from "./components/MyMentees";
 import { MenteeProfile } from "./components/MenteeProfile";
 import { ResourcesPage } from "./components/ResourcesPage";
+import { MenteeResourcesPage } from "./MenteeResourcesPage";
 
 export const router = createBrowserRouter([
   {
@@ -36,6 +37,7 @@ export const router = createBrowserRouter([
       { path: "mentor-dashboard", Component: MentorDashboard },
       { path: "login", Component: Login },
       { path: "resources", Component: ResourcesPage },
+      { path: "mentee-resources", Component: MenteeResourcesPage },
     ],
   },
 ]);

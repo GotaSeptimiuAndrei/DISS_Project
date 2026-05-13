@@ -102,20 +102,37 @@ export function Progress() {
             <div className="flex items-center gap-8">
               <Link to="/" className="flex items-center gap-2">
                 <Users className="w-6 h-6 text-blue-600" />
-                <span className="text-lg font-bold text-slate-900">MentorMatch</span>
+                <span className="text-lg font-bold text-slate-900">
+                  MentorMatch
+                </span>
               </Link>
               <div className="hidden md:flex items-center gap-6">
-                <Link to="/dashboard" className="text-slate-600 hover:text-slate-900">
+                <Link
+                  to="/dashboard"
+                  className="text-slate-600 hover:text-slate-900"
+                >
                   Dashboard
                 </Link>
-                <Link to="/find-mentors" className="text-slate-600 hover:text-slate-900">
+                <Link
+                  to="/find-mentors"
+                  className="text-slate-600 hover:text-slate-900"
+                >
                   Find Mentors
                 </Link>
-                <Link to="/my-mentors" className="text-slate-600 hover:text-slate-900">
+                <Link
+                  to="/my-mentors"
+                  className="text-slate-600 hover:text-slate-900"
+                >
                   My Mentors
                 </Link>
                 <Link to="/progress" className="text-blue-600 font-medium">
                   Progress
+                </Link>
+                <Link
+                  to="/mentee-resources"
+                  className="text-slate-600 hover:text-slate-900"
+                >
+                  Resources
                 </Link>
               </div>
             </div>
@@ -191,7 +208,9 @@ export function Progress() {
               <span className="text-slate-600 text-sm">Achievements</span>
               <Award className="w-5 h-5 text-yellow-600" />
             </div>
-            <div className="text-3xl font-bold text-slate-900 mb-1">{achievements.length}</div>
+            <div className="text-3xl font-bold text-slate-900 mb-1">
+              {achievements.length}
+            </div>
             <div className="text-sm text-slate-600">Unlocked</div>
           </motion.div>
         </div>
@@ -201,7 +220,9 @@ export function Progress() {
           <div className="lg:col-span-2 space-y-8">
             {/* Active Goals */}
             <div>
-              <h2 className="text-2xl font-bold text-slate-900 mb-6">Active Goals</h2>
+              <h2 className="text-2xl font-bold text-slate-900 mb-6">
+                Active Goals
+              </h2>
               <div className="space-y-6">
                 {goals.map((goal, index) => (
                   <motion.div
@@ -213,15 +234,23 @@ export function Progress() {
                   >
                     <div className="flex items-start justify-between mb-4">
                       <div>
-                        <h3 className="text-lg font-bold text-slate-900 mb-1">{goal.name}</h3>
-                        <p className="text-sm text-slate-600">Mentor: {goal.mentor}</p>
+                        <h3 className="text-lg font-bold text-slate-900 mb-1">
+                          {goal.name}
+                        </h3>
+                        <p className="text-sm text-slate-600">
+                          Mentor: {goal.mentor}
+                        </p>
                       </div>
-                      <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                        goal.status === "ahead"
-                          ? "bg-green-100 text-green-700"
-                          : "bg-blue-100 text-blue-700"
-                      }`}>
-                        {goal.status === "ahead" ? "Ahead of schedule" : "On track"}
+                      <span
+                        className={`px-3 py-1 rounded-full text-sm font-medium ${
+                          goal.status === "ahead"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-blue-100 text-blue-700"
+                        }`}
+                      >
+                        {goal.status === "ahead"
+                          ? "Ahead of schedule"
+                          : "On track"}
                       </span>
                     </div>
 
@@ -229,7 +258,9 @@ export function Progress() {
                     <div className="mb-4">
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-sm text-slate-600">Progress</span>
-                        <span className="text-sm font-semibold text-slate-900">{goal.progress}%</span>
+                        <span className="text-sm font-semibold text-slate-900">
+                          {goal.progress}%
+                        </span>
                       </div>
                       <div className="h-3 bg-slate-200 rounded-full overflow-hidden">
                         <motion.div
@@ -245,13 +276,17 @@ export function Progress() {
                     <div className="flex items-center gap-6 mb-4 text-sm">
                       <div className="flex items-center gap-2 text-slate-600">
                         <Calendar className="w-4 h-4" />
-                        <span>{goal.sessions} of {goal.target} sessions completed</span>
+                        <span>
+                          {goal.sessions} of {goal.target} sessions completed
+                        </span>
                       </div>
                     </div>
 
                     {/* Milestones */}
                     <div>
-                      <div className="text-sm font-medium text-slate-700 mb-3">Milestones</div>
+                      <div className="text-sm font-medium text-slate-700 mb-3">
+                        Milestones
+                      </div>
                       <div className="grid grid-cols-2 gap-2">
                         {goal.milestones.map((milestone, idx) => (
                           <div
@@ -264,7 +299,9 @@ export function Progress() {
                           >
                             <CheckCircle
                               className={`w-4 h-4 ${
-                                milestone.completed ? "text-green-600" : "text-slate-400"
+                                milestone.completed
+                                  ? "text-green-600"
+                                  : "text-slate-400"
                               }`}
                             />
                             <span className="text-sm">{milestone.name}</span>
@@ -279,12 +316,16 @@ export function Progress() {
 
             {/* Learning Path Chart */}
             <div className="bg-white rounded-xl shadow-md border border-slate-200 p-6">
-              <h3 className="text-xl font-bold text-slate-900 mb-6">Learning Journey</h3>
+              <h3 className="text-xl font-bold text-slate-900 mb-6">
+                Learning Journey
+              </h3>
               <div className="space-y-4">
                 {learningPath.map((month, index) => (
                   <div key={index}>
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-slate-900">{month.month} 2026</span>
+                      <span className="text-sm font-medium text-slate-900">
+                        {month.month} 2026
+                      </span>
                       <div className="text-sm text-slate-600">
                         {month.sessions} sessions • {month.hours}h
                       </div>
@@ -307,15 +348,23 @@ export function Progress() {
           <div className="space-y-6">
             {/* Skill Development */}
             <div className="bg-white rounded-xl shadow-md border border-slate-200 p-6">
-              <h3 className="text-lg font-bold text-slate-900 mb-4">Skill Development</h3>
+              <h3 className="text-lg font-bold text-slate-900 mb-4">
+                Skill Development
+              </h3>
               <div className="space-y-4">
                 {skills.map((skill, index) => (
                   <div key={index}>
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-slate-900">{skill.name}</span>
+                      <span className="text-sm font-medium text-slate-900">
+                        {skill.name}
+                      </span>
                       <div className="flex items-center gap-2">
-                        <span className="text-xs text-green-600 font-medium">{skill.improvement}</span>
-                        <span className="text-sm text-slate-600">{skill.level}%</span>
+                        <span className="text-xs text-green-600 font-medium">
+                          {skill.improvement}
+                        </span>
+                        <span className="text-sm text-slate-600">
+                          {skill.level}%
+                        </span>
                       </div>
                     </div>
                     <div className="h-2 bg-slate-200 rounded-full overflow-hidden">
@@ -333,7 +382,9 @@ export function Progress() {
 
             {/* Achievements */}
             <div className="bg-white rounded-xl shadow-md border border-slate-200 p-6">
-              <h3 className="text-lg font-bold text-slate-900 mb-4">Achievements</h3>
+              <h3 className="text-lg font-bold text-slate-900 mb-4">
+                Achievements
+              </h3>
               <div className="space-y-4">
                 {achievements.map((achievement, index) => (
                   <motion.div
@@ -351,7 +402,9 @@ export function Progress() {
                       <div className="text-xs text-slate-600 mb-1">
                         {achievement.description}
                       </div>
-                      <div className="text-xs text-slate-500">{achievement.date}</div>
+                      <div className="text-xs text-slate-500">
+                        {achievement.date}
+                      </div>
                     </div>
                   </motion.div>
                 ))}

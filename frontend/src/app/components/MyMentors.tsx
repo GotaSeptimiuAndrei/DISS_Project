@@ -145,6 +145,12 @@ export function MyMentors() {
                 >
                   Progress
                 </Link>
+                <Link
+                  to="/mentee-resources"
+                  className="text-slate-600 hover:text-slate-900"
+                >
+                  Resources
+                </Link>
               </div>
             </div>
             <div className="flex items-center gap-4">
@@ -258,7 +264,10 @@ export function MyMentors() {
               </h2>
               <div className="bg-white rounded-xl shadow-md border border-slate-200 divide-y divide-slate-200 overflow-hidden">
                 {pastSessions.map((session) => (
-                  <div key={session.id} className="p-6 hover:bg-slate-50 transition-colors">
+                  <div
+                    key={session.id}
+                    className="p-6 hover:bg-slate-50 transition-colors"
+                  >
                     <div className="flex items-start gap-4">
                       <img
                         src={session.mentorImage}
@@ -376,7 +385,9 @@ export function MyMentors() {
                   <span className="font-bold text-slate-900">23</span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-600 text-sm">Hours of Learning</span>
+                  <span className="text-slate-600 text-sm">
+                    Hours of Learning
+                  </span>
                   <span className="font-bold text-slate-900">18.5</span>
                 </div>
                 <div className="flex items-center justify-between">
@@ -384,7 +395,9 @@ export function MyMentors() {
                   <span className="font-bold text-slate-900">3</span>
                 </div>
                 <div className="flex items-center justify-between pt-2 border-t border-slate-100">
-                  <span className="text-slate-600 text-sm">Goals Completed</span>
+                  <span className="text-slate-600 text-sm">
+                    Goals Completed
+                  </span>
                   <span className="font-bold text-green-600">5</span>
                 </div>
               </div>

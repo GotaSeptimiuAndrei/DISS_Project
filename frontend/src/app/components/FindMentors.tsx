@@ -110,6 +110,12 @@ export function FindMentors() {
                 >
                   Progress
                 </Link>
+                <Link
+                  to="/mentee-resources"
+                  className="text-slate-600 hover:text-slate-900"
+                >
+                  Resources
+                </Link>
               </div>
             </div>
             <div className="flex items-center gap-4">
