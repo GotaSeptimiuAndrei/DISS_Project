@@ -84,7 +84,7 @@ export function Dashboard() {
   ];
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-background">
       {/* Navigation */}
       <nav className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -226,7 +226,7 @@ export function Dashboard() {
                 {upcomingSessions.map((session) => (
                   <div
                     key={session.id}
-                    className="flex items-center gap-4 p-4 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors"
+                    className="flex items-center gap-4 p-4 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors border border-slate-100"
                   >
                     <img
                       src={session.image}
@@ -335,7 +335,7 @@ export function Dashboard() {
                   <Link
                     key={mentor.id}
                     to={`/mentor/${mentor.id}`}
-                    className="block p-4 rounded-lg border border-slate-200 hover:border-blue-300 hover:bg-blue-50 transition-all"
+                    className="block p-4 rounded-lg border border-slate-200 hover:border-blue-300 hover:bg-blue-50 transition-all bg-white"
                   >
                     <div className="flex items-start gap-3 mb-3">
                       <img
