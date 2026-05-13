@@ -162,10 +162,10 @@ export function MentorDashboard() {
                   My Mentees
                 </Link>
                 <Link
-                  to="/mentor-dashboard"
+                  to="/resources"
                   className="text-slate-600 hover:text-slate-900"
                 >
-                  Availability
+                  Resources
                 </Link>
               </div>
             </div>
@@ -506,14 +506,20 @@ export function MentorDashboard() {
                 Quick Actions
               </h3>
               <div className="space-y-2">
-                <button className="w-full px-4 py-3 bg-indigo-50 text-indigo-700 rounded-lg font-medium hover:bg-indigo-100 transition-colors flex items-center gap-2">
+                <Link
+                  to="/resources"
+                  className="w-full px-4 py-3 bg-indigo-50 text-indigo-700 rounded-lg font-medium hover:bg-indigo-100 transition-colors flex items-center gap-2"
+                >
                   <Calendar className="w-5 h-5" />
-                  Update Availability
-                </button>
-                <button className="w-full px-4 py-3 bg-slate-50 text-slate-700 rounded-lg font-medium hover:bg-slate-100 transition-colors flex items-center gap-2">
+                  Update Resources
+                </Link>
+                <Link
+                  to="/my-mentees"
+                  className="w-full px-4 py-3 bg-slate-50 text-slate-700 rounded-lg font-medium hover:bg-slate-100 transition-colors flex items-center gap-2"
+                >
                   <Users className="w-5 h-5" />
-                  View All Mentees
-                </button>
+                  View My Mentees
+                </Link>
                 <button className="w-full px-4 py-3 bg-slate-50 text-slate-700 rounded-lg font-medium hover:bg-slate-100 transition-colors flex items-center gap-2">
                   <TrendingUp className="w-5 h-5" />
                   View Analytics
