@@ -1,0 +1,10 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: postgres_backend
+    environment:
+      POSTGRES_DB: diss_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123Andrei
+    ports:
+      - "5432:5432"
