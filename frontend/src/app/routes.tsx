@@ -11,6 +11,7 @@ import { BookSession } from "./components/BookSession";
 import { MyMentors } from "./components/MyMentors";
 import { Progress } from "./components/Progress";
 import { MentorDashboard } from "./components/MentorDashboard";
+import { Login } from "./components/Login";
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +29,7 @@ export const router = createBrowserRouter([
       { path: "my-mentors", Component: MyMentors },
       { path: "progress", Component: Progress },
       { path: "mentor-dashboard", Component: MentorDashboard },
+      { path: "login", Component: Login },
     ],
   },
 ]);
