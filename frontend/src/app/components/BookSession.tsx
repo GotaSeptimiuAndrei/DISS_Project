@@ -41,8 +41,34 @@ export function BookSession() {
     "Other"
   ];
 
-  const handleBooking = () => {
-    navigate("/my-mentors");
+const handleBooking = async () => {
+    const payload = {
+      mentorId: Number(id), // Pulls the mentor ID from the /book/:id URL parameter
+      menteeId: 6, // Hardcoded to 6 (Alex Ionescu) for the prototype demo
+      sessionDate: selectedDate, // e.g., "2026-04-08"
+      sessionTime: selectedTime, // e.g., "9:00 AM"
+      sessionType: sessionType,  // "video" or "chat"
+      topic: topic,              // e.g., "Career Growth Strategy"
+      notes: notes
+    };
+
+    try {
+      const response = await fetch("http://localhost:8080/api/sessions/book", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        navigate("/dashboard"); 
+      } else {
+        console.error("Failed to book session");
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+    }
   };
 
   return (
