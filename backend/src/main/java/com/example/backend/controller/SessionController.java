@@ -1,0 +1,65 @@
+package com.example.backend.controller;
+
+import com.example.backend.dto.SessionBookingRequest;
+import com.example.backend.model.Session;
+import com.example.backend.model.User;
+import com.example.backend.repository.SessionRepository;
+import com.example.backend.repository.UserRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
+@RestController
+@RequestMapping("/api/sessions")
+@CrossOrigin(origins = "*")
+public class SessionController {
+
+    private final SessionRepository sessionRepository;
+    private final UserRepository userRepository;
+
+    public SessionController(SessionRepository sessionRepository, UserRepository userRepository) {
+        this.sessionRepository = sessionRepository;
+        this.userRepository = userRepository;
+    }
+
+    @PostMapping("/book")
+    public ResponseEntity<Session> bookSession(@RequestBody SessionBookingRequest request) {
+
+        // 1. Fetch the Mentor and Mentee
+        User mentor = userRepository.findById(request.getMentorId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Mentor not found"));
+
+        User mentee = userRepository.findById(request.getMenteeId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Mentee not found"));
+
+        // 2. Build the Session entity
+        Session session = new Session();
+        session.setMentor(mentor);
+        session.setMentee(mentee);
+        session.setSessionDate(request.getSessionDate());
+        session.setTopic(request.getTopic());
+        session.setType(request.getSessionType());
+        session.setNotes(request.getNotes());
+
+        // Convert "9:00 AM" String to LocalTime
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("h:mm a", Locale.ENGLISH);
+        LocalTime parsedTime = LocalTime.parse(request.getSessionTime(), timeFormatter);
+        session.setSessionTime(parsedTime);
+
+        // Hardcode prototype defaults
+        session.setStatus("PENDING");
+        session.setDuration(60);
+        session.setIsFirstSession(true);
+
+        // 3. Save to database
+        Session savedSession = sessionRepository.save(session);
+
+        // 4. Return HTTP 201 Created
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedSession);
+    }
+}
