@@ -57,7 +57,7 @@ export function Dashboard() {
             m.profileBio ||
             "Experienced professional passionate about mentoring.",
           expertise: m.skills || [],
-          image: `https://images.unsplash.com/photo-${1573496359142 + index}?auto=format&fit=crop&w=400&q=80`,
+          image: imageUrls[index],
           matchScore: Math.floor(Math.random() * 20) + 80,
           location: "Cluj-Napoca, RO",
           availability: "Available this week",
