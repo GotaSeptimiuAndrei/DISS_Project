@@ -2,7 +2,10 @@ package com.example.backend.controller;
 
 import com.example.backend.dto.MentorResponseDTO;
 import com.example.backend.model.MentorProfile;
+import com.example.backend.model.Review;
 import com.example.backend.repository.MentorProfileRepository;
+import com.example.backend.repository.ReviewRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +20,15 @@ public class MentorController {
 
     private final MentorProfileRepository mentorProfileRepository;
 
+    @Autowired
+    private ReviewRepository reviewRepository;
+
     public MentorController(MentorProfileRepository mentorProfileRepository) {
         this.mentorProfileRepository = mentorProfileRepository;
     }
 
     @GetMapping
+    @Transactional
     public ResponseEntity<List<MentorResponseDTO>> getAllMentors(
             @RequestParam(required = false) List<String> skills) {
 
@@ -76,6 +83,30 @@ public class MentorController {
         dto.setReviewCount(profile.getUser().getReviewCount());
         dto.setProfileBio(profile.getProfileBio());
         dto.setSkills(profile.getSkills());
+
+        dto.setExperiences(profile.getExperiences().stream()
+                .map(e -> new MentorResponseDTO.ExperienceDTO(e.getTitle(), e.getCompany(), e.getPeriod(), e.getDescription()))
+                .toList());
+
+        dto.setEducation(profile.getEducation().stream()
+                .map(e -> new MentorResponseDTO.EducationDTO(e.getDegree(), e.getSchool(), e.getYear()))
+                .toList());
+
+        dto.setAvailability(profile.getAvailability().stream()
+                .map(a -> new MentorResponseDTO.AvailabilityDTO(a.getDay(), a.getSlotTime().toString()))
+                .toList());
+
+        List<Review> reviews = reviewRepository.findByMentorId(profile.getId());
+        dto.setReviews(reviews.stream()
+                .map(r -> new MentorResponseDTO.ReviewDTO(
+                        r.getMentee().getName(),
+                        r.getMentee().getTitle(),
+                        r.getRating(),
+                        r.getComment(),
+                        r.getCreatedAt().toLocalDate().toString()
+                ))
+                .toList());
+
         return dto;
     }
 }
