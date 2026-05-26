@@ -56,6 +56,15 @@ public class MentorController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/{id}")
+    @Transactional
+    public ResponseEntity<MentorResponseDTO> getMentorById(@PathVariable Long id) {
+        return mentorProfileRepository.findById(id)
+                .map(this::convertToDTO)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     // Helper method to map Entity -> DTO
     private MentorResponseDTO convertToDTO(MentorProfile profile) {
         MentorResponseDTO dto = new MentorResponseDTO();

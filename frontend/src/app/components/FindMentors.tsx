@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router";
 import { motion } from "motion/react";
 import {
@@ -13,16 +13,15 @@ import {
 } from "lucide-react";
 import { useChatPanel } from "./ChatPanel";
 
-// Matches the data structure from our Spring Boot API + our UI mock fields
 interface Mentor {
   id: number;
   name: string;
   title: string;
   company: string;
   rating: number;
-  sessions: number; // mapped from reviewCount
-  bio: string; // mapped from profileBio
-  expertise: string[]; // mapped from skills
+  sessions: number;
+  bio: string;
+  expertise: string[];
   image: string;
   matchScore: number;
   location: string;
@@ -46,19 +45,16 @@ export function FindMentors() {
 
   const imageUrls = [
     "https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHByb2Zlc3Npb25hbCUyMHdvbWFuJTIwaGVhZHNob3R8ZW58MXx8fHwxNzc1NDcwOTI5fDA&ixlib=rb-4.1.0&q=80&w=400",
-    "https://images.unsplash.com/photo-1652471949169-9c587e8898cd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxibGFjayUyMHdvbWFuJTIwYnVzaW5lc3MlMjBwcm9mZXNzaW9uYWx8ZW58MXx8fHwxNzc1NTQ5MTc3fDA&ixlib=rb-4.1.0&q=80&w=400",
-    "https://images.unsplash.com/photo-1770058428154-9eee8a6a1fbb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaWRkbGUlMjBhZ2VkJTIwd29tYW4lMjBwcm9mZXNzaW9uYWx8ZW58MXx8fHwxNzc1NTQ5MTc3fDA&ixlib=rb-4.1.0&q=80&w=400",
+    "https://images.unsplash.com/photo-1652471949169-9c587e8898cd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxibGFjayUyMHdvbWFuJTIwYnVzaW5lc3MlMjBwcm9mZXNzaW9uYWx|ZW58MXx8fHwxNzc1NTQ5MTc3fDA&ixlib=rb-4.1.0&q=80&w=400",
+    "https://images.unsplash.com/photo-1770058428154-9eee8a6a1fbb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaWRkbGUlMjBhZ2VkJTIwd29tYW4lMjBwcm9mZXNzaW9uYWx|ZW58MXx8fHwxNzc1NTQ5MTc3fDA&ixlib=rb-4.1.0&q=80&w=400",
     "https://images.unsplash.com/photo-1543132220-7bc04a0e790a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYW4lMjBidXNpbmVzcyUyMHByb2Zlc3Npb25hbCUyMHBvcnRyYWl0fGVufDF8fHx8MTc3NTU0OTA0OXww&ixlib=rb-4.1.0&q=80&w=400",
-    "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtZW50b3J8ZW58MXx8fHwxNzc1NTQ5MTc3fDA&ixlib=rb-4.1.0&q=80&w=400",
+    "https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtZW50b3J|ZW58MXx8fHwxNzc1NTQ5MTc3fDA&ixlib=rb-4.1.0&q=80&w=400",
   ];
 
   useEffect(() => {
-    // Build query for skills if we implement the backend filter later
-    // fetch(`http://localhost:8080/api/mentors?skill=${searchQuery}`)
     fetch("http://localhost:8080/api/mentors")
       .then((res) => res.json())
       .then((data) => {
-        // Map the backend DTO to match our UI expectations and add mock data for missing fields
         const populatedData = data.map((m: any, index: number) => ({
           id: m.id,
           name: m.name,
@@ -70,9 +66,8 @@ export function FindMentors() {
             m.profileBio ||
             "Experienced professional passionate about mentoring.",
           expertise: m.skills || [],
-          // Mocking the fields the backend DTO doesn't have yet:
-          image: imageUrls[index],
-          matchScore: Math.floor(Math.random() * 20) + 80, // Generates a random score between 80-99%
+          image: imageUrls[index % imageUrls.length], // Modulo avoids out-of-bounds errors if backend has more than 5 elements
+          matchScore: Math.floor(Math.random() * 20) + 80,
           location: "Cluj-Napoca, RO",
           availability: "Available this week",
         }));
@@ -86,9 +81,34 @@ export function FindMentors() {
       });
   }, []);
 
+  // ── FILTERING MECHANISM ──
+  // useMemo recomputes this list only when mentors array, searchQuery, or selectedFilter changes.
+  const filteredMentors = useMemo(() => {
+    return mentors.filter((mentor) => {
+      // 1. Text Search Logic (Checks name, title, company, AND skills/expertise)
+      const query = searchQuery.toLowerCase().trim();
+      const matchesSearch =
+        mentor.name.toLowerCase().includes(query) ||
+        mentor.title.toLowerCase().includes(query) ||
+        mentor.company.toLowerCase().includes(query) ||
+        mentor.expertise.some((skill) => skill.toLowerCase().includes(query));
+
+      // 2. Tab Filter Logic
+      let matchesTab = true;
+      if (selectedFilter === "high-match") {
+        matchesTab = mentor.matchScore >= 90; // Top matching mentors
+      } else if (selectedFilter === "available") {
+        matchesTab = mentor.availability === "Available this week";
+      } else if (selectedFilter === "popular") {
+        matchesTab = mentor.sessions >= 15 || mentor.rating >= 4.9; // Criteria for popular
+      }
+
+      return matchesSearch && matchesTab;
+    });
+  }, [mentors, searchQuery, selectedFilter]);
+
   return (
-    // Removed bg-background so it inherits the beautiful light blue gradient from Root.tsx
-    <div className="min-h-screen  bg-background">
+    <div className="min-h-screen bg-background">
       {/* Navigation */}
       <nav className="bg-white border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -139,7 +159,7 @@ export function FindMentors() {
                 <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
               </button>
               <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
-                AI {/* Initials for Alex Ionescu */}
+                AI
               </div>
             </div>
           </div>
@@ -186,10 +206,6 @@ export function FindMentors() {
                 {filter.label}
               </button>
             ))}
-            <button className="px-4 py-2 rounded-lg font-medium bg-white text-slate-700 border border-slate-300 hover:border-blue-300 flex items-center gap-2 shadow-sm">
-              <Filter className="w-4 h-4" />
-              More Filters
-            </button>
           </div>
         </div>
 
@@ -198,7 +214,7 @@ export function FindMentors() {
           <p className="text-slate-600">
             Showing{" "}
             <span className="font-semibold text-slate-900">
-              {mentors.length}
+              {filteredMentors.length}
             </span>{" "}
             mentors
           </p>
@@ -214,24 +230,41 @@ export function FindMentors() {
           </div>
         )}
 
+        {/* Empty State */}
+        {!loading && filteredMentors.length === 0 && (
+          <div className="text-center py-20 bg-white rounded-xl border border-dashed border-slate-300">
+            <p className="text-slate-500 text-lg">
+              No mentors match your search criteria.
+            </p>
+            <button
+              onClick={() => {
+                setSearchQuery("");
+                setSelectedFilter("all");
+              }}
+              className="mt-2 text-blue-600 hover:underline text-sm font-medium"
+            >
+              Clear filters
+            </button>
+          </div>
+        )}
+
         {/* Mentor Grid */}
         {!loading && (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {mentors.map((mentor, index) => (
+            {filteredMentors.map((mentor, index) => (
               <motion.div
                 key={mentor.id}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
+                transition={{ delay: index * 0.05 }}
                 viewport={{ once: true }}
               >
-                {/* CRITICAL: Passing the mentor object via state so MentorProfile.tsx can read it */}
                 <Link
                   to={`/mentor/${mentor.id}`}
                   state={{ mentor }}
                   className="block bg-white rounded-xl shadow-md border border-slate-200 overflow-hidden hover:shadow-xl hover:border-blue-300 transition-all"
                 >
-                  {/* Match Score Badge */}
+                  {/* Image and Match Badge */}
                   <div className="relative">
                     <img
                       src={mentor.image}
@@ -244,7 +277,6 @@ export function FindMentors() {
                   </div>
 
                   <div className="p-5">
-                    {/* Name and Title */}
                     <h3 className="text-lg font-bold text-slate-900 mb-1">
                       {mentor.name}
                     </h3>
