@@ -1,5 +1,6 @@
 import { Link } from "react-router";
 import { motion } from "motion/react";
+import { useState, useEffect } from "react";
 import {
   Users,
   Star,
@@ -7,108 +8,143 @@ import {
   MessageSquare,
   Video,
   Clock,
+  Loader2,
 } from "lucide-react";
 import { useChatPanel } from "./ChatPanel";
 
+const imageUrls = [
+  "https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHByb2Zlc3Npb25hbCUyMHdvbWFuJTIwaGVhZHNob3R8ZW58MXx8fHwxNzc1NDcwOTI5fDA&ixlib=rb-4.1.0&q=80&w=400",
+  "https://images.unsplash.com/photo-1652471949169-9c587e8898cd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxibGFjayUyMHdvbWFuJTIwYnVzaW5lc3MlMjBwcm9mZXNzaW9uYWx8ZW58MXx8fHwxNzc1NTQ5MTc3fDA&ixlib=rb-4.1.0&q=80&w=400",
+  "https://images.unsplash.com/photo-1770058428154-9eee8a6a1fbb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaWRkbGUlMjBhZ2VkJTIwd29tYW4lMjBwcm9mZXNzaW9uYWx8ZW58MXx8fHwxNzc1NTQ5MTc3fDA&ixlib=rb-4.1.0&q=80&w=400",
+];
+
+// Mock per-mentor data indexed by position (0, 1, 2)
+const MENTOR_MOCK = [
+  {
+    sessionsCompleted: 8,
+    nextSession: "Tomorrow, 2:00 PM",
+    upcomingTopic: "Leadership Development Strategy",
+    upcomingDate: "Tomorrow",
+    upcomingTime: "2:00 PM - 3:00 PM",
+    pastSessions: [
+      {
+        topic: "Career Growth Planning",
+        date: "Apr 1, 2026",
+        duration: "60 min",
+        rating: 5,
+      },
+    ],
+  },
+  {
+    sessionsCompleted: 5,
+    nextSession: "Friday, 10:00 AM",
+    upcomingTopic: "Product Strategy Session",
+    upcomingDate: "Friday, Apr 11",
+    upcomingTime: "10:00 AM - 10:45 AM",
+    pastSessions: [
+      {
+        topic: "Product Metrics Deep Dive",
+        date: "Mar 28, 2026",
+        duration: "45 min",
+        rating: 5,
+      },
+    ],
+  },
+  {
+    sessionsCompleted: 3,
+    nextSession: null,
+    upcomingTopic: null,
+    upcomingDate: null,
+    upcomingTime: null,
+    pastSessions: [
+      {
+        topic: "System Design Principles",
+        date: "Mar 25, 2026",
+        duration: "60 min",
+        rating: 5,
+      },
+    ],
+  },
+];
+
+interface Mentor {
+  id: number;
+  name: string;
+  title: string;
+  company: string;
+  rating: number;
+  image: string;
+  sessionsCompleted: number;
+  nextSession: string | null;
+}
+
 export function MyMentors() {
   const { openChat, ChatPortal } = useChatPanel();
+  const [mentors, setMentors] = useState<Mentor[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const activeMentors = [
-    {
-      id: 1,
-      name: "Dr. Sarah Chen",
-      title: "Chief Technology Officer",
-      company: "Amazon",
-      image:
-        "https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHByb2Zlc3Npb25hbCUyMHdvbWFuJTIwaGVhZHNob3R8ZW58MXx8fHwxNzc1NDcwOTI5fDA&ixlib=rb-4.1.0&q=80&w=400",
-      rating: 4.9,
-      sessionsCompleted: 8,
-      nextSession: "Tomorrow, 2:00 PM",
-      status: "active",
-    },
-    {
-      id: 2,
-      name: "Marcus Williams",
-      title: "Senior Product Manager",
-      company: "Amazon",
-      image:
-        "https://images.unsplash.com/photo-1543132220-7bc04a0e790a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYW4lMjBidXNpbmVzcyUyMHByb2Zlc3Npb25hbCUyMHBvcnRyYWl0fGVufDF8fHx8MTc3NTU0OTA0OXww&ixlib=rb-4.1.0&q=80&w=400",
-      rating: 4.8,
-      sessionsCompleted: 5,
-      nextSession: "Friday, 10:00 AM",
-      status: "active",
-    },
-    {
-      id: 3,
-      name: "James Park",
-      title: "Senior Software Architect",
-      company: "Amazon",
-      image:
-        "https://images.unsplash.com/photo-1706025090996-63717544be2d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhc2lhbiUyMG1hbiUyMHByb2Zlc3Npb25hbCUyMGhlYWRzaG90fGVufDF8fHx8MTc3NTQ2NTQ0N3ww&ixlib=rb-4.1.0&q=80&w=400",
-      rating: 4.9,
-      sessionsCompleted: 3,
-      nextSession: null,
-      status: "active",
-    },
-  ];
+  useEffect(() => {
+    fetch("http://localhost:8080/api/mentors")
+      .then((res) => res.json())
+      .then((data) => {
+        const top3 = data.slice(0, 3).map((m: any, i: number) => ({
+          id: m.id,
+          name: m.name,
+          title: m.title,
+          company: m.company,
+          rating: m.rating ?? 4.8,
+          image: imageUrls[i],
+          sessionsCompleted: MENTOR_MOCK[i].sessionsCompleted,
+          nextSession: MENTOR_MOCK[i].nextSession,
+        }));
+        setMentors(top3);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
+  }, []);
 
-  const upcomingSessions = [
-    {
-      id: 1,
-      mentor: "Dr. Sarah Chen",
-      mentorImage:
-        "https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHByb2Zlc3Npb25hbCUyMHdvbWFuJTIwaGVhZHNob3R8ZW58MXx8fHwxNzc1NDcwOTI5fDA&ixlib=rb-4.1.0&q=80&w=400",
-      topic: "Leadership Development Strategy",
-      date: "Tomorrow",
-      time: "2:00 PM - 3:00 PM",
-      type: "video",
-      status: "confirmed",
-    },
-    {
-      id: 2,
-      mentor: "Marcus Williams",
-      mentorImage:
-        "https://images.unsplash.com/photo-1543132220-7bc04a0e790a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYW4lMjBidXNpbmVzcyUyMHByb2Zlc3Npb25hbCUyMHBvcnRyYWl0fGVufDF8fHx8MTc3NTU0OTA0OXww&ixlib=rb-4.1.0&q=80&w=400",
-      topic: "Product Strategy Session",
-      date: "Friday, Apr 11",
-      time: "10:00 AM - 10:45 AM",
-      type: "video",
-      status: "confirmed",
-    },
-  ];
+  // Derive upcoming sessions from mentors who have a next session
+  const upcomingSessions = mentors
+    .map((m, i) => {
+      const mock = MENTOR_MOCK[i];
+      if (!mock.upcomingTopic) return null;
+      return {
+        id: m.id,
+        mentor: m.name,
+        mentorImage: m.image,
+        topic: mock.upcomingTopic,
+        date: mock.upcomingDate!,
+        time: mock.upcomingTime!,
+      };
+    })
+    .filter(Boolean) as {
+    id: number;
+    mentor: string;
+    mentorImage: string;
+    topic: string;
+    date: string;
+    time: string;
+  }[];
 
-  const pastSessions = [
-    {
-      id: 1,
-      mentor: "Dr. Sarah Chen",
-      mentorImage:
-        "https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHByb2Zlc3Npb25hbCUyMHdvbWFuJTIwaGVhZHNob3R8ZW58MXx8fHwxNzc1NDcwOTI5fDA&ixlib=rb-4.1.0&q=80&w=400",
-      topic: "Career Growth Planning",
-      date: "Apr 1, 2026",
-      duration: "60 min",
-      rating: 5,
-    },
-    {
-      id: 2,
-      mentor: "Marcus Williams",
-      mentorImage:
-        "https://images.unsplash.com/photo-1543132220-7bc04a0e790a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYW4lMjBidXNpbmVzcyUyMHByb2Zlc3Npb25hbCUyMHBvcnRyYWl0fGVufDF8fHx8MTc3NTU0OTA0OXww&ixlib=rb-4.1.0&q=80&w=400",
-      topic: "Product Metrics Deep Dive",
-      date: "Mar 28, 2026",
-      duration: "45 min",
-      rating: 5,
-    },
-    {
-      id: 3,
-      mentor: "James Park",
-      mentorImage:
-        "https://images.unsplash.com/photo-1706025090996-63717544be2d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhc2lhbiUyMG1hbiUyMHByb2Zlc3Npb25hbCUyMGhlYWRzaG90fGVufDF8fHx8MTc3NTQ2NTQ0N3ww&ixlib=rb-4.1.0&q=80&w=400",
-      topic: "System Design Principles",
-      date: "Mar 25, 2026",
-      duration: "60 min",
-      rating: 5,
-    },
-  ];
+  // Derive past sessions from all mentors
+  const pastSessions = mentors.flatMap((m, i) =>
+    MENTOR_MOCK[i].pastSessions.map((s) => ({
+      ...s,
+      mentor: m.name,
+      mentorImage: m.image,
+    })),
+  );
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="w-10 h-10 text-blue-600 animate-spin" />
+        <span className="ml-3 text-slate-600 font-medium">
+          Loading your mentors...
+        </span>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -162,7 +198,7 @@ export function MyMentors() {
                 <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
               </button>
               <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
-                JD
+                AI
               </div>
             </div>
           </div>
@@ -179,15 +215,14 @@ export function MyMentors() {
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
-          {/* Main Content */}
           <div className="lg:col-span-2 space-y-8">
             {/* Active Mentors */}
             <div>
               <h2 className="text-xl font-bold text-slate-900 mb-4">
-                Active Mentors ({activeMentors.length})
+                Active Mentors ({mentors.length})
               </h2>
               <div className="grid gap-4">
-                {activeMentors.map((mentor, index) => (
+                {mentors.map((mentor, index) => (
                   <motion.div
                     key={mentor.id}
                     initial={{ opacity: 0, y: 20 }}
@@ -250,9 +285,9 @@ export function MyMentors() {
                           >
                             Send Message
                           </button>
-                          <ChatPortal />
                           <Link
                             to={`/mentor/${mentor.id}`}
+                            state={{ mentor }}
                             className="px-4 py-2 bg-white border-2 border-slate-200 text-slate-700 rounded-lg text-sm font-medium hover:border-blue-300 hover:text-blue-600 transition-colors"
                           >
                             View Profile
@@ -271,9 +306,9 @@ export function MyMentors() {
                 Past Sessions
               </h2>
               <div className="bg-white rounded-xl shadow-md border border-slate-200 divide-y divide-slate-200 overflow-hidden">
-                {pastSessions.map((session) => (
+                {pastSessions.map((session, i) => (
                   <div
-                    key={session.id}
+                    key={i}
                     className="p-6 hover:bg-slate-50 transition-colors"
                   >
                     <div className="flex items-start gap-4">
@@ -293,9 +328,9 @@ export function MyMentors() {
                             </p>
                           </div>
                           <div className="flex items-center gap-1">
-                            {[...Array(session.rating)].map((_, i) => (
+                            {[...Array(session.rating)].map((_, j) => (
                               <Star
-                                key={i}
+                                key={j}
                                 className="w-4 h-4 fill-yellow-400 text-yellow-400"
                               />
                             ))}
@@ -382,7 +417,7 @@ export function MyMentors() {
               </Link>
             </div>
 
-            {/* Stats */}
+            {/* Stats — derived from real data */}
             <div className="bg-white rounded-xl shadow-md border border-slate-200 p-6">
               <h3 className="text-lg font-bold text-slate-900 mb-4">
                 Your Stats
@@ -390,17 +425,26 @@ export function MyMentors() {
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-slate-600 text-sm">Total Sessions</span>
-                  <span className="font-bold text-slate-900">23</span>
+                  <span className="font-bold text-slate-900">
+                    {mentors.reduce((sum, m) => sum + m.sessionsCompleted, 0)}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-600 text-sm">
                     Hours of Learning
                   </span>
-                  <span className="font-bold text-slate-900">18.5</span>
+                  <span className="font-bold text-slate-900">
+                    {(
+                      mentors.reduce((sum, m) => sum + m.sessionsCompleted, 0) *
+                      0.9
+                    ).toFixed(1)}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-600 text-sm">Active Mentors</span>
-                  <span className="font-bold text-slate-900">3</span>
+                  <span className="font-bold text-slate-900">
+                    {mentors.length}
+                  </span>
                 </div>
                 <div className="flex items-center justify-between pt-2 border-t border-slate-100">
                   <span className="text-slate-600 text-sm">
