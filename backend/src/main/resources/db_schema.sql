@@ -86,3 +86,20 @@ CREATE TABLE Reviews (
 -- for matching algorithm
 CREATE INDEX idx_mentor_skills ON Mentor_Skills(skill_name);
 CREATE INDEX idx_user_role ON Users(role);
+
+CREATE TABLE Mentor_Experience (
+    id SERIAL PRIMARY KEY,
+    mentor_id INT REFERENCES Mentor_Profiles(user_id) ON DELETE CASCADE,
+    title VARCHAR(100) NOT NULL,
+    company VARCHAR(100) NOT NULL,
+    period VARCHAR(50),          -- e.g. '2020 - Present'
+    description TEXT
+);
+
+CREATE TABLE Mentor_Education (
+    id SERIAL PRIMARY KEY,
+    mentor_id INT REFERENCES Mentor_Profiles(user_id) ON DELETE CASCADE,
+    degree VARCHAR(150) NOT NULL,
+    school VARCHAR(150) NOT NULL,
+    year VARCHAR(10)
+);

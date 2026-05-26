@@ -10,7 +10,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update  
+      ddl-auto: update  #to run the seeder again change this to 'create' and after the first run switch it back to update
     show-sql: true      
     properties:
       hibernate:
