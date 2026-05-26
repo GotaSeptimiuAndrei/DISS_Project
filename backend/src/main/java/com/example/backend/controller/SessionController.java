@@ -12,6 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Locale;
 
 @RestController
@@ -61,5 +62,26 @@ public class SessionController {
 
         // 4. Return HTTP 201 Created
         return ResponseEntity.status(HttpStatus.CREATED).body(savedSession);
+    }
+
+    @GetMapping("/mentor/{mentorId}/pending")
+    public ResponseEntity<List<Session>> getPendingSessions(@PathVariable Long mentorId) {
+        List<Session> pendingSessions = sessionRepository.findByMentorIdAndStatus(mentorId, "PENDING");
+        return ResponseEntity.ok(pendingSessions);
+    }
+
+    // Endpoint to accept or decline a session
+    @PatchMapping("/{sessionId}/status")
+    public ResponseEntity<Session> updateSessionStatus(
+            @PathVariable Long sessionId,
+            @RequestParam String status) {
+
+        Session session = sessionRepository.findById(sessionId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Session not found"));
+
+        session.setStatus(status.toUpperCase()); // "ACCEPTED" or "DECLINED"
+        Session updatedSession = sessionRepository.save(session);
+
+        return ResponseEntity.ok(updatedSession);
     }
 }
