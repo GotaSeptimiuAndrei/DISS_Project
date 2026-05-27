@@ -412,7 +412,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         User user = new User();
         user.setName(name);
         user.setEmail(email);
-        user.setPassword("password123");
+        user.setPassword("$2a$12$gz2PBudEdzhoy1xS3vGT6uahSMMVzj0RJfpfLO4pSKRFpV05IUdZe");
         user.setRole(role);
         user.setTitle(title);
         user.setCompany(company);
