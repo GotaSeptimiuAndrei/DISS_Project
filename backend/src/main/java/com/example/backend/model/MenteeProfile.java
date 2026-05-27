@@ -8,8 +8,8 @@ import lombok.Data;
 import java.util.List;
 
 @Entity
-@Table(name = "mentee_profiles")
 @Data
+@Table(name = "mentee_profiles")
 public class MenteeProfile {
     @Id
     private Long id;

@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "mentor_profiles")
 @Data
+@Table(name = "mentor_profiles")
 public class MentorProfile {
     @Id
     private Long id;

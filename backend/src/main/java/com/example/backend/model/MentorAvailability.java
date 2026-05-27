@@ -5,8 +5,8 @@ import lombok.Data;
 
 import java.time.LocalTime;
 
-@Data
 @Entity
+@Data
 @Table(name = "mentor_availability")
 public class MentorAvailability {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

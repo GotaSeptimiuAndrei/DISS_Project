@@ -1,6 +1,7 @@
 package com.example.backend.config;
 
 import com.example.backend.filter.JwtAuthFilter;
+import com.example.backend.repository.UserRepository;
 import com.example.backend.service.UserInfoUserDetailsService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -33,10 +34,11 @@ import java.util.Arrays;
 public class SecurityConfig {
 
     private final JwtAuthFilter authFilter;
+    private final UserRepository userRepository;
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new UserInfoUserDetailsService();
+        return new UserInfoUserDetailsService(userRepository);
     }
 
     @Bean

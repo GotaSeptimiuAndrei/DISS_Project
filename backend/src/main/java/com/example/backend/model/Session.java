@@ -6,9 +6,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
+@Data
 @Table(name = "sessions")
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
 public class Session {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
