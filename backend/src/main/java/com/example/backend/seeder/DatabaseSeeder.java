@@ -1,7 +1,11 @@
 package com.example.backend.seeder;
 
 import com.example.backend.model.*;
+import com.example.backend.model.enums.Role;
 import com.example.backend.repository.*;
+import com.example.backend.service.UserService;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,9 +16,12 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 
 @Component
+@AllArgsConstructor
+@Slf4j
 public class DatabaseSeeder implements CommandLineRunner {
 
     private final UserRepository userRepository;
+    private final UserService userService;
     private final MentorProfileRepository mentorProfileRepository;
     private final MenteeProfileRepository menteeProfileRepository;
     private final MentorExperienceRepository experienceRepository;
@@ -23,34 +30,15 @@ public class DatabaseSeeder implements CommandLineRunner {
     private final ReviewRepository reviewRepository;
     private final SessionRepository sessionRepository;
 
-    public DatabaseSeeder(
-            UserRepository userRepository,
-            MentorProfileRepository mentorProfileRepository,
-            MenteeProfileRepository menteeProfileRepository,
-            MentorExperienceRepository experienceRepository,
-            MentorEducationRepository educationRepository,
-            MentorAvailabilityRepository availabilityRepository,
-            ReviewRepository reviewRepository,
-            SessionRepository sessionRepository) {
-        this.userRepository = userRepository;
-        this.mentorProfileRepository = mentorProfileRepository;
-        this.menteeProfileRepository = menteeProfileRepository;
-        this.experienceRepository = experienceRepository;
-        this.educationRepository = educationRepository;
-        this.availabilityRepository = availabilityRepository;
-        this.reviewRepository = reviewRepository;
-        this.sessionRepository = sessionRepository;
-    }
-
     @Override
     @Transactional
     public void run(String... args) {
         if (userRepository.count() == 0) {
-            System.out.println("🌱 Seeding database with realistic prototype data...");
+            log.info("🌱 Seeding database with realistic prototype data...");
             seedAll();
-            System.out.println("✅ Database seeding complete!");
+            log.info("✅ Database seeding complete!");
         } else {
-            System.out.println("⚡ Database already contains data. Skipping seeder.");
+            log.info("⚡ Database already contains data. Skipping seeder.");
         }
     }
 
@@ -412,7 +400,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         User user = new User();
         user.setName(name);
         user.setEmail(email);
-        user.setPassword("password123");
+        user.setPassword("passwordA1+");
         user.setRole(role);
         user.setTitle(title);
         user.setCompany(company);
@@ -423,6 +411,6 @@ public class DatabaseSeeder implements CommandLineRunner {
             user.setSessionsCompleted(sessionsCompleted);
             user.setResponseTime("Usually responds in 2 hours");
         }
-        return userRepository.save(user);
+        return userService.create(user);
     }
 }
