@@ -1,49 +1,49 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router";
-import { motion } from "motion/react";
-import { Users, ArrowRight, ArrowLeft } from "lucide-react";
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router';
+import { motion } from 'motion/react';
+import { Users, ArrowRight, ArrowLeft } from 'lucide-react';
 
 export function OnboardingMentor() {
   const [step, setStep] = useState(1);
-  const [customExpertise, setCustomExpertise] = useState("");
+  const [customExpertise, setCustomExpertise] = useState('');
   const navigate = useNavigate();
   const totalSteps = 4;
 
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    title: "",
-    company: "",
+    name: '',
+    email: '',
+    title: '',
+    company: '',
     expertise: [] as string[],
-    experience: "",
+    experience: '',
     availability: [] as string[],
     sessionTypes: [] as string[],
   });
 
   const expertiseOptions = [
-    "Leadership",
-    "Software Engineering",
-    "Data Science",
-    "Product Management",
-    "UX/UI Design",
-    "Marketing",
-    "Sales",
-    "Finance",
-    "Human Resources",
-    "Entrepreneurship"
+    'Leadership',
+    'Software Engineering',
+    'Data Science',
+    'Product Management',
+    'UX/UI Design',
+    'Marketing',
+    'Sales',
+    'Finance',
+    'Human Resources',
+    'Entrepreneurship',
   ];
 
   const sessionTypeOptions = [
-    { value: "one-on-one", label: "One-on-One Sessions", description: "Individual mentorship" },
-    { value: "group", label: "Group Sessions", description: "Mentor multiple mentees" },
-    { value: "workshop", label: "Workshops", description: "Structured learning sessions" }
+    { value: 'one-on-one', label: 'One-on-One Sessions', description: 'Individual mentorship' },
+    { value: 'group', label: 'Group Sessions', description: 'Mentor multiple mentees' },
+    { value: 'workshop', label: 'Workshops', description: 'Structured learning sessions' },
   ];
 
   const handleNext = () => {
     if (step < totalSteps) {
       setStep(step + 1);
     } else {
-      navigate("/mentor-dashboard");
+      navigate('/mentor-dashboard');
     }
   };
 
@@ -54,11 +54,9 @@ export function OnboardingMentor() {
   };
 
   const toggleExpertise = (item: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      expertise: prev.expertise.includes(item)
-        ? prev.expertise.filter(e => e !== item)
-        : [...prev.expertise, item]
+      expertise: prev.expertise.includes(item) ? prev.expertise.filter((e) => e !== item) : [...prev.expertise, item],
     }));
   };
 
@@ -68,19 +66,19 @@ export function OnboardingMentor() {
       return;
     }
 
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      expertise: [...prev.expertise, trimmedExpertise]
+      expertise: [...prev.expertise, trimmedExpertise],
     }));
-    setCustomExpertise("");
+    setCustomExpertise('');
   };
 
   const toggleSessionType = (type: string) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       sessionTypes: prev.sessionTypes.includes(type)
-        ? prev.sessionTypes.filter(t => t !== type)
-        : [...prev.sessionTypes, type]
+        ? prev.sessionTypes.filter((t) => t !== type)
+        : [...prev.sessionTypes, type],
     }));
   };
 
@@ -93,9 +91,7 @@ export function OnboardingMentor() {
             <Users className="w-6 h-6 text-indigo-600 group-hover:scale-110 transition-transform" />
             <span className="text-xl font-bold text-slate-900">MentorMatch</span>
           </Link>
-          <h1 className="text-3xl font-bold text-slate-900 mb-2">
-            Create your mentor profile
-          </h1>
+          <h1 className="text-3xl font-bold text-slate-900 mb-2">Create your mentor profile</h1>
           <p className="text-slate-600">
             Step {step} of {totalSteps}
           </p>
@@ -123,14 +119,10 @@ export function OnboardingMentor() {
         >
           {step === 1 && (
             <div>
-              <h2 className="text-2xl font-bold text-slate-900 mb-6">
-                Professional Information
-              </h2>
+              <h2 className="text-2xl font-bold text-slate-900 mb-6">Professional Information</h2>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Full Name
-                  </label>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Full Name</label>
                   <input
                     type="text"
                     value={formData.name}
@@ -140,9 +132,7 @@ export function OnboardingMentor() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Email Address
-                  </label>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Email Address</label>
                   <input
                     type="email"
                     value={formData.email}
@@ -152,9 +142,7 @@ export function OnboardingMentor() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Current Title
-                  </label>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Current Title</label>
                   <input
                     type="text"
                     value={formData.title}
@@ -164,9 +152,7 @@ export function OnboardingMentor() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Company
-                  </label>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Company</label>
                   <input
                     type="text"
                     value={formData.company}
@@ -176,9 +162,7 @@ export function OnboardingMentor() {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Years of Experience
-                  </label>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Years of Experience</label>
                   <select
                     value={formData.experience}
                     onChange={(e) => setFormData({ ...formData, experience: e.target.value })}
@@ -197,19 +181,15 @@ export function OnboardingMentor() {
 
           {step === 2 && (
             <div>
-              <h2 className="text-2xl font-bold text-slate-900 mb-2">
-                Areas of Expertise
-              </h2>
-              <p className="text-slate-600 mb-6">
-                Select all areas where you can provide guidance
-              </p>
+              <h2 className="text-2xl font-bold text-slate-900 mb-2">Areas of Expertise</h2>
+              <p className="text-slate-600 mb-6">Select all areas where you can provide guidance</p>
               <div className="mb-4 flex gap-2">
                 <input
                   type="text"
                   value={customExpertise}
                   onChange={(e) => setCustomExpertise(e.target.value)}
                   onKeyDown={(e) => {
-                    if (e.key === "Enter") {
+                    if (e.key === 'Enter') {
                       e.preventDefault();
                       addCustomExpertise();
                     }
@@ -232,8 +212,8 @@ export function OnboardingMentor() {
                     onClick={() => toggleExpertise(item)}
                     className={`p-4 rounded-lg border-2 text-sm font-medium transition-all ${
                       formData.expertise.includes(item)
-                        ? "border-indigo-600 bg-indigo-50 text-indigo-700"
-                        : "border-slate-200 bg-white text-slate-700 hover:border-indigo-300"
+                        ? 'border-indigo-600 bg-indigo-50 text-indigo-700'
+                        : 'border-slate-200 bg-white text-slate-700 hover:border-indigo-300'
                     }`}
                   >
                     {item}
@@ -247,8 +227,8 @@ export function OnboardingMentor() {
                       onClick={() => toggleExpertise(item)}
                       className={`p-4 rounded-lg border-2 text-sm font-medium transition-all ${
                         formData.expertise.includes(item)
-                          ? "border-indigo-600 bg-indigo-50 text-indigo-700"
-                          : "border-slate-200 bg-white text-slate-700 hover:border-indigo-300"
+                          ? 'border-indigo-600 bg-indigo-50 text-indigo-700'
+                          : 'border-slate-200 bg-white text-slate-700 hover:border-indigo-300'
                       }`}
                     >
                       {item}
@@ -260,12 +240,8 @@ export function OnboardingMentor() {
 
           {step === 3 && (
             <div>
-              <h2 className="text-2xl font-bold text-slate-900 mb-2">
-                Session Preferences
-              </h2>
-              <p className="text-slate-600 mb-6">
-                What types of sessions would you like to offer?
-              </p>
+              <h2 className="text-2xl font-bold text-slate-900 mb-2">Session Preferences</h2>
+              <p className="text-slate-600 mb-6">What types of sessions would you like to offer?</p>
               <div className="space-y-3">
                 {sessionTypeOptions.map((type) => (
                   <button
@@ -273,8 +249,8 @@ export function OnboardingMentor() {
                     onClick={() => toggleSessionType(type.value)}
                     className={`w-full p-4 rounded-lg border-2 text-left transition-all ${
                       formData.sessionTypes.includes(type.value)
-                        ? "border-indigo-600 bg-indigo-50"
-                        : "border-slate-200 bg-white hover:border-indigo-300"
+                        ? 'border-indigo-600 bg-indigo-50'
+                        : 'border-slate-200 bg-white hover:border-indigo-300'
                     }`}
                   >
                     <div className="font-semibold text-slate-900">{type.label}</div>
@@ -287,31 +263,27 @@ export function OnboardingMentor() {
 
           {step === 4 && (
             <div>
-              <h2 className="text-2xl font-bold text-slate-900 mb-2">
-                Your Availability
-              </h2>
-              <p className="text-slate-600 mb-6">
-                Select your preferred mentoring time slots
-              </p>
+              <h2 className="text-2xl font-bold text-slate-900 mb-2">Your Availability</h2>
+              <p className="text-slate-600 mb-6">Select your preferred mentoring time slots</p>
               <div className="space-y-3">
                 {[
-                  { value: "weekday_morning", label: "Weekday Mornings", time: "9:00 AM - 12:00 PM" },
-                  { value: "weekday_afternoon", label: "Weekday Afternoons", time: "12:00 PM - 5:00 PM" },
-                  { value: "weekday_evening", label: "Weekday Evenings", time: "5:00 PM - 9:00 PM" },
-                  { value: "weekend", label: "Weekends", time: "Flexible hours" }
+                  { value: 'weekday_morning', label: 'Weekday Mornings', time: '9:00 AM - 12:00 PM' },
+                  { value: 'weekday_afternoon', label: 'Weekday Afternoons', time: '12:00 PM - 5:00 PM' },
+                  { value: 'weekday_evening', label: 'Weekday Evenings', time: '5:00 PM - 9:00 PM' },
+                  { value: 'weekend', label: 'Weekends', time: 'Flexible hours' },
                 ].map((slot) => (
                   <button
                     key={slot.value}
                     onClick={() => {
                       const newAvailability = formData.availability.includes(slot.value)
-                        ? formData.availability.filter(a => a !== slot.value)
+                        ? formData.availability.filter((a) => a !== slot.value)
                         : [...formData.availability, slot.value];
                       setFormData({ ...formData, availability: newAvailability });
                     }}
                     className={`w-full p-4 rounded-lg border-2 text-left transition-all ${
                       formData.availability.includes(slot.value)
-                        ? "border-indigo-600 bg-indigo-50"
-                        : "border-slate-200 bg-white hover:border-indigo-300"
+                        ? 'border-indigo-600 bg-indigo-50'
+                        : 'border-slate-200 bg-white hover:border-indigo-300'
                     }`}
                   >
                     <div className="font-semibold text-slate-900">{slot.label}</div>
@@ -330,8 +302,8 @@ export function OnboardingMentor() {
             disabled={step === 1}
             className={`px-6 py-3 rounded-lg font-medium transition-all flex items-center gap-2 ${
               step === 1
-                ? "bg-slate-200 text-slate-400 cursor-not-allowed"
-                : "bg-white border-2 border-slate-300 text-slate-700 hover:border-slate-400 shadow-sm"
+                ? 'bg-slate-200 text-slate-400 cursor-not-allowed'
+                : 'bg-white border-2 border-slate-300 text-slate-700 hover:border-slate-400 shadow-sm'
             }`}
           >
             <ArrowLeft className="w-5 h-5" />
@@ -341,7 +313,7 @@ export function OnboardingMentor() {
             onClick={handleNext}
             className="px-6 py-3 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-all flex items-center gap-2 shadow-sm"
           >
-            {step === totalSteps ? "Complete" : "Continue"}
+            {step === totalSteps ? 'Complete' : 'Continue'}
             <ArrowRight className="w-5 h-5" />
           </button>
         </div>

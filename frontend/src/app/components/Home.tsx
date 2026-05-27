@@ -1,57 +1,64 @@
-import { Link } from "react-router";
-import { motion } from "motion/react";
-import { Users, Target, Calendar, TrendingUp, CheckCircle, Star } from "lucide-react";
+import { Link } from 'react-router';
+import { motion } from 'motion/react';
+import { Users, Target, Calendar, TrendingUp, CheckCircle, Star } from 'lucide-react';
 
 export function Home() {
   const features = [
     {
       icon: Target,
-      title: "Smart Matching",
-      description: "Our intelligent algorithm connects you with mentors who match your goals, learning style, and preferences."
+      title: 'Smart Matching',
+      description:
+        'Our intelligent algorithm connects you with mentors who match your goals, learning style, and preferences.',
     },
     {
       icon: Calendar,
-      title: "Easy Scheduling",
-      description: "Book sessions that fit your schedule with integrated calendar and seamless booking flow."
+      title: 'Easy Scheduling',
+      description: 'Book sessions that fit your schedule with integrated calendar and seamless booking flow.',
     },
     {
       icon: TrendingUp,
-      title: "Track Progress",
-      description: "Visualize your skill development and milestone achievements with structured goal tracking."
+      title: 'Track Progress',
+      description: 'Visualize your skill development and milestone achievements with structured goal tracking.',
     },
     {
       icon: Star,
-      title: "Verified Mentors",
-      description: "Learn from experienced professionals with verified credentials and authentic reviews."
-    }
+      title: 'Verified Mentors',
+      description: 'Learn from experienced professionals with verified credentials and authentic reviews.',
+    },
   ];
 
   const stats = [
-    { value: "10,000+", label: "Active Mentors" },
-    { value: "50,000+", label: "Sessions Completed" },
-    { value: "4.8/5", label: "Average Rating" },
-    { value: "95%", label: "Match Success Rate" }
+    { value: '10,000+', label: 'Active Mentors' },
+    { value: '50,000+', label: 'Sessions Completed' },
+    { value: '4.8/5', label: 'Average Rating' },
+    { value: '95%', label: 'Match Success Rate' },
   ];
 
   const testimonials = [
     {
-      name: "Sarah Chen",
-      role: "Software Engineer",
-      image: "https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHByb2Zlc3Npb25hbCUyMHdvbWFuJTIwaGVhZHNob3R8ZW58MXx8fHwxNzc1NDcwOTI5fDA&ixlib=rb-4.1.0&q=80&w=400",
-      quote: "MentorMatch helped me transition from junior to senior developer in just 18 months. My mentor's guidance was invaluable."
+      name: 'Sarah Chen',
+      role: 'Software Engineer',
+      image:
+        'https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHByb2Zlc3Npb25hbCUyMHdvbWFuJTIwaGVhZHNob3R8ZW58MXx8fHwxNzc1NDcwOTI5fDA&ixlib=rb-4.1.0&q=80&w=400',
+      quote:
+        "MentorMatch helped me transition from junior to senior developer in just 18 months. My mentor's guidance was invaluable.",
     },
     {
-      name: "Marcus Williams",
-      role: "Product Manager",
-      image: "https://images.unsplash.com/photo-1543132220-7bc04a0e790a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYW4lMjBidXNpbmVzcyUyMHByb2Zlc3Npb25hbCUyMHBvcnRyYWl0fGVufDF8fHx8MTc3NTU0OTA0OXww&ixlib=rb-4.1.0&q=80&w=400",
-      quote: "The matching algorithm found me a mentor who understood exactly what I needed. The progress tracking keeps me accountable."
+      name: 'Marcus Williams',
+      role: 'Product Manager',
+      image:
+        'https://images.unsplash.com/photo-1543132220-7bc04a0e790a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYW4lMjBidXNpbmVzcyUyMHByb2Zlc3Npb25hbCUyMHBvcnRyYWl0fGVufDF8fHx8MTc3NTU0OTA0OXww&ixlib=rb-4.1.0&q=80&w=400',
+      quote:
+        'The matching algorithm found me a mentor who understood exactly what I needed. The progress tracking keeps me accountable.',
     },
     {
-      name: "Emily Rodriguez",
-      role: "UX Designer",
-      image: "https://images.unsplash.com/photo-1765648684613-b77086065bc1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3b21hbiUyMHByb2Zlc3Npb25hbCUyMHdvcmtpbmclMjBsYXB0b3B8ZW58MXx8fHwxNzc1NTQ5MDQ5fDA&ixlib=rb-4.1.0&q=80&w=400",
-      quote: "As a career changer, I needed structured guidance. MentorMatch connected me with an amazing mentor who helped me land my dream job."
-    }
+      name: 'Emily Rodriguez',
+      role: 'UX Designer',
+      image:
+        'https://images.unsplash.com/photo-1765648684613-b77086065bc1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3b21hbiUyMHByb2Zlc3Npb25hbCUyMHdvcmtpbmclMjBsYXB0b3B8ZW58MXx8fHwxNzc1NTQ5MDQ5fDA&ixlib=rb-4.1.0&q=80&w=400',
+      quote:
+        'As a career changer, I needed structured guidance. MentorMatch connected me with an amazing mentor who helped me land my dream job.',
+    },
   ];
 
   return (
@@ -62,15 +69,10 @@ export function Home() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center gap-2">
               <Users className="w-8 h-8 text-blue-600" />
-              <span className="text-xl font-bold text-slate-900">
-                MentorMatch
-              </span>
+              <span className="text-xl font-bold text-slate-900">MentorMatch</span>
             </div>
             <div className="flex items-center gap-4">
-              <Link
-                to="/login"
-                className="text-slate-600 hover:text-slate-900 transition-colors"
-              >
+              <Link to="/login" className="text-slate-600 hover:text-slate-900 transition-colors">
                 Sign In
               </Link>
               <Link
@@ -88,19 +90,14 @@ export function Home() {
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8 bg-transparent">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-            >
+            <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }}>
               <h1 className="text-5xl sm:text-6xl font-bold text-slate-900 mb-6 leading-tight">
                 Find Your Perfect
                 <span className="text-blue-600"> Mentor</span>
               </h1>
               <p className="text-xl text-slate-600 mb-8 leading-relaxed">
-                Connect with experienced professionals who understand your
-                goals. Accelerate your career growth with personalized guidance
-                and structured mentorship.
+                Connect with experienced professionals who understand your goals. Accelerate your career growth with
+                personalized guidance and structured mentorship.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
@@ -137,12 +134,8 @@ export function Home() {
                     <CheckCircle className="w-6 h-6 text-green-600" />
                   </div>
                   <div>
-                    <div className="font-semibold text-slate-900">
-                      95% Match Rate
-                    </div>
-                    <div className="text-sm text-slate-600">
-                      Successful connections
-                    </div>
+                    <div className="font-semibold text-slate-900">95% Match Rate</div>
+                    <div className="text-sm text-slate-600">Successful connections</div>
                   </div>
                 </div>
               </motion.div>
@@ -164,9 +157,7 @@ export function Home() {
                 viewport={{ once: true }}
                 className="text-center"
               >
-                <div className="text-4xl font-bold text-blue-600 mb-2">
-                  {stat.value}
-                </div>
+                <div className="text-4xl font-bold text-blue-600 mb-2">{stat.value}</div>
                 <div className="text-slate-600">{stat.label}</div>
               </motion.div>
             ))}
@@ -178,12 +169,9 @@ export function Home() {
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-transparent">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">
-              Why Choose MentorMatch?
-            </h2>
+            <h2 className="text-4xl font-bold text-slate-900 mb-4">Why Choose MentorMatch?</h2>
             <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-              We've built the most comprehensive mentorship platform to support
-              your professional growth
+              We've built the most comprehensive mentorship platform to support your professional growth
             </p>
           </div>
 
@@ -200,9 +188,7 @@ export function Home() {
                 <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
                   <feature.icon className="w-6 h-6 text-blue-600" />
                 </div>
-                <h3 className="text-xl font-semibold text-slate-900 mb-2">
-                  {feature.title}
-                </h3>
+                <h3 className="text-xl font-semibold text-slate-900 mb-2">{feature.title}</h3>
                 <p className="text-slate-600">{feature.description}</p>
               </motion.div>
             ))}
@@ -214,33 +200,27 @@ export function Home() {
       <section className="py-20 bg-transparent px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">
-              How It Works
-            </h2>
-            <p className="text-xl text-slate-600">
-              Get matched with your ideal mentor in three simple steps
-            </p>
+            <h2 className="text-4xl font-bold text-slate-900 mb-4">How It Works</h2>
+            <p className="text-xl text-slate-600">Get matched with your ideal mentor in three simple steps</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                step: "01",
-                title: "Create Your Profile",
-                description:
-                  "Share your goals, skills, and preferences. Our onboarding takes just 10 minutes.",
+                step: '01',
+                title: 'Create Your Profile',
+                description: 'Share your goals, skills, and preferences. Our onboarding takes just 10 minutes.',
               },
               {
-                step: "02",
-                title: "Get Matched",
+                step: '02',
+                title: 'Get Matched',
                 description:
-                  "Our smart algorithm finds mentors who align with your learning style and career objectives.",
+                  'Our smart algorithm finds mentors who align with your learning style and career objectives.',
               },
               {
-                step: "03",
-                title: "Start Learning",
-                description:
-                  "Book sessions, track progress, and achieve your goals with expert guidance.",
+                step: '03',
+                title: 'Start Learning',
+                description: 'Book sessions, track progress, and achieve your goals with expert guidance.',
               },
             ].map((item, index) => (
               <motion.div
@@ -252,17 +232,11 @@ export function Home() {
                 className="relative"
               >
                 <div className="bg-white p-8 rounded-xl shadow-lg">
-                  <div className="text-6xl font-bold text-blue-100 mb-4">
-                    {item.step}
-                  </div>
-                  <h3 className="text-2xl font-semibold text-slate-900 mb-3">
-                    {item.title}
-                  </h3>
+                  <div className="text-6xl font-bold text-blue-100 mb-4">{item.step}</div>
+                  <h3 className="text-2xl font-semibold text-slate-900 mb-3">{item.title}</h3>
                   <p className="text-slate-600">{item.description}</p>
                 </div>
-                {index < 2 && (
-                  <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-blue-300" />
-                )}
+                {index < 2 && <div className="hidden md:block absolute top-1/2 -right-4 w-8 h-0.5 bg-blue-300" />}
               </motion.div>
             ))}
           </div>
@@ -273,12 +247,8 @@ export function Home() {
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-transparent">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">
-              Success Stories
-            </h2>
-            <p className="text-xl text-slate-600">
-              Hear from professionals who transformed their careers
-            </p>
+            <h2 className="text-4xl font-bold text-slate-900 mb-4">Success Stories</h2>
+            <p className="text-xl text-slate-600">Hear from professionals who transformed their careers</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -293,28 +263,15 @@ export function Home() {
               >
                 <div className="flex items-center gap-1 mb-4">
                   {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className="w-5 h-5 fill-yellow-400 text-yellow-400"
-                    />
+                    <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                   ))}
                 </div>
-                <p className="text-slate-600 mb-6 italic">
-                  "{testimonial.quote}"
-                </p>
+                <p className="text-slate-600 mb-6 italic">"{testimonial.quote}"</p>
                 <div className="flex items-center gap-3">
-                  <img
-                    src={testimonial.image}
-                    alt={testimonial.name}
-                    className="w-12 h-12 rounded-full object-cover"
-                  />
+                  <img src={testimonial.image} alt={testimonial.name} className="w-12 h-12 rounded-full object-cover" />
                   <div>
-                    <div className="font-semibold text-slate-900">
-                      {testimonial.name}
-                    </div>
-                    <div className="text-sm text-slate-600">
-                      {testimonial.role}
-                    </div>
+                    <div className="font-semibold text-slate-900">{testimonial.name}</div>
+                    <div className="text-sm text-slate-600">{testimonial.role}</div>
                   </div>
                 </div>
               </motion.div>
@@ -326,17 +283,10 @@ export function Home() {
       {/* CTA Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-blue-600 to-indigo-700">
         <div className="max-w-4xl mx-auto text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-4xl font-bold text-white mb-6">
-              Ready to Accelerate Your Career?
-            </h2>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <h2 className="text-4xl font-bold text-white mb-6">Ready to Accelerate Your Career?</h2>
             <p className="text-xl text-blue-100 mb-8">
-              Join thousands of professionals who are achieving their goals with
-              MentorMatch
+              Join thousands of professionals who are achieving their goals with MentorMatch
             </p>
             <Link
               to="/signup"
@@ -356,9 +306,7 @@ export function Home() {
               <Users className="w-6 h-6" />
               <span className="text-lg font-semibold">MentorMatch</span>
             </div>
-            <div className="text-slate-400">
-              © 2026 MentorMatch. All rights reserved.
-            </div>
+            <div className="text-slate-400">© 2026 MentorMatch. All rights reserved.</div>
           </div>
         </div>
       </footer>
