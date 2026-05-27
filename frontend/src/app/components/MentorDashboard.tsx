@@ -1,6 +1,6 @@
 import { Link } from 'react-router';
 import { motion } from 'motion/react';
-import { Users, Calendar, Star, TrendingUp, Clock, MessageSquare, Award, CheckCircle, Video } from 'lucide-react';
+import { Users, Calendar, Star, TrendingUp, Clock, MessageSquare, Award, Video } from 'lucide-react';
 import { useChatPanel } from './ChatPanel';
 
 export function MentorDashboard() {

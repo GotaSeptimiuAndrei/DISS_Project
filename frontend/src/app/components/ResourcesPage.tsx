@@ -16,7 +16,6 @@ import {
   Download,
   Eye,
   Plus,
-  FolderOpen,
   Calendar,
   User,
   Tag,
