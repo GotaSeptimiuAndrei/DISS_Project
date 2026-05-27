@@ -1,5 +1,5 @@
-import { Link } from "react-router";
-import { motion } from "motion/react";
+import { Link } from 'react-router';
+import { motion } from 'motion/react';
 import {
   Users,
   ArrowLeft,
@@ -13,65 +13,54 @@ import {
   Sparkles,
   BookOpen,
   Lightbulb,
-} from "lucide-react";
+} from 'lucide-react';
 
 export function MenteeProfile() {
   const mentee = {
-    name: "Emily Rodriguez",
-    email: "emily.rodriguez@example.com",
-    experienceLevel: "Intermediate",
-    bio: "Aspiring product leader passionate about technology, communication, and building impactful digital experiences. Currently transitioning from software engineering into product management and looking for mentorship around leadership, strategy, and stakeholder communication.",
+    name: 'Emily Rodriguez',
+    email: 'emily.rodriguez@example.com',
+    experienceLevel: 'Intermediate',
+    bio: 'Aspiring product leader passionate about technology, communication, and building impactful digital experiences. Currently transitioning from software engineering into product management and looking for mentorship around leadership, strategy, and stakeholder communication.',
 
     learningGoals: [
-      "Leadership Development",
-      "Career Transition",
-      "Product Management",
-      "Communication Skills",
-      "AI & Machine Learning",
-      "Public Speaking",
+      'Leadership Development',
+      'Career Transition',
+      'Product Management',
+      'Communication Skills',
+      'AI & Machine Learning',
+      'Public Speaking',
     ],
 
-    customGoals: [
-      "Improve stakeholder management",
-      "Build confidence in strategic decision making",
-    ],
+    customGoals: ['Improve stakeholder management', 'Build confidence in strategic decision making'],
 
     learningStyle: {
-      type: "Project-based",
-      description:
-        "Hands-on learning through practical projects and real-world collaboration.",
+      type: 'Project-based',
+      description: 'Hands-on learning through practical projects and real-world collaboration.',
     },
 
-    availability: ["Weekday Evenings · 5pm – 9pm", "Weekends · Flexible"],
+    availability: ['Weekday Evenings · 5pm – 9pm', 'Weekends · Flexible'],
 
     mentorshipPreferences: {
-      sessionFrequency: "Bi-weekly",
-      preferredSessionType: "Video Calls",
-      commitmentLevel: "6+ months",
+      sessionFrequency: 'Bi-weekly',
+      preferredSessionType: 'Video Calls',
+      commitmentLevel: '6+ months',
     },
 
     progress: {
       completedSessions: 8,
       activeGoals: 5,
-      mentorshipStreak: "3 months",
+      mentorshipStreak: '3 months',
     },
 
-    interests: [
-      "Product Strategy",
-      "Career Growth",
-      "AI Products",
-      "Startup Culture",
-      "Leadership",
-      "Public Speaking",
-    ],
+    interests: ['Product Strategy', 'Career Growth', 'AI Products', 'Startup Culture', 'Leadership', 'Public Speaking'],
 
-    image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800",
+    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800',
   };
 
   const experienceColors = {
-    Beginner: "bg-green-100 text-green-700 border-green-200",
-    Intermediate: "bg-blue-100 text-blue-700 border-blue-200",
-    Advanced: "bg-purple-100 text-purple-700 border-purple-200",
+    Beginner: 'bg-green-100 text-green-700 border-green-200',
+    Intermediate: 'bg-blue-100 text-blue-700 border-blue-200',
+    Advanced: 'bg-purple-100 text-purple-700 border-purple-200',
   };
 
   return (
@@ -82,9 +71,7 @@ export function MenteeProfile() {
             <div className="flex items-center gap-8">
               <Link to="/" className="flex items-center gap-2">
                 <Users className="w-6 h-6 text-blue-600" />
-                <span className="text-lg font-bold text-slate-900">
-                  MentorMatch
-                </span>
+                <span className="text-lg font-bold text-slate-900">MentorMatch</span>
               </Link>
             </div>
 
@@ -127,9 +114,7 @@ export function MenteeProfile() {
                   <div className="flex-1 pt-0 sm:pt-2">
                     <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                       <div>
-                        <h1 className="text-3xl font-bold text-slate-900 mb-2">
-                          {mentee.name}
-                        </h1>
+                        <h1 className="text-3xl font-bold text-slate-900 mb-2">{mentee.name}</h1>
 
                         <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600 mb-4">
                           <div className="flex items-center gap-2">
@@ -145,9 +130,7 @@ export function MenteeProfile() {
 
                         <div
                           className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border font-medium ${
-                            experienceColors[
-                              mentee.experienceLevel as keyof typeof experienceColors
-                            ]
+                            experienceColors[mentee.experienceLevel as keyof typeof experienceColors]
                           }`}
                         >
                           <Sparkles className="w-4 h-4" />
@@ -158,30 +141,18 @@ export function MenteeProfile() {
 
                     <div className="grid grid-cols-3 gap-4 mt-6">
                       <div className="bg-slate-50 rounded-xl p-4">
-                        <div className="text-2xl font-bold text-slate-900">
-                          {mentee.progress.completedSessions}
-                        </div>
-                        <div className="text-sm text-slate-600">
-                          Sessions Completed
-                        </div>
+                        <div className="text-2xl font-bold text-slate-900">{mentee.progress.completedSessions}</div>
+                        <div className="text-sm text-slate-600">Sessions Completed</div>
                       </div>
 
                       <div className="bg-slate-50 rounded-xl p-4">
-                        <div className="text-2xl font-bold text-slate-900">
-                          {mentee.progress.activeGoals}
-                        </div>
-                        <div className="text-sm text-slate-600">
-                          Active Goals
-                        </div>
+                        <div className="text-2xl font-bold text-slate-900">{mentee.progress.activeGoals}</div>
+                        <div className="text-sm text-slate-600">Active Goals</div>
                       </div>
 
                       <div className="bg-slate-50 rounded-xl p-4">
-                        <div className="text-2xl font-bold text-slate-900">
-                          {mentee.progress.mentorshipStreak}
-                        </div>
-                        <div className="text-sm text-slate-600">
-                          Learning Streak
-                        </div>
+                        <div className="text-2xl font-bold text-slate-900">{mentee.progress.mentorshipStreak}</div>
+                        <div className="text-sm text-slate-600">Learning Streak</div>
                       </div>
                     </div>
                   </div>
@@ -211,33 +182,23 @@ export function MenteeProfile() {
               <div className="flex items-center gap-2 mb-4">
                 <Target className="w-5 h-5 text-blue-600" />
 
-                <h2 className="text-xl font-bold text-slate-900">
-                  Learning Goals
-                </h2>
+                <h2 className="text-xl font-bold text-slate-900">Learning Goals</h2>
               </div>
 
               <div className="flex flex-wrap gap-3 mb-6">
                 {mentee.learningGoals.map((goal, index) => (
-                  <span
-                    key={index}
-                    className="px-4 py-2 bg-blue-50 text-blue-700 rounded-lg font-medium"
-                  >
+                  <span key={index} className="px-4 py-2 bg-blue-50 text-blue-700 rounded-lg font-medium">
                     {goal}
                   </span>
                 ))}
               </div>
 
               <div>
-                <h3 className="font-semibold text-slate-900 mb-3">
-                  Custom Goals
-                </h3>
+                <h3 className="font-semibold text-slate-900 mb-3">Custom Goals</h3>
 
                 <div className="space-y-3">
                   {mentee.customGoals.map((goal, index) => (
-                    <div
-                      key={index}
-                      className="flex items-start gap-3 p-4 bg-slate-50 rounded-xl"
-                    >
+                    <div key={index} className="flex items-start gap-3 p-4 bg-slate-50 rounded-xl">
                       <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
 
                       <span className="text-slate-700">{goal}</span>
@@ -257,9 +218,7 @@ export function MenteeProfile() {
               <div className="flex items-center gap-2 mb-4">
                 <Brain className="w-5 h-5 text-indigo-600" />
 
-                <h2 className="text-xl font-bold text-slate-900">
-                  Learning Style
-                </h2>
+                <h2 className="text-xl font-bold text-slate-900">Learning Style</h2>
               </div>
 
               <div className="border border-indigo-100 bg-indigo-50 rounded-2xl p-6">
@@ -269,19 +228,13 @@ export function MenteeProfile() {
                   </div>
 
                   <div>
-                    <h3 className="text-lg font-semibold text-slate-900">
-                      {mentee.learningStyle.type}
-                    </h3>
+                    <h3 className="text-lg font-semibold text-slate-900">{mentee.learningStyle.type}</h3>
 
-                    <p className="text-sm text-slate-600">
-                      Preferred mentorship approach
-                    </p>
+                    <p className="text-sm text-slate-600">Preferred mentorship approach</p>
                   </div>
                 </div>
 
-                <p className="text-slate-700 leading-relaxed">
-                  {mentee.learningStyle.description}
-                </p>
+                <p className="text-slate-700 leading-relaxed">{mentee.learningStyle.description}</p>
               </div>
             </motion.div>
 
@@ -295,17 +248,12 @@ export function MenteeProfile() {
               <div className="flex items-center gap-2 mb-4">
                 <BookOpen className="w-5 h-5 text-cyan-600" />
 
-                <h2 className="text-xl font-bold text-slate-900">
-                  Interests & Focus Areas
-                </h2>
+                <h2 className="text-xl font-bold text-slate-900">Interests & Focus Areas</h2>
               </div>
 
               <div className="flex flex-wrap gap-2">
                 {mentee.interests.map((interest, index) => (
-                  <span
-                    key={index}
-                    className="px-4 py-2 rounded-lg bg-slate-100 text-slate-700 font-medium"
-                  >
+                  <span key={index} className="px-4 py-2 rounded-lg bg-slate-100 text-slate-700 font-medium">
                     {interest}
                   </span>
                 ))}
@@ -321,22 +269,16 @@ export function MenteeProfile() {
               transition={{ delay: 0.2 }}
               className="bg-white rounded-xl shadow-lg border border-slate-200 p-6 sticky top-8"
             >
-              <h2 className="text-xl font-bold text-slate-900 mb-6">
-                Mentorship Preferences
-              </h2>
+              <h2 className="text-xl font-bold text-slate-900 mb-6">Mentorship Preferences</h2>
 
               <div className="space-y-4 mb-8">
                 <div className="flex items-center gap-3">
                   <Calendar className="w-5 h-5 text-blue-600" />
 
                   <div>
-                    <div className="font-medium text-slate-900">
-                      Session Frequency
-                    </div>
+                    <div className="font-medium text-slate-900">Session Frequency</div>
 
-                    <div className="text-sm text-slate-600">
-                      {mentee.mentorshipPreferences.sessionFrequency}
-                    </div>
+                    <div className="text-sm text-slate-600">{mentee.mentorshipPreferences.sessionFrequency}</div>
                   </div>
                 </div>
 
@@ -344,13 +286,9 @@ export function MenteeProfile() {
                   <Users className="w-5 h-5 text-blue-600" />
 
                   <div>
-                    <div className="font-medium text-slate-900">
-                      Preferred Format
-                    </div>
+                    <div className="font-medium text-slate-900">Preferred Format</div>
 
-                    <div className="text-sm text-slate-600">
-                      {mentee.mentorshipPreferences.preferredSessionType}
-                    </div>
+                    <div className="text-sm text-slate-600">{mentee.mentorshipPreferences.preferredSessionType}</div>
                   </div>
                 </div>
 
@@ -360,9 +298,7 @@ export function MenteeProfile() {
                   <div>
                     <div className="font-medium text-slate-900">Commitment</div>
 
-                    <div className="text-sm text-slate-600">
-                      {mentee.mentorshipPreferences.commitmentLevel}
-                    </div>
+                    <div className="text-sm text-slate-600">{mentee.mentorshipPreferences.commitmentLevel}</div>
                   </div>
                 </div>
               </div>
@@ -376,13 +312,8 @@ export function MenteeProfile() {
 
                 <div className="space-y-3">
                   {mentee.availability.map((slot, index) => (
-                    <div
-                      key={index}
-                      className="px-4 py-3 rounded-xl bg-slate-50 border border-slate-200"
-                    >
-                      <div className="text-sm font-medium text-slate-700">
-                        {slot}
-                      </div>
+                    <div key={index} className="px-4 py-3 rounded-xl bg-slate-50 border border-slate-200">
+                      <div className="text-sm font-medium text-slate-700">{slot}</div>
                     </div>
                   ))}
                 </div>

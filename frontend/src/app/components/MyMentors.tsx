@@ -1,51 +1,44 @@
-import { Link } from "react-router";
-import { motion } from "motion/react";
-import { useState, useEffect } from "react";
-import {
-  Users,
-  Star,
-  Calendar,
-  MessageSquare,
-  Video,
-  Clock,
-  Loader2,
-} from "lucide-react";
-import { useChatPanel } from "./ChatPanel";
+import { Link } from 'react-router';
+import { motion } from 'motion/react';
+import { useState, useEffect } from 'react';
+import { Users, Star, Calendar, MessageSquare, Video, Clock, Loader2 } from 'lucide-react';
+import { useChatPanel } from './ChatPanel';
+import axiosClient from '../../api/axiosClient';
 
 const imageUrls = [
-  "https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHByb2Zlc3Npb25hbCUyMHdvbWFuJTIwaGVhZHNob3R8ZW58MXx8fHwxNzc1NDcwOTI5fDA&ixlib=rb-4.1.0&q=80&w=400",
-  "https://images.unsplash.com/photo-1652471949169-9c587e8898cd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxibGFjayUyMHdvbWFuJTIwYnVzaW5lc3MlMjBwcm9mZXNzaW9uYWx8ZW58MXx8fHwxNzc1NTQ5MTc3fDA&ixlib=rb-4.1.0&q=80&w=400",
-  "https://images.unsplash.com/photo-1770058428154-9eee8a6a1fbb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaWRkbGUlMjBhZ2VkJTIwd29tYW4lMjBwcm9mZXNzaW9uYWx8ZW58MXx8fHwxNzc1NTQ5MTc3fDA&ixlib=rb-4.1.0&q=80&w=400",
+  'https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHByb2Zlc3Npb25hbCUyMHdvbWFuJTIwaGVhZHNob3R8ZW58MXx8fHwxNzc1NDcwOTI5fDA&ixlib=rb-4.1.0&q=80&w=400',
+  'https://images.unsplash.com/photo-1652471949169-9c587e8898cd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxibGFjayUyMHdvbWFuJTIwYnVzaW5lc3MlMjBwcm9mZXNzaW9uYWx8ZW58MXx8fHwxNzc1NTQ5MTc3fDA&ixlib=rb-4.1.0&q=80&w=400',
+  'https://images.unsplash.com/photo-1770058428154-9eee8a6a1fbb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaWRkbGUlMjBhZ2VkJTIwd29tYW4lMjBwcm9mZXNzaW9uYWx8ZW58MXx8fHwxNzc1NTQ5MTc3fDA&ixlib=rb-4.1.0&q=80&w=400',
 ];
 
 // Mock per-mentor data indexed by position (0, 1, 2)
 const MENTOR_MOCK = [
   {
     sessionsCompleted: 8,
-    nextSession: "Tomorrow, 2:00 PM",
-    upcomingTopic: "Leadership Development Strategy",
-    upcomingDate: "Tomorrow",
-    upcomingTime: "2:00 PM - 3:00 PM",
+    nextSession: 'Tomorrow, 2:00 PM',
+    upcomingTopic: 'Leadership Development Strategy',
+    upcomingDate: 'Tomorrow',
+    upcomingTime: '2:00 PM - 3:00 PM',
     pastSessions: [
       {
-        topic: "Career Growth Planning",
-        date: "Apr 1, 2026",
-        duration: "60 min",
+        topic: 'Career Growth Planning',
+        date: 'Apr 1, 2026',
+        duration: '60 min',
         rating: 5,
       },
     ],
   },
   {
     sessionsCompleted: 5,
-    nextSession: "Friday, 10:00 AM",
-    upcomingTopic: "Product Strategy Session",
-    upcomingDate: "Friday, Apr 11",
-    upcomingTime: "10:00 AM - 10:45 AM",
+    nextSession: 'Friday, 10:00 AM',
+    upcomingTopic: 'Product Strategy Session',
+    upcomingDate: 'Friday, Apr 11',
+    upcomingTime: '10:00 AM - 10:45 AM',
     pastSessions: [
       {
-        topic: "Product Metrics Deep Dive",
-        date: "Mar 28, 2026",
-        duration: "45 min",
+        topic: 'Product Metrics Deep Dive',
+        date: 'Mar 28, 2026',
+        duration: '45 min',
         rating: 5,
       },
     ],
@@ -58,9 +51,9 @@ const MENTOR_MOCK = [
     upcomingTime: null,
     pastSessions: [
       {
-        topic: "System Design Principles",
-        date: "Mar 25, 2026",
-        duration: "60 min",
+        topic: 'System Design Principles',
+        date: 'Mar 25, 2026',
+        duration: '60 min',
         rating: 5,
       },
     ],
@@ -84,10 +77,10 @@ export function MyMentors() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/mentors")
-      .then((res) => res.json())
-      .then((data) => {
-        const top3 = data.slice(0, 3).map((m: any, i: number) => ({
+    axiosClient
+      .get('/mentors')
+      .then((res) => {
+        const top3 = res.data.slice(0, 3).map((m: any, i: number) => ({
           id: m.id,
           name: m.name,
           title: m.title,
@@ -139,9 +132,7 @@ export function MyMentors() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <Loader2 className="w-10 h-10 text-blue-600 animate-spin" />
-        <span className="ml-3 text-slate-600 font-medium">
-          Loading your mentors...
-        </span>
+        <span className="ml-3 text-slate-600 font-medium">Loading your mentors...</span>
       </div>
     );
   }
@@ -155,45 +146,28 @@ export function MyMentors() {
             <div className="flex items-center gap-8">
               <Link to="/" className="flex items-center gap-2">
                 <Users className="w-6 h-6 text-blue-600" />
-                <span className="text-lg font-bold text-slate-900">
-                  MentorMatch
-                </span>
+                <span className="text-lg font-bold text-slate-900">MentorMatch</span>
               </Link>
               <div className="hidden md:flex items-center gap-6">
-                <Link
-                  to="/dashboard"
-                  className="text-slate-600 hover:text-slate-900"
-                >
+                <Link to="/dashboard" className="text-slate-600 hover:text-slate-900">
                   Dashboard
                 </Link>
-                <Link
-                  to="/find-mentors"
-                  className="text-slate-600 hover:text-slate-900"
-                >
+                <Link to="/find-mentors" className="text-slate-600 hover:text-slate-900">
                   Find Mentors
                 </Link>
                 <Link to="/my-mentors" className="text-blue-600 font-medium">
                   My Mentors
                 </Link>
-                <Link
-                  to="/progress"
-                  className="text-slate-600 hover:text-slate-900"
-                >
+                <Link to="/progress" className="text-slate-600 hover:text-slate-900">
                   Progress
                 </Link>
-                <Link
-                  to="/mentee-resources"
-                  className="text-slate-600 hover:text-slate-900"
-                >
+                <Link to="/mentee-resources" className="text-slate-600 hover:text-slate-900">
                   Resources
                 </Link>
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <button
-                onClick={() => openChat()}
-                className="p-2 text-slate-600 hover:text-slate-900 relative"
-              >
+              <button onClick={() => openChat()} className="p-2 text-slate-600 hover:text-slate-900 relative">
                 <MessageSquare className="w-5 h-5" />
                 <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
               </button>
@@ -209,18 +183,14 @@ export function MyMentors() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-slate-900 mb-2">My Mentors</h1>
-          <p className="text-slate-600">
-            Manage your mentoring relationships and sessions
-          </p>
+          <p className="text-slate-600">Manage your mentoring relationships and sessions</p>
         </div>
 
         <div className="grid lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-8">
             {/* Active Mentors */}
             <div>
-              <h2 className="text-xl font-bold text-slate-900 mb-4">
-                Active Mentors ({mentors.length})
-              </h2>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Active Mentors ({mentors.length})</h2>
               <div className="grid gap-4">
                 {mentors.map((mentor, index) => (
                   <motion.div
@@ -239,30 +209,20 @@ export function MyMentors() {
                       <div className="flex-1">
                         <div className="flex items-start justify-between mb-2">
                           <div>
-                            <h3 className="text-lg font-semibold text-slate-900">
-                              {mentor.name}
-                            </h3>
-                            <p className="text-sm text-slate-600">
-                              {mentor.title}
-                            </p>
-                            <p className="text-sm text-slate-500">
-                              {mentor.company}
-                            </p>
+                            <h3 className="text-lg font-semibold text-slate-900">{mentor.name}</h3>
+                            <p className="text-sm text-slate-600">{mentor.title}</p>
+                            <p className="text-sm text-slate-500">{mentor.company}</p>
                           </div>
                           <div className="flex items-center gap-1 text-sm bg-slate-50 px-2 py-1 rounded">
                             <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                            <span className="font-semibold">
-                              {mentor.rating}
-                            </span>
+                            <span className="font-semibold">{mentor.rating}</span>
                           </div>
                         </div>
 
                         <div className="flex items-center gap-6 text-sm text-slate-600 mb-4">
                           <div className="flex items-center gap-1">
                             <Calendar className="w-4 h-4" />
-                            <span>
-                              {mentor.sessionsCompleted} sessions completed
-                            </span>
+                            <span>{mentor.sessionsCompleted} sessions completed</span>
                           </div>
                           {mentor.nextSession && (
                             <div className="flex items-center gap-1 text-green-600 font-medium">
@@ -302,15 +262,10 @@ export function MyMentors() {
 
             {/* Past Sessions */}
             <div>
-              <h2 className="text-xl font-bold text-slate-900 mb-4">
-                Past Sessions
-              </h2>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Past Sessions</h2>
               <div className="bg-white rounded-xl shadow-md border border-slate-200 divide-y divide-slate-200 overflow-hidden">
                 {pastSessions.map((session, i) => (
-                  <div
-                    key={i}
-                    className="p-6 hover:bg-slate-50 transition-colors"
-                  >
+                  <div key={i} className="p-6 hover:bg-slate-50 transition-colors">
                     <div className="flex items-start gap-4">
                       <img
                         src={session.mentorImage}
@@ -320,19 +275,12 @@ export function MyMentors() {
                       <div className="flex-1">
                         <div className="flex items-start justify-between mb-2">
                           <div>
-                            <h4 className="font-semibold text-slate-900">
-                              {session.topic}
-                            </h4>
-                            <p className="text-sm text-slate-600">
-                              {session.mentor}
-                            </p>
+                            <h4 className="font-semibold text-slate-900">{session.topic}</h4>
+                            <p className="text-sm text-slate-600">{session.mentor}</p>
                           </div>
                           <div className="flex items-center gap-1">
                             {[...Array(session.rating)].map((_, j) => (
-                              <Star
-                                key={j}
-                                className="w-4 h-4 fill-yellow-400 text-yellow-400"
-                              />
+                              <Star key={j} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                             ))}
                           </div>
                         </div>
@@ -359,9 +307,7 @@ export function MyMentors() {
           <div className="space-y-6">
             {/* Upcoming Sessions */}
             <div className="bg-white rounded-xl shadow-md border border-slate-200 p-6">
-              <h3 className="text-lg font-bold text-slate-900 mb-4">
-                Upcoming Sessions
-              </h3>
+              <h3 className="text-lg font-bold text-slate-900 mb-4">Upcoming Sessions</h3>
               <div className="space-y-4">
                 {upcomingSessions.map((session) => (
                   <div
@@ -375,12 +321,8 @@ export function MyMentors() {
                         className="w-10 h-10 rounded-full object-cover border border-white"
                       />
                       <div className="flex-1">
-                        <div className="font-semibold text-slate-900 text-sm">
-                          {session.mentor}
-                        </div>
-                        <div className="text-xs text-slate-600 line-clamp-1">
-                          {session.topic}
-                        </div>
+                        <div className="font-semibold text-slate-900 text-sm">{session.mentor}</div>
+                        <div className="text-xs text-slate-600 line-clamp-1">{session.topic}</div>
                       </div>
                     </div>
                     <div className="flex items-center gap-2 text-xs text-slate-600 mb-3">
@@ -406,9 +348,7 @@ export function MyMentors() {
             {/* Quick Actions */}
             <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl shadow-lg p-6 text-white">
               <h3 className="text-lg font-bold mb-4">Need more guidance?</h3>
-              <p className="text-blue-100 text-sm mb-4">
-                Find additional mentors to help you achieve your goals
-              </p>
+              <p className="text-blue-100 text-sm mb-4">Find additional mentors to help you achieve your goals</p>
               <Link
                 to="/find-mentors"
                 className="block w-full px-4 py-3 bg-white text-blue-600 rounded-lg font-medium text-center hover:bg-blue-50 transition-all transform hover:scale-105"
@@ -419,9 +359,7 @@ export function MyMentors() {
 
             {/* Stats — derived from real data */}
             <div className="bg-white rounded-xl shadow-md border border-slate-200 p-6">
-              <h3 className="text-lg font-bold text-slate-900 mb-4">
-                Your Stats
-              </h3>
+              <h3 className="text-lg font-bold text-slate-900 mb-4">Your Stats</h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-slate-600 text-sm">Total Sessions</span>
@@ -430,26 +368,17 @@ export function MyMentors() {
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-600 text-sm">
-                    Hours of Learning
-                  </span>
+                  <span className="text-slate-600 text-sm">Hours of Learning</span>
                   <span className="font-bold text-slate-900">
-                    {(
-                      mentors.reduce((sum, m) => sum + m.sessionsCompleted, 0) *
-                      0.9
-                    ).toFixed(1)}
+                    {(mentors.reduce((sum, m) => sum + m.sessionsCompleted, 0) * 0.9).toFixed(1)}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-slate-600 text-sm">Active Mentors</span>
-                  <span className="font-bold text-slate-900">
-                    {mentors.length}
-                  </span>
+                  <span className="font-bold text-slate-900">{mentors.length}</span>
                 </div>
                 <div className="flex items-center justify-between pt-2 border-t border-slate-100">
-                  <span className="text-slate-600 text-sm">
-                    Goals Completed
-                  </span>
+                  <span className="text-slate-600 text-sm">Goals Completed</span>
                   <span className="font-bold text-green-600">5</span>
                 </div>
               </div>
