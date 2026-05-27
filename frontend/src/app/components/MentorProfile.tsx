@@ -13,6 +13,7 @@ import {
   Video,
   CheckCircle,
   Loader2,
+  UserCircle,
 } from "lucide-react";
 import { useChatPanel } from "./ChatPanel";
 
@@ -30,23 +31,28 @@ interface MentorDetail {
   location?: string;
   sessionsCompleted?: number;
   responseTime?: string;
+
+  experiences: {
+    title: string;
+    company: string;
+    period: string;
+    description: string;
+  }[];
+  education: { degree: string; school: string; year: string }[];
+  availability: { day: string; slotTime: string }[];
+  reviews: {
+    reviewerName: string;
+    reviewerRole: string;
+    rating: number;
+    comment: string;
+    createdAt: string;
+  }[];
 }
 
 // Static fallback data for fields the backend doesn't serve yet
 const FALLBACK_IMAGE =
   "https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHByb2Zlc3Npb25hbCUyMHdvbWFuJTIwaGVhZHNob3R8ZW58MXx8fHwxNzc1NDcwOTI5fDA&ixlib=rb-4.1.0&q=80&w=800";
 
-const MOCK_EXPERIENCE = [
-  {
-    title: "Senior Engineer",
-    company: "N/A",
-    period: "—",
-    description: "Details coming soon.",
-  },
-];
-const MOCK_EDUCATION = [
-  { degree: "B.S. Computer Science", school: "—", year: "—" },
-];
 const MOCK_REVIEWS = [
   {
     name: "Alex Johnson",
@@ -71,10 +77,8 @@ export function MentorProfile() {
   // If navigating from FindMentors, state already has the mentor (avoids an extra request)
   const statementor = location.state?.mentor;
 
-  const [mentor, setMentor] = useState<MentorDetail | null>(
-    statementor ?? null,
-  );
-  const [loading, setLoading] = useState(!statementor);
+  const [mentor, setMentor] = useState<MentorDetail | null>(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
   useEffect(() => {
@@ -89,7 +93,14 @@ export function MentorProfile() {
         return res.json();
       })
       .then((data) => {
-        setMentor(data);
+        setMentor({
+          ...data,
+          skills: data.skills ?? [],
+          experiences: data.experiences ?? [],
+          education: data.education ?? [],
+          availability: data.availability ?? [],
+          reviews: data.reviews ?? [],
+        });
         setLoading(false);
       })
       .catch(() => {
@@ -255,7 +266,7 @@ export function MentorProfile() {
                 Experience
               </h2>
               <div className="space-y-6">
-                {MOCK_EXPERIENCE.map((exp, i) => (
+                {mentor.experiences.map((exp, i) => (
                   <div key={i} className="flex gap-4">
                     <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center shrink-0">
                       <Briefcase className="w-6 h-6 text-blue-600" />
@@ -288,7 +299,7 @@ export function MentorProfile() {
                 Education
               </h2>
               <div className="space-y-4">
-                {MOCK_EDUCATION.map((edu, i) => (
+                {mentor.education.map((edu, i) => (
                   <div key={i} className="flex gap-4">
                     <div className="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center shrink-0">
                       <Award className="w-6 h-6 text-indigo-600" />
@@ -314,29 +325,25 @@ export function MentorProfile() {
             >
               <h2 className="text-xl font-bold text-slate-900 mb-6">Reviews</h2>
               <div className="space-y-6">
-                {MOCK_REVIEWS.map((review, i) => (
+                {mentor.reviews.map((review, i) => (
                   <div
                     key={i}
                     className="pb-6 border-b border-slate-200 last:border-0 last:pb-0"
                   >
                     <div className="flex items-start gap-4">
-                      <img
-                        src={review.avatar}
-                        alt={review.name}
-                        className="w-12 h-12 rounded-full object-cover"
-                      />
+                      <UserCircle className="w-12 h-12 text-slate-400 shrink-0" />
                       <div className="flex-1">
                         <div className="flex items-start justify-between mb-2">
                           <div>
                             <div className="font-semibold text-slate-900">
-                              {review.name}
+                              {review.reviewerName}
                             </div>
                             <div className="text-sm text-slate-600">
-                              {review.role}
+                              {review.reviewerRole}
                             </div>
                           </div>
                           <div className="text-sm text-slate-500">
-                            {review.date}
+                            {review.createdAt}
                           </div>
                         </div>
                         <div className="flex items-center gap-1 mb-2">
@@ -347,7 +354,7 @@ export function MentorProfile() {
                             />
                           ))}
                         </div>
-                        <p className="text-slate-600">{review.text}</p>
+                        <p className="text-slate-600">{review.comment}</p>
                       </div>
                     </div>
                   </div>
@@ -434,13 +441,24 @@ export function MentorProfile() {
                   Available slots
                 </h3>
                 <div className="space-y-3">
-                  {MOCK_AVAILABILITY.map((a, i) => (
+                  {Object.entries(
+                    mentor.availability.reduce(
+                      (acc, slot) => {
+                        acc[slot.day] = [
+                          ...(acc[slot.day] ?? []),
+                          slot.slotTime,
+                        ];
+                        return acc;
+                      },
+                      {} as Record<string, string[]>,
+                    ),
+                  ).map(([day, slots], i) => (
                     <div key={i}>
                       <p className="text-xs font-medium text-slate-500 uppercase mb-1">
-                        {a.day}
+                        {day}
                       </p>
                       <div className="flex flex-wrap gap-2">
-                        {a.slots.map((slot, j) => (
+                        {slots.map((slot, j) => (
                           <span
                             key={j}
                             className="px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs font-medium border border-blue-100"
