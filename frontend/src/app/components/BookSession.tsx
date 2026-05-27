@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
-import { Link, useParams, useNavigate, useLocation } from "react-router";
-import { motion } from "motion/react";
-import { Users, ArrowLeft, Calendar, Clock, MessageSquare, Video, CheckCircle2, Loader2 } from "lucide-react";
+import { useState, useEffect } from 'react';
+import { Link, useParams, useNavigate, useLocation } from 'react-router';
+import { motion } from 'motion/react';
+import { Users, ArrowLeft, Calendar, Clock, MessageSquare, Video, CheckCircle2, Loader2 } from 'lucide-react';
+
+import axiosClient from '../../api/axiosClient';
 
 export function BookSession() {
   const { id } = useParams();
@@ -10,11 +12,11 @@ export function BookSession() {
 
   const stateMentor = location.state?.mentor;
 
-  const [selectedDate, setSelectedDate] = useState("");
-  const [selectedTime, setSelectedTime] = useState("");
-  const [sessionType, setSessionType] = useState("video");
-  const [topic, setTopic] = useState("");
-  const [notes, setNotes] = useState("");
+  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedTime, setSelectedTime] = useState('');
+  const [sessionType, setSessionType] = useState('video');
+  const [topic, setTopic] = useState('');
+  const [notes, setNotes] = useState('');
 
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -58,12 +60,12 @@ export function BookSession() {
     .map(slot => slot.slotTime);
 
   const topics = [
-    "Career Growth Strategy",
-    "Leadership Development",
-    "Technical Skills",
-    "Interview Preparation",
-    "General Advice",
-    "Other"
+    'Career Growth Strategy',
+    'Leadership Development',
+    'Technical Skills',
+    'Interview Preparation',
+    'General Advice',
+    'Other',
   ];
 
   const handleBooking = async () => {
@@ -221,25 +223,19 @@ export function BookSession() {
               animate={{ opacity: 1, y: 0 }}
               className="bg-white rounded-xl shadow-sm border border-slate-200 p-8"
             >
-              <h1 className="text-2xl font-bold text-slate-900 mb-2">
-                Book a Session
-              </h1>
-              <p className="text-slate-600 mb-8">
-                Schedule a mentoring session with {mentor.name}
-              </p>
+              <h1 className="text-2xl font-bold text-slate-900 mb-2">Book a Session</h1>
+              <p className="text-slate-600 mb-8">Schedule a mentoring session with {mentor.name}</p>
 
               <div className="space-y-6">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-3">
-                    Session Type
-                  </label>
+                  <label className="block text-sm font-medium text-slate-700 mb-3">Session Type</label>
                   <div className="grid grid-cols-2 gap-3">
                     <button
-                      onClick={() => setSessionType("video")}
+                      onClick={() => setSessionType('video')}
                       className={`p-4 rounded-lg border-2 text-left transition-all ${
-                        sessionType === "video"
-                          ? "border-blue-600 bg-blue-50"
-                          : "border-slate-200 bg-white hover:border-blue-300"
+                        sessionType === 'video'
+                          ? 'border-blue-600 bg-blue-50'
+                          : 'border-slate-200 bg-white hover:border-blue-300'
                       }`}
                     >
                       <Video className="w-5 h-5 text-blue-600 mb-2" />
@@ -247,11 +243,11 @@ export function BookSession() {
                       <div className="text-sm text-slate-600">Face-to-face session</div>
                     </button>
                     <button
-                      onClick={() => setSessionType("chat")}
+                      onClick={() => setSessionType('chat')}
                       className={`p-4 rounded-lg border-2 text-left transition-all ${
-                        sessionType === "chat"
-                          ? "border-blue-600 bg-blue-50"
-                          : "border-slate-200 bg-white hover:border-blue-300"
+                        sessionType === 'chat'
+                          ? 'border-blue-600 bg-blue-50'
+                          : 'border-slate-200 bg-white hover:border-blue-300'
                       }`}
                     >
                       <MessageSquare className="w-5 h-5 text-blue-600 mb-2" />
@@ -272,8 +268,8 @@ export function BookSession() {
                         onClick={() => setTopic(t)}
                         className={`p-3 rounded-lg border-2 text-sm font-medium transition-all ${
                           topic === t
-                            ? "border-blue-600 bg-blue-50 text-blue-700"
-                            : "border-slate-200 bg-white text-slate-700 hover:border-blue-300"
+                            ? 'border-blue-600 bg-blue-50 text-blue-700'
+                            : 'border-slate-200 bg-white text-slate-700 hover:border-blue-300'
                         }`}
                       >
                         {t}
@@ -283,9 +279,7 @@ export function BookSession() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-3">
-                    Select a Date
-                  </label>
+                  <label className="block text-sm font-medium text-slate-700 mb-3">Select a Date</label>
                   <div className="grid grid-cols-3 gap-3">
                     {availableDates.map((dateOption) => (
                       <button
@@ -296,27 +290,20 @@ export function BookSession() {
                         }}
                         className={`p-4 rounded-lg border-2 text-center transition-all ${
                           selectedDate === dateOption.date
-                            ? "border-blue-600 bg-blue-50 shadow-inner"
-                            : "border-slate-200 bg-white hover:border-blue-300"
+                            ? 'border-blue-600 bg-blue-50 shadow-inner'
+                            : 'border-slate-200 bg-white hover:border-blue-300'
                         }`}
                       >
                         <Calendar className="w-5 h-5 text-blue-600 mx-auto mb-2" />
-                        <div className="text-sm font-medium text-slate-900">
-                          {dateOption.display}
-                        </div>
+                        <div className="text-sm font-medium text-slate-900">{dateOption.display}</div>
                       </button>
                     ))}
                   </div>
                 </div>
 
                 {selectedDate && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                  >
-                    <label className="block text-sm font-medium text-slate-700 mb-3">
-                      Select a Time
-                    </label>
+                  <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }}>
+                    <label className="block text-sm font-medium text-slate-700 mb-3">Select a Time</label>
                     <div className="grid grid-cols-4 gap-2">
                       {timeSlots.map((time) => (
                         <button
@@ -324,8 +311,8 @@ export function BookSession() {
                           onClick={() => setSelectedTime(time)}
                           className={`p-3 rounded-lg border-2 text-sm font-medium transition-all ${
                             selectedTime === time
-                              ? "border-blue-600 bg-blue-50 text-blue-700 shadow-inner"
-                              : "border-slate-200 bg-white text-slate-700 hover:border-blue-300"
+                              ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-inner'
+                              : 'border-slate-200 bg-white text-slate-700 hover:border-blue-300'
                           }`}
                         >
                           {time}
@@ -336,9 +323,7 @@ export function BookSession() {
                 )}
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-3">
-                    Additional Notes (Optional)
-                  </label>
+                  <label className="block text-sm font-medium text-slate-700 mb-3">Additional Notes (Optional)</label>
                   <textarea
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
@@ -353,8 +338,8 @@ export function BookSession() {
                   disabled={!selectedDate || !selectedTime || !topic}
                   className={`w-full py-4 rounded-lg font-medium transition-all shadow-sm ${
                     selectedDate && selectedTime && topic
-                      ? "bg-blue-600 text-white hover:bg-blue-700"
-                      : "bg-slate-200 text-slate-400 cursor-not-allowed"
+                      ? 'bg-blue-600 text-white hover:bg-blue-700'
+                      : 'bg-slate-200 text-slate-400 cursor-not-allowed'
                   }`}
                 >
                   Confirm Booking
@@ -371,13 +356,9 @@ export function BookSession() {
               className="bg-white rounded-xl shadow-lg border border-slate-200 p-6 sticky top-8"
             >
               <h3 className="font-semibold text-slate-900 mb-4">Booking Summary</h3>
-              
+
               <div className="flex items-center gap-3 mb-6 pb-6 border-b border-slate-200">
-                <img
-                  src={mentor.image}
-                  alt={mentor.name}
-                  className="w-12 h-12 rounded-full object-cover"
-                />
+                <img src={mentor.image} alt={mentor.name} className="w-12 h-12 rounded-full object-cover" />
                 <div>
                   <div className="font-semibold text-slate-900">{mentor.name}</div>
                   <div className="text-sm text-slate-600">{mentor.title}</div>
@@ -388,7 +369,7 @@ export function BookSession() {
                 <div>
                   <div className="text-sm text-slate-600 mb-1">Session Type</div>
                   <div className="font-medium text-slate-900">
-                    {sessionType === "video" ? "Video Call" : "Chat Only"}
+                    {sessionType === 'video' ? 'Video Call' : 'Chat Only'}
                   </div>
                 </div>
 
@@ -403,7 +384,7 @@ export function BookSession() {
                   <div>
                     <div className="text-sm text-slate-600 mb-1">Date</div>
                     <div className="font-medium text-slate-900">
-                      {availableDates.find(d => d.date === selectedDate)?.display}
+                      {availableDates.find((d) => d.date === selectedDate)?.display}
                     </div>
                   </div>
                 )}
@@ -432,9 +413,7 @@ export function BookSession() {
                   <Clock className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                   <div className="text-sm text-blue-900">
                     <p className="font-medium mb-1">Cancellation Policy</p>
-                    <p className="text-blue-700">
-                      You can cancel or reschedule up to 24 hours before the session.
-                    </p>
+                    <p className="text-blue-700">You can cancel or reschedule up to 24 hours before the session.</p>
                   </div>
                 </div>
               </div>

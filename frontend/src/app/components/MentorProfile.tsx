@@ -1,6 +1,6 @@
-import { Link, useParams, useLocation } from "react-router";
-import { motion } from "motion/react";
-import { useState, useEffect } from "react";
+import { Link, useParams, useLocation } from 'react-router';
+import { motion } from 'motion/react';
+import { useState, useEffect } from 'react';
 import {
   Users,
   ArrowLeft,
@@ -14,8 +14,11 @@ import {
   CheckCircle,
   Loader2,
   UserCircle,
-} from "lucide-react";
-import { useChatPanel } from "./ChatPanel";
+} from 'lucide-react';
+
+import { useChatPanel } from './ChatPanel';
+
+import axiosClient from '../../api/axiosClient';
 
 interface MentorDetail {
   id: number;
@@ -51,22 +54,21 @@ interface MentorDetail {
 
 // Static fallback data for fields the backend doesn't serve yet
 const FALLBACK_IMAGE =
-  "https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHByb2Zlc3Npb25hbCUyMHdvbWFuJTIwaGVhZHNob3R8ZW58MXx8fHwxNzc1NDcwOTI5fDA&ixlib=rb-4.1.0&q=80&w=800";
+  'https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHByb2Zlc3Npb25hbCUyMHdvbWFuJTIwaGVhZHNob3R8ZW58MXx8fHwxNzc1NDcwOTI5fDA&ixlib=rb-4.1.0&q=80&w=800';
 
 const MOCK_REVIEWS = [
   {
-    name: "Alex Johnson",
-    role: "Software Engineer",
+    name: 'Alex Johnson',
+    role: 'Software Engineer',
     rating: 5,
-    date: "Recently",
-    text: "Great mentor, very helpful!",
-    avatar:
-      "https://images.unsplash.com/photo-1706025090996-63717544be2d?w=100",
+    date: 'Recently',
+    text: 'Great mentor, very helpful!',
+    avatar: 'https://images.unsplash.com/photo-1706025090996-63717544be2d?w=100',
   },
 ];
 const MOCK_AVAILABILITY = [
-  { day: "Monday", slots: ["2:00 PM", "4:00 PM"] },
-  { day: "Wednesday", slots: ["10:00 AM", "3:00 PM"] },
+  { day: 'Monday', slots: ['2:00 PM', '4:00 PM'] },
+  { day: 'Wednesday', slots: ['10:00 AM', '3:00 PM'] },
 ];
 
 export function MentorProfile() {
@@ -86,25 +88,20 @@ export function MentorProfile() {
   }, []);
 
   useEffect(() => {
-    // Always fetch fresh data from the API to get the latest info
-    fetch(`http://localhost:8080/api/mentors/${id}`)
+    axiosClient
+      .get(`/mentors/${id}`)
       .then((res) => {
-        if (!res.ok) throw new Error("Not found");
-        return res.json();
-      })
-      .then((data) => {
         setMentor({
-          ...data,
-          skills: data.skills ?? [],
-          experiences: data.experiences ?? [],
-          education: data.education ?? [],
-          availability: data.availability ?? [],
-          reviews: data.reviews ?? [],
+          ...res.data,
+          skills: res.data.skills ?? [],
+          experiences: res.data.experiences ?? [],
+          education: res.data.education ?? [],
+          availability: res.data.availability ?? [],
+          reviews: res.data.reviews ?? [],
         });
         setLoading(false);
       })
       .catch(() => {
-        // If fetch fails but we have state data, silently keep it
         if (!statementor) setError(true);
         setLoading(false);
       });
@@ -114,9 +111,7 @@ export function MentorProfile() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <Loader2 className="w-10 h-10 text-blue-600 animate-spin" />
-        <span className="ml-3 text-slate-600 font-medium">
-          Loading profile...
-        </span>
+        <span className="ml-3 text-slate-600 font-medium">Loading profile...</span>
       </div>
     );
   }
@@ -134,10 +129,9 @@ export function MentorProfile() {
 
   // Merge API data with UI-only mock fields
   const image = mentor.image ?? statementor?.image ?? FALLBACK_IMAGE;
-  const location_ =
-    mentor.location ?? statementor?.location ?? "Cluj-Napoca, RO";
+  const location_ = mentor.location ?? statementor?.location ?? 'Cluj-Napoca, RO';
   const sessionsCompleted = mentor.sessionsCompleted ?? mentor.reviewCount;
-  const responseTime = mentor.responseTime ?? "Within 2 hours";
+  const responseTime = mentor.responseTime ?? 'Within 2 hours';
 
   return (
     <div className="min-h-screen bg-background">
@@ -146,9 +140,7 @@ export function MentorProfile() {
           <div className="flex justify-between items-center h-16">
             <Link to="/" className="flex items-center gap-2">
               <Users className="w-6 h-6 text-blue-600" />
-              <span className="text-lg font-bold text-slate-900">
-                MentorMatch
-              </span>
+              <span className="text-lg font-bold text-slate-900">MentorMatch</span>
             </Link>
             <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
               AI
@@ -158,10 +150,7 @@ export function MentorProfile() {
       </nav>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Link
-          to="/find-mentors"
-          className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-6"
-        >
+        <Link to="/find-mentors" className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-6">
           <ArrowLeft className="w-4 h-4" />
           Back to search
         </Link>
@@ -184,12 +173,8 @@ export function MentorProfile() {
                     className="w-32 h-32 -mt-16 shrink-0 rounded-xl object-cover border-4 border-white shadow-lg"
                   />
                   <div className="flex-1 pt-0 sm:pt-2">
-                    <h1 className="text-3xl font-bold text-slate-900 mb-1">
-                      {mentor.name}
-                    </h1>
-                    <p className="text-lg text-slate-600 mb-2">
-                      {mentor.title}
-                    </p>
+                    <h1 className="text-3xl font-bold text-slate-900 mb-1">{mentor.name}</h1>
+                    <p className="text-lg text-slate-600 mb-2">{mentor.title}</p>
                     <div className="flex flex-wrap gap-4 text-sm text-slate-500">
                       <div className="flex items-center gap-1">
                         <Briefcase className="w-4 h-4" />
@@ -203,12 +188,8 @@ export function MentorProfile() {
                     <div className="flex items-center gap-6 mt-4">
                       <div className="flex items-center gap-1">
                         <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
-                        <span className="font-bold text-slate-900">
-                          {mentor.rating}
-                        </span>
-                        <span className="text-slate-600">
-                          ({mentor.reviewCount} reviews)
-                        </span>
+                        <span className="font-bold text-slate-900">{mentor.rating}</span>
+                        <span className="text-slate-600">({mentor.reviewCount} reviews)</span>
                       </div>
                       <div className="flex items-center gap-1 text-slate-600">
                         <CheckCircle className="w-5 h-5 text-green-600" />
@@ -228,9 +209,7 @@ export function MentorProfile() {
               className="bg-white rounded-xl shadow-sm border border-slate-200 p-6"
             >
               <h2 className="text-xl font-bold text-slate-900 mb-4">About</h2>
-              <p className="text-slate-600 leading-relaxed">
-                {mentor.profileBio}
-              </p>
+              <p className="text-slate-600 leading-relaxed">{mentor.profileBio}</p>
             </motion.div>
 
             {/* Expertise */}
@@ -240,15 +219,10 @@ export function MentorProfile() {
               transition={{ delay: 0.2 }}
               className="bg-white rounded-xl shadow-sm border border-slate-200 p-6"
             >
-              <h2 className="text-xl font-bold text-slate-900 mb-4">
-                Areas of Expertise
-              </h2>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Areas of Expertise</h2>
               <div className="flex flex-wrap gap-2">
                 {(mentor.skills ?? []).map((skill, i) => (
-                  <span
-                    key={i}
-                    className="px-4 py-2 bg-blue-50 text-blue-700 rounded-lg font-medium"
-                  >
+                  <span key={i} className="px-4 py-2 bg-blue-50 text-blue-700 rounded-lg font-medium">
                     {skill}
                   </span>
                 ))}
@@ -262,9 +236,7 @@ export function MentorProfile() {
               transition={{ delay: 0.3 }}
               className="bg-white rounded-xl shadow-sm border border-slate-200 p-6"
             >
-              <h2 className="text-xl font-bold text-slate-900 mb-4">
-                Experience
-              </h2>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Experience</h2>
               <div className="space-y-6">
                 {mentor.experiences.map((exp, i) => (
                   <div key={i} className="flex gap-4">
@@ -272,16 +244,10 @@ export function MentorProfile() {
                       <Briefcase className="w-6 h-6 text-blue-600" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-slate-900">
-                        {exp.title}
-                      </h3>
+                      <h3 className="font-semibold text-slate-900">{exp.title}</h3>
                       <p className="text-sm text-slate-600">{exp.company}</p>
-                      <p className="text-sm text-slate-500 mb-1">
-                        {exp.period}
-                      </p>
-                      <p className="text-sm text-slate-600">
-                        {exp.description}
-                      </p>
+                      <p className="text-sm text-slate-500 mb-1">{exp.period}</p>
+                      <p className="text-sm text-slate-600">{exp.description}</p>
                     </div>
                   </div>
                 ))}
@@ -295,9 +261,7 @@ export function MentorProfile() {
               transition={{ delay: 0.4 }}
               className="bg-white rounded-xl shadow-sm border border-slate-200 p-6"
             >
-              <h2 className="text-xl font-bold text-slate-900 mb-4">
-                Education
-              </h2>
+              <h2 className="text-xl font-bold text-slate-900 mb-4">Education</h2>
               <div className="space-y-4">
                 {mentor.education.map((edu, i) => (
                   <div key={i} className="flex gap-4">
@@ -305,9 +269,7 @@ export function MentorProfile() {
                       <Award className="w-6 h-6 text-indigo-600" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-slate-900">
-                        {edu.degree}
-                      </h3>
+                      <h3 className="font-semibold text-slate-900">{edu.degree}</h3>
                       <p className="text-sm text-slate-600">{edu.school}</p>
                       <p className="text-sm text-slate-500">{edu.year}</p>
                     </div>
@@ -326,32 +288,20 @@ export function MentorProfile() {
               <h2 className="text-xl font-bold text-slate-900 mb-6">Reviews</h2>
               <div className="space-y-6">
                 {mentor.reviews.map((review, i) => (
-                  <div
-                    key={i}
-                    className="pb-6 border-b border-slate-200 last:border-0 last:pb-0"
-                  >
+                  <div key={i} className="pb-6 border-b border-slate-200 last:border-0 last:pb-0">
                     <div className="flex items-start gap-4">
                       <UserCircle className="w-12 h-12 text-slate-400 shrink-0" />
                       <div className="flex-1">
                         <div className="flex items-start justify-between mb-2">
                           <div>
-                            <div className="font-semibold text-slate-900">
-                              {review.reviewerName}
-                            </div>
-                            <div className="text-sm text-slate-600">
-                              {review.reviewerRole}
-                            </div>
+                            <div className="font-semibold text-slate-900">{review.reviewerName}</div>
+                            <div className="text-sm text-slate-600">{review.reviewerRole}</div>
                           </div>
-                          <div className="text-sm text-slate-500">
-                            {review.createdAt}
-                          </div>
+                          <div className="text-sm text-slate-500">{review.createdAt}</div>
                         </div>
                         <div className="flex items-center gap-1 mb-2">
                           {[...Array(5)].map((_, j) => (
-                            <Star
-                              key={j}
-                              className="w-4 h-4 fill-yellow-400 text-yellow-400"
-                            />
+                            <Star key={j} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                           ))}
                         </div>
                         <p className="text-slate-600">{review.comment}</p>
@@ -372,26 +322,18 @@ export function MentorProfile() {
               className="bg-white rounded-xl shadow-lg border border-slate-200 p-6 sticky top-8"
             >
               <div className="text-center mb-6">
-                <div className="text-3xl font-bold text-slate-900 mb-2">
-                  Free
-                </div>
-                <p className="text-sm text-slate-600">
-                  Sessions offered on volunteer basis
-                </p>
+                <div className="text-3xl font-bold text-slate-900 mb-2">Free</div>
+                <p className="text-sm text-slate-600">Sessions offered on volunteer basis</p>
               </div>
 
               <div className="space-y-4 mb-6">
                 <div className="flex items-center gap-3 text-sm">
                   <Video className="w-5 h-5 text-blue-600" />
-                  <span className="text-slate-600">
-                    Video sessions available
-                  </span>
+                  <span className="text-slate-600">Video sessions available</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm">
                   <MessageSquare className="w-5 h-5 text-blue-600" />
-                  <span className="text-slate-600">
-                    Responds {responseTime}
-                  </span>
+                  <span className="text-slate-600">Responds {responseTime}</span>
                 </div>
                 <div className="flex items-center gap-3 text-sm">
                   <Calendar className="w-5 h-5 text-blue-600" />
@@ -420,9 +362,7 @@ export function MentorProfile() {
               <ChatPortal />
 
               <div className="mt-6 pt-6 border-t border-slate-200">
-                <h3 className="font-semibold text-slate-900 mb-3">
-                  Why mentees choose {mentor.name.split(" ")[0]}
-                </h3>
+                <h3 className="font-semibold text-slate-900 mb-3">Why mentees choose {mentor.name.split(' ')[0]}</h3>
                 <div className="space-y-2 text-sm">
                   <div className="flex items-center justify-between">
                     <span className="text-slate-600">Response rate</span>
@@ -430,9 +370,7 @@ export function MentorProfile() {
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-slate-600">Avg. response time</span>
-                    <span className="font-semibold text-slate-900">
-                      {responseTime}
-                    </span>
+                    <span className="font-semibold text-slate-900">{responseTime}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-slate-600">Completion rate</span>
@@ -443,26 +381,19 @@ export function MentorProfile() {
 
               {/* Availability */}
               <div className="mt-6 pt-6 border-t border-slate-200">
-                <h3 className="font-semibold text-slate-900 mb-3">
-                  Available slots
-                </h3>
+                <h3 className="font-semibold text-slate-900 mb-3">Available slots</h3>
                 <div className="space-y-3">
                   {Object.entries(
                     mentor.availability.reduce(
                       (acc, slot) => {
-                        acc[slot.day] = [
-                          ...(acc[slot.day] ?? []),
-                          slot.slotTime,
-                        ];
+                        acc[slot.day] = [...(acc[slot.day] ?? []), slot.slotTime];
                         return acc;
                       },
                       {} as Record<string, string[]>,
                     ),
                   ).map(([day, slots], i) => (
                     <div key={i}>
-                      <p className="text-xs font-medium text-slate-500 uppercase mb-1">
-                        {day}
-                      </p>
+                      <p className="text-xs font-medium text-slate-500 uppercase mb-1">{day}</p>
                       <div className="flex flex-wrap gap-2">
                         {slots.map((slot, j) => (
                           <span

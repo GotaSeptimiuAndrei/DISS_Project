@@ -1,12 +1,15 @@
 package com.example.backend.model;
 
+import com.example.backend.model.enums.Availability;
+import com.example.backend.model.enums.ExperienceLevel;
+import com.example.backend.model.enums.LearningStyle;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.util.List;
 
 @Entity
-@Table(name = "mentee_profiles")
 @Data
+@Table(name = "mentee_profiles")
 public class MenteeProfile {
     @Id
     private Long id;
@@ -16,9 +19,17 @@ public class MenteeProfile {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private String experienceLevel;
-    private String learningStyle;
-    private String availability;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ExperienceLevel experienceLevel;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private LearningStyle learningStyle;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Availability availability;
 
     @ElementCollection
     @CollectionTable(name = "mentee_goals", joinColumns = @JoinColumn(name = "user_id"))

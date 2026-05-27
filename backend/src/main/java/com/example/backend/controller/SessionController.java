@@ -5,6 +5,7 @@ import com.example.backend.model.Session;
 import com.example.backend.model.User;
 import com.example.backend.repository.SessionRepository;
 import com.example.backend.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,15 +19,11 @@ import java.util.Locale;
 @RestController
 @RequestMapping("/api/sessions")
 @CrossOrigin(origins = "*")
+@AllArgsConstructor
 public class SessionController {
 
     private final SessionRepository sessionRepository;
     private final UserRepository userRepository;
-
-    public SessionController(SessionRepository sessionRepository, UserRepository userRepository) {
-        this.sessionRepository = sessionRepository;
-        this.userRepository = userRepository;
-    }
 
     @PostMapping("/book")
     public ResponseEntity<Session> bookSession(@RequestBody SessionBookingRequest request) {

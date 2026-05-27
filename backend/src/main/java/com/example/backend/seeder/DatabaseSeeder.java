@@ -1,7 +1,14 @@
 package com.example.backend.seeder;
 
 import com.example.backend.model.*;
+import com.example.backend.model.enums.Availability;
+import com.example.backend.model.enums.ExperienceLevel;
+import com.example.backend.model.enums.LearningStyle;
+import com.example.backend.model.enums.Role;
 import com.example.backend.repository.*;
+import com.example.backend.service.UserService;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,9 +19,12 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 
 @Component
+@AllArgsConstructor
+@Slf4j
 public class DatabaseSeeder implements CommandLineRunner {
 
     private final UserRepository userRepository;
+    private final UserService userService;
     private final MentorProfileRepository mentorProfileRepository;
     private final MenteeProfileRepository menteeProfileRepository;
     private final MentorExperienceRepository experienceRepository;
@@ -23,34 +33,15 @@ public class DatabaseSeeder implements CommandLineRunner {
     private final ReviewRepository reviewRepository;
     private final SessionRepository sessionRepository;
 
-    public DatabaseSeeder(
-            UserRepository userRepository,
-            MentorProfileRepository mentorProfileRepository,
-            MenteeProfileRepository menteeProfileRepository,
-            MentorExperienceRepository experienceRepository,
-            MentorEducationRepository educationRepository,
-            MentorAvailabilityRepository availabilityRepository,
-            ReviewRepository reviewRepository,
-            SessionRepository sessionRepository) {
-        this.userRepository = userRepository;
-        this.mentorProfileRepository = mentorProfileRepository;
-        this.menteeProfileRepository = menteeProfileRepository;
-        this.experienceRepository = experienceRepository;
-        this.educationRepository = educationRepository;
-        this.availabilityRepository = availabilityRepository;
-        this.reviewRepository = reviewRepository;
-        this.sessionRepository = sessionRepository;
-    }
-
     @Override
     @Transactional
     public void run(String... args) {
         if (userRepository.count() == 0) {
-            System.out.println("🌱 Seeding database with realistic prototype data...");
+            log.info("🌱 Seeding database with realistic prototype data...");
             seedAll();
-            System.out.println("✅ Database seeding complete!");
+            log.info("✅ Database seeding complete!");
         } else {
-            System.out.println("⚡ Database already contains data. Skipping seeder.");
+            log.info("⚡ Database already contains data. Skipping seeder.");
         }
     }
 
@@ -301,41 +292,41 @@ public class DatabaseSeeder implements CommandLineRunner {
 
         User u1 = createUser("Alex Ionescu", "alex.ionescu@encenter.ro", Role.MENTEE, "Junior Engineer", "EnCenter Ltd.", 0, 0, 0);
         MenteeProfile mp1 = new MenteeProfile();
-        mp1.setUser(u1); mp1.setExperienceLevel("Junior");
-        mp1.setLearningStyle("1:1 mentoring, Short sessions");
-        mp1.setAvailability("Mondays and Thursdays 10:00 AM - 11:00 AM");
+        mp1.setUser(u1); mp1.setExperienceLevel(ExperienceLevel.BEGINNER);
+        mp1.setLearningStyle(LearningStyle.EXPLORATORY);
+        mp1.setAvailability(Availability.WEEKDAYS_MORNING);
         mp1.setGoals(Arrays.asList("Understand AI tools", "Improve presentation skills", "Learn project management basics"));
         menteeProfileRepository.save(mp1);
 
         User u2 = createUser("Mihai Stan", "mihai.stan@encenter.ro", Role.MENTEE, "QA Tester", "EnCenter Ltd.", 0, 0, 0);
         MenteeProfile mp2 = new MenteeProfile();
-        mp2.setUser(u2); mp2.setExperienceLevel("Mid-Level");
-        mp2.setLearningStyle("Hands-on practice");
-        mp2.setAvailability("Fridays 14:00 - 16:00");
+        mp2.setUser(u2); mp2.setExperienceLevel(ExperienceLevel.INTERMEDIATE);
+        mp2.setLearningStyle(LearningStyle.STRUCTURED);
+        mp2.setAvailability(Availability.WEEKDAYS_AFTERNOON);
         mp2.setGoals(Arrays.asList("Learn automated testing", "Java/Spring Boot basics"));
         menteeProfileRepository.save(mp2);
 
         User u3 = createUser("Maria Radu", "maria.radu@encenter.ro", Role.MENTEE, "Marketing Associate", "EnCenter Ltd.", 0, 0, 0);
         MenteeProfile mp3 = new MenteeProfile();
-        mp3.setUser(u3); mp3.setExperienceLevel("Junior");
-        mp3.setLearningStyle("Video calls and reading resources");
-        mp3.setAvailability("Tuesdays 09:00 - 10:00");
+        mp3.setUser(u3); mp3.setExperienceLevel(ExperienceLevel.BEGINNER);
+        mp3.setLearningStyle(LearningStyle.PROJECT_BASED);
+        mp3.setAvailability(Availability.WEEKDAYS_EVENING);
         mp3.setGoals(Arrays.asList("Data Analysis", "Understanding SEO metrics"));
         menteeProfileRepository.save(mp3);
 
         User u4 = createUser("John Doe", "john.doe@encenter.ro", Role.MENTEE, "Intern", "EnCenter Ltd.", 0, 0, 0);
         MenteeProfile mp4 = new MenteeProfile();
-        mp4.setUser(u4); mp4.setExperienceLevel("Entry-Level");
-        mp4.setLearningStyle("1:1 mentoring");
-        mp4.setAvailability("Flexible");
+        mp4.setUser(u4); mp4.setExperienceLevel(ExperienceLevel.BEGINNER);
+        mp4.setLearningStyle(LearningStyle.STRUCTURED);
+        mp4.setAvailability(Availability.WEEKENDS);
         mp4.setGoals(Arrays.asList("Public Speaking", "Corporate Communication"));
         menteeProfileRepository.save(mp4);
 
         User u5 = createUser("Laura Vasile", "laura.vasile@encenter.ro", Role.MENTEE, "Mid-level Developer", "EnCenter Ltd.", 0, 0, 0);
         MenteeProfile mp5 = new MenteeProfile();
-        mp5.setUser(u5); mp5.setExperienceLevel("Mid-Level");
-        mp5.setLearningStyle("Weekly mentoring");
-        mp5.setAvailability("Wednesdays 16:00 - 17:00");
+        mp5.setUser(u5); mp5.setExperienceLevel(ExperienceLevel.INTERMEDIATE);
+        mp5.setLearningStyle(LearningStyle.PROJECT_BASED);
+        mp5.setAvailability(Availability.WEEKDAYS_AFTERNOON);
         mp5.setGoals(Arrays.asList("Software Architecture", "Leadership transition"));
         menteeProfileRepository.save(mp5);
 
@@ -412,7 +403,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         User user = new User();
         user.setName(name);
         user.setEmail(email);
-        user.setPassword("password123");
+        user.setPassword("passwordA1+");
         user.setRole(role);
         user.setTitle(title);
         user.setCompany(company);
@@ -423,6 +414,6 @@ public class DatabaseSeeder implements CommandLineRunner {
             user.setSessionsCompleted(sessionsCompleted);
             user.setResponseTime("Usually responds in 2 hours");
         }
-        return userRepository.save(user);
+        return userService.create(user);
     }
 }

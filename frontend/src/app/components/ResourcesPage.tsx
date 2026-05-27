@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { motion } from "motion/react";
-import { Link } from "react-router";
+import { useState } from 'react';
+import { motion } from 'motion/react';
+import { Link } from 'react-router';
 import {
   Users,
   Upload,
@@ -22,94 +22,94 @@ import {
   Tag,
   Sparkles,
   MessageSquare,
-} from "lucide-react";
-import { useChatPanel } from "./ChatPanel";
+} from 'lucide-react';
+import { useChatPanel } from './ChatPanel';
 
 export function ResourcesPage() {
-  const [selectedTab, setSelectedTab] = useState("library");
+  const [selectedTab, setSelectedTab] = useState('library');
 
   const { openChat, ChatPortal } = useChatPanel();
 
   const resources = [
     {
       id: 1,
-      title: "Leadership Fundamentals for First-Time Managers",
-      type: "PDF Guide",
-      category: "Leadership Development",
-      uploadedBy: "Dr. Sarah Chen",
-      uploadDate: "2 days ago",
+      title: 'Leadership Fundamentals for First-Time Managers',
+      type: 'PDF Guide',
+      category: 'Leadership Development',
+      uploadedBy: 'Dr. Sarah Chen',
+      uploadDate: '2 days ago',
       assignedTo: 12,
-      size: "4.2 MB",
-      status: "Published",
+      size: '4.2 MB',
+      status: 'Published',
       icon: FileText,
-      color: "text-red-600 bg-red-100",
+      color: 'text-red-600 bg-red-100',
     },
     {
       id: 2,
-      title: "Product Strategy Workshop Recording",
-      type: "Video",
-      category: "Product Management",
-      uploadedBy: "Michael Foster",
-      uploadDate: "1 week ago",
+      title: 'Product Strategy Workshop Recording',
+      type: 'Video',
+      category: 'Product Management',
+      uploadedBy: 'Michael Foster',
+      uploadDate: '1 week ago',
       assignedTo: 8,
-      size: "128 MB",
-      status: "Published",
+      size: '128 MB',
+      status: 'Published',
       icon: Video,
-      color: "text-blue-600 bg-blue-100",
+      color: 'text-blue-600 bg-blue-100',
     },
     {
       id: 3,
-      title: "AI Career Transition Roadmap",
-      type: "Resource Link",
-      category: "AI & Machine Learning",
-      uploadedBy: "Lisa Wong",
-      uploadDate: "5 days ago",
+      title: 'AI Career Transition Roadmap',
+      type: 'Resource Link',
+      category: 'AI & Machine Learning',
+      uploadedBy: 'Lisa Wong',
+      uploadDate: '5 days ago',
       assignedTo: 15,
-      size: "External",
-      status: "Draft",
+      size: 'External',
+      status: 'Draft',
       icon: LinkIcon,
-      color: "text-green-600 bg-green-100",
+      color: 'text-green-600 bg-green-100',
     },
   ];
 
   const assignments = [
     {
-      mentee: "Emily Rodriguez",
-      resource: "Leadership Fundamentals for First-Time Managers",
-      assignedDate: "Today",
+      mentee: 'Emily Rodriguez',
+      resource: 'Leadership Fundamentals for First-Time Managers',
+      assignedDate: 'Today',
       progress: 75,
-      dueDate: "May 25",
-      status: "In Progress",
+      dueDate: 'May 25',
+      status: 'In Progress',
     },
     {
-      mentee: "James Wilson",
-      resource: "Product Strategy Workshop Recording",
-      assignedDate: "Yesterday",
+      mentee: 'James Wilson',
+      resource: 'Product Strategy Workshop Recording',
+      assignedDate: 'Yesterday',
       progress: 100,
-      dueDate: "May 20",
-      status: "Completed",
+      dueDate: 'May 20',
+      status: 'Completed',
     },
     {
-      mentee: "Sophia Martinez",
-      resource: "AI Career Transition Roadmap",
-      assignedDate: "3 days ago",
+      mentee: 'Sophia Martinez',
+      resource: 'AI Career Transition Roadmap',
+      assignedDate: '3 days ago',
       progress: 20,
-      dueDate: "May 30",
-      status: "Started",
+      dueDate: 'May 30',
+      status: 'Started',
     },
   ];
 
   const categories = [
-    "Leadership Development",
-    "Career Transition",
-    "Technical Skills",
-    "Communication Skills",
-    "Data Analysis",
-    "Project Management",
-    "Public Speaking",
-    "AI & Machine Learning",
-    "Product Management",
-    "Entrepreneurship",
+    'Leadership Development',
+    'Career Transition',
+    'Technical Skills',
+    'Communication Skills',
+    'Data Analysis',
+    'Project Management',
+    'Public Speaking',
+    'AI & Machine Learning',
+    'Product Management',
+    'Entrepreneurship',
   ];
 
   return (
@@ -121,21 +121,13 @@ export function ResourcesPage() {
             <div className="flex items-center gap-8">
               <Link to="/" className="flex items-center gap-2">
                 <Users className="w-6 h-6 text-indigo-600" />
-                <span className="text-lg font-bold text-slate-900">
-                  MentorMatch
-                </span>
+                <span className="text-lg font-bold text-slate-900">MentorMatch</span>
               </Link>
               <div className="hidden md:flex items-center gap-6">
-                <Link
-                  to="/mentor-dashboard"
-                  className="text-slate-600 hover:text-slate-900"
-                >
+                <Link to="/mentor-dashboard" className="text-slate-600 hover:text-slate-900">
                   Dashboard
                 </Link>
-                <Link
-                  to="/my-mentees"
-                  className="text-slate-600 hover:text-slate-900"
-                >
+                <Link to="/my-mentees" className="text-slate-600 hover:text-slate-900">
                   My Mentees
                 </Link>
                 <Link to="/resources" className="text-indigo-600 font-medium">
@@ -144,10 +136,7 @@ export function ResourcesPage() {
               </div>
             </div>
             <div className="flex items-center gap-4">
-              <button
-                onClick={() => openChat()}
-                className="p-2 text-slate-600 hover:text-slate-900 relative"
-              >
+              <button onClick={() => openChat()} className="p-2 text-slate-600 hover:text-slate-900 relative">
                 <MessageSquare className="w-5 h-5" />
                 <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
               </button>
@@ -168,13 +157,9 @@ export function ResourcesPage() {
           className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8"
         >
           <div>
-            <h1 className="text-4xl font-bold text-slate-900 mb-2">
-              Learning Resources
-            </h1>
+            <h1 className="text-4xl font-bold text-slate-900 mb-2">Learning Resources</h1>
 
-            <p className="text-slate-600 text-lg">
-              Upload, organize, and assign educational content to mentees.
-            </p>
+            <p className="text-slate-600 text-lg">Upload, organize, and assign educational content to mentees.</p>
           </div>
 
           <button className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl font-medium hover:bg-blue-700 transition-colors shadow-sm">
@@ -187,23 +172,23 @@ export function ResourcesPage() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           {[
             {
-              label: "Total Resources",
-              value: "48",
+              label: 'Total Resources',
+              value: '48',
               icon: BookOpen,
             },
             {
-              label: "Assigned Resources",
-              value: "126",
+              label: 'Assigned Resources',
+              value: '126',
               icon: Send,
             },
             {
-              label: "Completed Assignments",
-              value: "84",
+              label: 'Completed Assignments',
+              value: '84',
               icon: CheckCircle,
             },
             {
-              label: "Pending Reviews",
-              value: "12",
+              label: 'Pending Reviews',
+              value: '12',
               icon: Clock,
             },
           ].map((stat, index) => (
@@ -222,9 +207,7 @@ export function ResourcesPage() {
                 <Sparkles className="w-5 h-5 text-slate-300" />
               </div>
 
-              <div className="text-3xl font-bold text-slate-900 mb-1">
-                {stat.value}
-              </div>
+              <div className="text-3xl font-bold text-slate-900 mb-1">{stat.value}</div>
 
               <div className="text-sm text-slate-600">{stat.label}</div>
             </motion.div>
@@ -234,17 +217,17 @@ export function ResourcesPage() {
         {/* Tabs */}
         <div className="flex gap-2 mb-8 overflow-x-auto">
           {[
-            { id: "library", label: "Resource Library" },
-            { id: "assignments", label: "Assignments" },
-            { id: "upload", label: "Upload Center" },
+            { id: 'library', label: 'Resource Library' },
+            { id: 'assignments', label: 'Assignments' },
+            { id: 'upload', label: 'Upload Center' },
           ].map((tab) => (
             <button
               key={tab.id}
               onClick={() => setSelectedTab(tab.id)}
               className={`px-5 py-3 rounded-xl font-medium whitespace-nowrap transition-all ${
                 selectedTab === tab.id
-                  ? "bg-blue-600 text-white shadow-sm"
-                  : "bg-white text-slate-600 hover:text-slate-900 border border-slate-200"
+                  ? 'bg-blue-600 text-white shadow-sm'
+                  : 'bg-white text-slate-600 hover:text-slate-900 border border-slate-200'
               }`}
             >
               {tab.label}
@@ -253,7 +236,7 @@ export function ResourcesPage() {
         </div>
 
         {/* Resource Library */}
-        {selectedTab === "library" && (
+        {selectedTab === 'library' && (
           <div className="space-y-6">
             {/* Search & Filter */}
             <div className="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
@@ -287,23 +270,19 @@ export function ResourcesPage() {
                 >
                   <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
                     <div className="flex gap-4">
-                      <div
-                        className={`w-14 h-14 rounded-2xl flex items-center justify-center ${resource.color}`}
-                      >
+                      <div className={`w-14 h-14 rounded-2xl flex items-center justify-center ${resource.color}`}>
                         <resource.icon className="w-7 h-7" />
                       </div>
 
                       <div>
                         <div className="flex flex-wrap items-center gap-3 mb-2">
-                          <h3 className="text-xl font-semibold text-slate-900">
-                            {resource.title}
-                          </h3>
+                          <h3 className="text-xl font-semibold text-slate-900">{resource.title}</h3>
 
                           <span
                             className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                              resource.status === "Published"
-                                ? "bg-green-100 text-green-700"
-                                : "bg-amber-100 text-amber-700"
+                              resource.status === 'Published'
+                                ? 'bg-green-100 text-green-700'
+                                : 'bg-amber-100 text-amber-700'
                             }`}
                           >
                             {resource.status}
@@ -328,13 +307,9 @@ export function ResourcesPage() {
                         </div>
 
                         <div className="flex flex-wrap gap-3 text-sm">
-                          <span className="px-3 py-1 bg-slate-100 rounded-lg text-slate-700">
-                            {resource.type}
-                          </span>
+                          <span className="px-3 py-1 bg-slate-100 rounded-lg text-slate-700">{resource.type}</span>
 
-                          <span className="px-3 py-1 bg-slate-100 rounded-lg text-slate-700">
-                            {resource.size}
-                          </span>
+                          <span className="px-3 py-1 bg-slate-100 rounded-lg text-slate-700">{resource.size}</span>
 
                           <span className="px-3 py-1 bg-blue-50 rounded-lg text-blue-700 font-medium">
                             Assigned to {resource.assignedTo} mentees
@@ -367,16 +342,12 @@ export function ResourcesPage() {
         )}
 
         {/* Assignments */}
-        {selectedTab === "assignments" && (
+        {selectedTab === 'assignments' && (
           <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
             <div className="p-6 border-b border-slate-200">
-              <h2 className="text-2xl font-bold text-slate-900">
-                Resource Assignments
-              </h2>
+              <h2 className="text-2xl font-bold text-slate-900">Resource Assignments</h2>
 
-              <p className="text-slate-600 mt-1">
-                Track mentee progress across assigned learning materials.
-              </p>
+              <p className="text-slate-600 mt-1">Track mentee progress across assigned learning materials.</p>
             </div>
 
             <div className="divide-y divide-slate-200">
@@ -390,13 +361,9 @@ export function ResourcesPage() {
                 >
                   <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
                     <div>
-                      <h3 className="text-lg font-semibold text-slate-900 mb-1">
-                        {assignment.mentee}
-                      </h3>
+                      <h3 className="text-lg font-semibold text-slate-900 mb-1">{assignment.mentee}</h3>
 
-                      <p className="text-slate-600 mb-4">
-                        {assignment.resource}
-                      </p>
+                      <p className="text-slate-600 mb-4">{assignment.resource}</p>
 
                       <div className="flex flex-wrap items-center gap-4 text-sm text-slate-500">
                         <span>Assigned: {assignment.assignedDate}</span>
@@ -405,11 +372,11 @@ export function ResourcesPage() {
 
                         <span
                           className={`px-3 py-1 rounded-full font-medium ${
-                            assignment.status === "Completed"
-                              ? "bg-green-100 text-green-700"
-                              : assignment.status === "In Progress"
-                                ? "bg-blue-100 text-blue-700"
-                                : "bg-amber-100 text-amber-700"
+                            assignment.status === 'Completed'
+                              ? 'bg-green-100 text-green-700'
+                              : assignment.status === 'In Progress'
+                                ? 'bg-blue-100 text-blue-700'
+                                : 'bg-amber-100 text-amber-700'
                           }`}
                         >
                           {assignment.status}
@@ -421,16 +388,11 @@ export function ResourcesPage() {
                       <div className="flex justify-between text-sm mb-2">
                         <span className="text-slate-600">Progress</span>
 
-                        <span className="font-medium text-slate-900">
-                          {assignment.progress}%
-                        </span>
+                        <span className="font-medium text-slate-900">{assignment.progress}%</span>
                       </div>
 
                       <div className="w-full h-3 bg-slate-100 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-blue-600 rounded-full"
-                          style={{ width: `${assignment.progress}%` }}
-                        />
+                        <div className="h-full bg-blue-600 rounded-full" style={{ width: `${assignment.progress}%` }} />
                       </div>
                     </div>
                   </div>
@@ -441,13 +403,11 @@ export function ResourcesPage() {
         )}
 
         {/* Upload Center */}
-        {selectedTab === "upload" && (
+        {selectedTab === 'upload' && (
           <div className="grid lg:grid-cols-3 gap-8">
             {/* Upload Form */}
             <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-200 p-8 shadow-sm">
-              <h2 className="text-2xl font-bold text-slate-900 mb-6">
-                Upload Learning Resource
-              </h2>
+              <h2 className="text-2xl font-bold text-slate-900 mb-6">Upload Learning Resource</h2>
 
               <div className="space-y-6">
                 {/* Upload Box */}
@@ -456,13 +416,9 @@ export function ResourcesPage() {
                     <Upload className="w-8 h-8 text-blue-600" />
                   </div>
 
-                  <h3 className="text-lg font-semibold text-slate-900 mb-2">
-                    Drag & drop files here
-                  </h3>
+                  <h3 className="text-lg font-semibold text-slate-900 mb-2">Drag & drop files here</h3>
 
-                  <p className="text-slate-500 mb-4">
-                    Upload PDFs, videos, slides, worksheets, or external links.
-                  </p>
+                  <p className="text-slate-500 mb-4">Upload PDFs, videos, slides, worksheets, or external links.</p>
 
                   <button className="px-5 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700">
                     Browse Files
@@ -472,9 +428,7 @@ export function ResourcesPage() {
                 {/* Form Fields */}
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">
-                      Resource Title
-                    </label>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">Resource Title</label>
 
                     <input
                       type="text"
@@ -484,9 +438,7 @@ export function ResourcesPage() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">
-                      Category
-                    </label>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">Category</label>
 
                     <select className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
                       <option>Select category</option>
@@ -499,9 +451,7 @@ export function ResourcesPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
-                    Description
-                  </label>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">Description</label>
 
                   <textarea
                     rows={5}
@@ -525,18 +475,16 @@ export function ResourcesPage() {
             {/* Sidebar */}
             <div className="space-y-6">
               <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
-                <h3 className="text-lg font-bold text-slate-900 mb-4">
-                  Supported Content
-                </h3>
+                <h3 className="text-lg font-bold text-slate-900 mb-4">Supported Content</h3>
 
                 <div className="space-y-4">
                   {[
-                    "PDFs & Worksheets",
-                    "Video Tutorials",
-                    "External Links",
-                    "Presentation Slides",
-                    "Case Studies",
-                    "Templates & Guides",
+                    'PDFs & Worksheets',
+                    'Video Tutorials',
+                    'External Links',
+                    'Presentation Slides',
+                    'Case Studies',
+                    'Templates & Guides',
                   ].map((item, index) => (
                     <div key={index} className="flex items-center gap-3">
                       <CheckCircle className="w-5 h-5 text-green-600" />
@@ -555,8 +503,7 @@ export function ResourcesPage() {
                 <h3 className="text-xl font-bold mb-2">Build Learning Paths</h3>
 
                 <p className="text-blue-100 leading-relaxed mb-6">
-                  Combine multiple resources into guided mentorship journeys for
-                  your mentees.
+                  Combine multiple resources into guided mentorship journeys for your mentees.
                 </p>
 
                 <button className="w-full px-5 py-3 bg-white text-blue-700 rounded-xl font-semibold hover:bg-blue-50 transition-colors">
