@@ -168,7 +168,8 @@ export function OnboardingMentor() {
 
       // Backend endpoint can be adjusted later by the backend teammate
       console.log('Submitting mentor onboarding data:', payload);
-      await axiosClient.post('/mentors/onboarding', payload);
+      // ide majd be kell tenni a megfelelo POST register endpointot
+      await axiosClient.post('/', payload);
 
       navigate('/mentor-dashboard');
     } catch (err) {
