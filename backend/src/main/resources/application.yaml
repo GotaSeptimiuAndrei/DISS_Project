@@ -3,17 +3,13 @@ spring:
     name: backend
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/diss_db
+    url: jdbc:postgresql://localhost:5432/mentormatch
     username: postgres
-    password: 123Andrei
+    password: postgres
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
-      ddl-auto: update  #to run the seeder again change this to 'create' and after the first run switch it back to update
-    show-sql: true      
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+      ddl-auto: update #to run the seeder again change this to 'create' and after the first run switch it back to update
+    show-sql: true
     open-in-view: false
-    
