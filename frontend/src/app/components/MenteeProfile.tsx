@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link, useParams } from 'react-router';
 import { motion } from 'motion/react';
 import {
   Users,
@@ -13,55 +13,96 @@ import {
   Sparkles,
   BookOpen,
   Lightbulb,
+  Loader2,
 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import axiosClient from '../../api/axiosClient';
+
+const imageUrls = [
+  'https://images.unsplash.com/photo-1706025090996-63717544be2d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHByb2Zlc3Npb25hbCUyMHdvbWFuJTIwaGVhZHNob3R8ZW58MXx8fHwxNzc1NDcwOTI5fDA&ixlib=rb-4.1.0&q=80&w=400',
+  'https://images.unsplash.com/photo-1652471949169-9c587e8898cd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxibGFjayUyMHdvbWFuJTIwYnVzaW5lc3MlMjBwcm9mZXNzaW9uYWx8ZW58MXx8fHwxNzc1NTQ5MTc3fDA&ixlib=rb-4.1.0&q=80&w=400',
+  'https://images.unsplash.com/photo-1770058428154-9eee8a6a1fbb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaWRkbGUlMjBhZ2VkJTIwd29tYW4lMjBwcm9mZXNzaW9uYWx8ZW58MXx8fHwxNzc1NTQ5MTc3fDA&ixlib=rb-4.1.0&q=80&w=400',
+  'https://images.unsplash.com/photo-1543132220-7bc04a0e790a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZnJpY2FuJTIwbWFuJTIwcHJvZmVzc2lvbmFsfGVufDF8fHx8MTc3NTU0OTE3N3wwfDA&ixlib=rb-4.1.0&q=80&w=400',
+];
 
 export function MenteeProfile() {
-  const mentee = {
-    name: 'Emily Rodriguez',
-    email: 'emily.rodriguez@example.com',
-    experienceLevel: 'Intermediate',
-    bio: 'Aspiring product leader passionate about technology, communication, and building impactful digital experiences. Currently transitioning from software engineering into product management and looking for mentorship around leadership, strategy, and stakeholder communication.',
+  const { id } = useParams<{ id: string }>();
+  const [mentee, setMentee] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-    learningGoals: [
-      'Leadership Development',
-      'Career Transition',
-      'Product Management',
-      'Communication Skills',
-      'AI & Machine Learning',
-      'Public Speaking',
-    ],
+  useEffect(() => {
+    if (!id) {
+      setError('Mentee ID not found');
+      setLoading(false);
+      return;
+    }
 
-    customGoals: ['Improve stakeholder management', 'Build confidence in strategic decision making'],
-
-    learningStyle: {
-      type: 'Project-based',
-      description: 'Hands-on learning through practical projects and real-world collaboration.',
-    },
-
-    availability: ['Weekday Evenings · 5pm – 9pm', 'Weekends · Flexible'],
-
-    mentorshipPreferences: {
-      sessionFrequency: 'Bi-weekly',
-      preferredSessionType: 'Video Calls',
-      commitmentLevel: '6+ months',
-    },
-
-    progress: {
-      completedSessions: 8,
-      activeGoals: 5,
-      mentorshipStreak: '3 months',
-    },
-
-    interests: ['Product Strategy', 'Career Growth', 'AI Products', 'Startup Culture', 'Leadership', 'Public Speaking'],
-
-    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800',
-  };
+    axiosClient
+      .get(`/mentees/${id}`)
+      .then((res) => {
+        const menteeIndex = parseInt(id) - 1;
+        const menteeData = {
+          ...res.data,
+          image: imageUrls[menteeIndex % imageUrls.length],
+          email: res.data.email || 'email@example.com',
+          experienceLevel: res.data.experienceLevel || 'Intermediate',
+          bio: 'Mentee working towards their professional goals.',
+          learningGoals: res.data.goals || ['Professional Development'],
+          customGoals: ['Improve skills', 'Achieve goals'],
+          learningStyle: {
+            type: res.data.learningStyle || 'Hands-on',
+            description: 'Practical learning through real-world projects.',
+          },
+          availability: res.data.availability ? [res.data.availability] : ['Weekday Evenings'],
+          mentorshipPreferences: {
+            sessionFrequency: 'Bi-weekly',
+            preferredSessionType: 'Video Calls',
+            commitmentLevel: '6+ months',
+          },
+          progress: {
+            completedSessions: 8,
+            activeGoals: res.data.goals?.length || 3,
+            mentorshipStreak: '3 months',
+          },
+          interests: res.data.goals || [],
+        };
+        setMentee(menteeData);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError('Failed to load mentee profile');
+        setLoading(false);
+      });
+  }, [id]);
 
   const experienceColors = {
     Beginner: 'bg-green-100 text-green-700 border-green-200',
     Intermediate: 'bg-blue-100 text-blue-700 border-blue-200',
     Advanced: 'bg-purple-100 text-purple-700 border-purple-200',
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="w-10 h-10 text-blue-600 animate-spin" />
+        <span className="ml-3 text-slate-600 font-medium">Loading mentee profile...</span>
+      </div>
+    );
+  }
+
+  if (error || !mentee) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <p className="text-slate-600 font-medium mb-4">{error || 'Mentee not found'}</p>
+          <Link to="/my-mentees" className="text-blue-600 hover:text-blue-700">
+            Back to My Mentees
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -85,12 +126,9 @@ export function MenteeProfile() {
       </nav>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Link
-          to="/mentor-dashboard"
-          className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-6"
-        >
+        <Link to="/my-mentees" className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-6">
           <ArrowLeft className="w-4 h-4" />
-          Back to dashboard
+          Back to My Mentees
         </Link>
 
         <div className="grid lg:grid-cols-3 gap-8">

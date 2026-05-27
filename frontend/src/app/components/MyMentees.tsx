@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import {
@@ -20,8 +20,10 @@ import {
   CheckCircle,
   AlertCircle,
   Zap,
+  Loader2,
 } from 'lucide-react';
 import { useChatPanel } from './ChatPanel';
+import axiosClient from '../../api/axiosClient';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -59,198 +61,18 @@ interface Mentee {
   skills: Skill[];
   recentSessions: Session[];
   lastNote: string;
+  email?: string;
+  experienceLevel?: string;
+  learningStyle?: string;
+  availability?: string;
+  goals?: string[];
 }
 
-// ─── Data ─────────────────────────────────────────────────────────────────────
-
-const mentees: Mentee[] = [
-  {
-    id: 1,
-    name: 'Alex Johnson',
-    image: 'https://images.unsplash.com/photo-1706025090996-63717544be2d?w=200',
-    title: 'Product Manager',
-    company: 'TechX Solutions',
-    goal: 'Software Engineering Leadership',
-    overallProgress: 75,
-    sessionsCompleted: 6,
-    totalSessions: 8,
-    nextSession: 'Tomorrow, 2:00 PM',
-    joinedDate: 'Mar 15, 2026',
-    status: 'on-track',
-    rating: 4.8,
-    skills: [
-      { name: 'Prompt Engineering', current: 67, target: 90 },
-      { name: 'AI Workflows', current: 40, target: 80 },
-      { name: 'System Design', current: 80, target: 95 },
-      { name: 'Team Leadership', current: 70, target: 85 },
-    ],
-    recentSessions: [
-      {
-        id: 1,
-        topic: 'LLM Basics',
-        date: 'Mar 20',
-        duration: '30 min',
-        status: 'completed',
-        notes: 'Strong fundamentals, ready for advanced topics.',
-      },
-      {
-        id: 2,
-        topic: 'Prompting',
-        date: 'Apr 3',
-        duration: '30 min',
-        status: 'completed',
-        notes: 'Picked up CoT very fast.',
-      },
-      {
-        id: 3,
-        topic: 'Chain-of-thought',
-        date: 'Apr 10',
-        duration: '30 min',
-        status: 'completed',
-      },
-      {
-        id: 4,
-        topic: 'AI Workflow Design',
-        date: 'Tomorrow',
-        duration: '30 min',
-        status: 'upcoming',
-      },
-    ],
-    lastNote:
-      'Alex is making strong progress. Next focus should be practical AI workflow design applied to product specs.',
-  },
-  {
-    id: 2,
-    name: 'Maria Garcia',
-    image: 'https://images.unsplash.com/photo-1652471949169-9c587e8898cd?w=200',
-    title: 'Engineering Manager',
-    company: 'CloudScale',
-    goal: 'Team Management',
-    overallProgress: 45,
-    sessionsCompleted: 3,
-    totalSessions: 8,
-    nextSession: 'Thursday, 10:00 AM',
-    joinedDate: 'Apr 1, 2026',
-    status: 'active',
-    rating: 4.6,
-    skills: [
-      { name: '1-on-1 Management', current: 55, target: 85 },
-      { name: 'Performance Reviews', current: 30, target: 80 },
-      { name: 'Team Culture', current: 60, target: 90 },
-      { name: 'Conflict Resolution', current: 35, target: 75 },
-    ],
-    recentSessions: [
-      {
-        id: 1,
-        topic: 'Management Fundamentals',
-        date: 'Apr 3',
-        duration: '45 min',
-        status: 'completed',
-        notes: 'Good understanding of frameworks.',
-      },
-      {
-        id: 2,
-        topic: 'Running 1-on-1s',
-        date: 'Apr 8',
-        duration: '45 min',
-        status: 'completed',
-      },
-      {
-        id: 3,
-        topic: 'Performance Frameworks',
-        date: 'Thursday',
-        duration: '45 min',
-        status: 'upcoming',
-      },
-    ],
-    lastNote:
-      'Maria has solid instincts. Should focus on structured frameworks for difficult conversations in next session.',
-  },
-  {
-    id: 3,
-    name: 'David Chen',
-    image: 'https://images.unsplash.com/photo-1543132220-7bc04a0e790a?w=200',
-    title: 'Junior Developer',
-    company: 'DesignFest',
-    goal: 'System Design & Architecture',
-    overallProgress: 85,
-    sessionsCompleted: 8,
-    totalSessions: 8,
-    nextSession: null,
-    joinedDate: 'Feb 10, 2026',
-    status: 'on-track',
-    rating: 5.0,
-    skills: [
-      { name: 'System Design', current: 85, target: 90 },
-      { name: 'Scalability', current: 80, target: 90 },
-      { name: 'Database Design', current: 90, target: 95 },
-      { name: 'API Architecture', current: 88, target: 95 },
-    ],
-    recentSessions: [
-      {
-        id: 1,
-        topic: 'Distributed Systems',
-        date: 'Apr 5',
-        duration: '60 min',
-        status: 'completed',
-        notes: 'Excellent grasp of CAP theorem.',
-      },
-      {
-        id: 2,
-        topic: 'Caching Strategies',
-        date: 'Apr 9',
-        duration: '60 min',
-        status: 'completed',
-      },
-    ],
-    lastNote: 'David has nearly completed the curriculum. Recommend extending with real-world case studies.',
-  },
-  {
-    id: 4,
-    name: 'Sarah Williams',
-    image: 'https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?w=200',
-    title: 'UX Designer',
-    company: 'Mountain View Studio',
-    goal: 'Career Growth Strategy',
-    overallProgress: 30,
-    sessionsCompleted: 2,
-    totalSessions: 6,
-    nextSession: null,
-    joinedDate: 'Apr 8, 2026',
-    status: 'needs-attention',
-    rating: 4.2,
-    skills: [
-      { name: 'Portfolio Strategy', current: 40, target: 85 },
-      { name: 'Salary Negotiation', current: 20, target: 70 },
-      { name: 'Personal Branding', current: 35, target: 80 },
-      { name: 'Interview Skills', current: 30, target: 90 },
-    ],
-    recentSessions: [
-      {
-        id: 1,
-        topic: 'Career Assessment',
-        date: 'Apr 9',
-        duration: '30 min',
-        status: 'completed',
-        notes: 'Needs more confidence in self-presentation.',
-      },
-      {
-        id: 2,
-        topic: 'Goal Setting',
-        date: 'Apr 11',
-        duration: '30 min',
-        status: 'completed',
-      },
-      {
-        id: 3,
-        topic: 'Portfolio Review',
-        date: 'Apr 18',
-        duration: '30 min',
-        status: 'upcoming',
-      },
-    ],
-    lastNote: 'Sarah missed scheduling the third session. Worth a proactive check-in message.',
-  },
+const imageUrls = [
+  'https://images.unsplash.com/photo-1706025090996-63717544be2d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHByb2Zlc3Npb25hbCUyMHdvbWFuJTIwaGVhZHNob3R8ZW58MXx8fHwxNzc1NDcwOTI5fDA&ixlib=rb-4.1.0&q=80&w=400',
+  'https://images.unsplash.com/photo-1652471949169-9c587e8898cd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxibGFjayUyMHdvbWFuJTIwYnVzaW5lc3MlMjBwcm9mZXNzaW9uYWx8ZW58MXx8fHwxNzc1NTQ5MTc3fDA&ixlib=rb-4.1.0&q=80&w=400',
+  'https://images.unsplash.com/photo-1770058428154-9eee8a6a1fbb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaWRkbGUlMjBhZ2VkJTIwd29tYW4lMjBwcm9mZXNzaW9uYWx8ZW58MXx8fHwxNzc1NTQ5MTc3fDA&ixlib=rb-4.1.0&q=80&w=400',
+  'https://images.unsplash.com/photo-1543132220-7bc04a0e790a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhZnJpY2FuJTIwbWFuJTIwcHJvZmVzc2lvbmFsfGVufDF8fHx8MTc3NTU0OTE3N3wwfDA&ixlib=rb-4.1.0&q=80&w=400',
 ];
 
 // ─── Sub-components ────────────────────────────────────────────────────────────
@@ -546,8 +368,47 @@ function MenteeCard({ mentee, openChat }: { mentee: Mentee; openChat: () => void
 
 export function MyMentees() {
   const { openChat, ChatPortal } = useChatPanel();
+  const [mentees, setMentees] = useState<Mentee[]>([]);
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState<'all' | Mentee['status']>('all');
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axiosClient
+      .get('/mentees')
+      .then((res) => {
+        const menteesWithImages = res.data.map((m: any, i: number) => ({
+          id: m.id,
+          name: m.name,
+          email: m.email,
+          title: m.title,
+          company: m.company,
+          image: imageUrls[i % imageUrls.length],
+          rating: m.rating ?? 4.5,
+          reviewCount: m.reviewCount ?? 0,
+          experienceLevel: m.experienceLevel,
+          learningStyle: m.learningStyle,
+          availability: m.availability,
+          goals: m.goals,
+          // Mock data for demo
+          goal: m.goals?.[0] || 'Personal Development',
+          overallProgress: 60,
+          sessionsCompleted: 3,
+          totalSessions: 6,
+          nextSession: 'Coming Soon',
+          joinedDate: 'Apr 1, 2026',
+          status: 'active' as const,
+          skills: [],
+          recentSessions: [],
+          lastNote: 'Great progress!',
+        }));
+        setMentees(menteesWithImages);
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
+  }, []);
 
   const filtered = mentees.filter((m) => {
     const matchesSearch =
@@ -557,8 +418,18 @@ export function MyMentees() {
   });
 
   const totalSessions = mentees.reduce((a, m) => a + m.sessionsCompleted, 0);
-  const avgProgress = Math.round(mentees.reduce((a, m) => a + m.overallProgress, 0) / mentees.length);
+  const avgProgress =
+    mentees.length > 0 ? Math.round(mentees.reduce((a, m) => a + m.overallProgress, 0) / mentees.length) : 0;
   const needsAttention = mentees.filter((m) => m.status === 'needs-attention').length;
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="w-10 h-10 text-indigo-600 animate-spin" />
+        <span className="ml-3 text-slate-600 font-medium">Loading your mentees...</span>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
