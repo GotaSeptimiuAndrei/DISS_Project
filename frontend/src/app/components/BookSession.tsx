@@ -1,36 +1,61 @@
-import { useState } from "react";
-import { Link, useParams, useNavigate } from "react-router";
+import { useState, useEffect } from "react";
+import { Link, useParams, useNavigate, useLocation } from "react-router";
 import { motion } from "motion/react";
-import { Users, ArrowLeft, Calendar, Clock, MessageSquare, Video } from "lucide-react";
+import { Users, ArrowLeft, Calendar, Clock, MessageSquare, Video, CheckCircle2, Loader2 } from "lucide-react";
 
 export function BookSession() {
   const { id } = useParams();
+  const location = useLocation();
   const navigate = useNavigate();
+
+  const stateMentor = location.state?.mentor;
+
   const [selectedDate, setSelectedDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
   const [sessionType, setSessionType] = useState("video");
   const [topic, setTopic] = useState("");
   const [notes, setNotes] = useState("");
 
+  const [isSuccess, setIsSuccess] = useState(false);
+
   const mentor = {
-    name: "Dr. Sarah Chen",
-    title: "Chief Technology Officer at Amazon",
-    image: "https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHByb2Zlc3Npb25hbCUyMHdvbWFuJTIwaGVhZHNob3R8ZW58MXx8fHwxNzc1NDcwOTI5fDA&ixlib=rb-4.1.0&q=80&w=400"
+    name: stateMentor?.name ?? "",
+    title: stateMentor?.title ?? "",
+    image: stateMentor?.image ?? ""
   };
 
-  const availableDates = [
-    { date: "2026-04-08", display: "Tue, Apr 8" },
-    { date: "2026-04-09", display: "Wed, Apr 9" },
-    { date: "2026-04-10", display: "Thu, Apr 10" },
-    { date: "2026-04-11", display: "Fri, Apr 11" },
-    { date: "2026-04-14", display: "Mon, Apr 14" },
-    { date: "2026-04-15", display: "Tue, Apr 15" }
-  ];
+  const [rawAvailability, setRawAvailability] = useState<any[]>(
+    stateMentor && Array.isArray(stateMentor.availability) && stateMentor.availability.length > 0
+      ? stateMentor.availability
+      : []
+  );
 
-  const timeSlots = [
-    "9:00 AM", "10:00 AM", "11:00 AM",
-    "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM"
-  ];
+  const [loading, setLoading] = useState(rawAvailability.length === 0);
+
+  useEffect(() => {
+    if (rawAvailability.length === 0) {
+      fetch(`http://localhost:8080/api/mentors/${id}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setRawAvailability(data.availability ?? []);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error("Failed to load availability:", err);
+          setLoading(false);
+        });
+    }
+  }, [id, rawAvailability.length]);
+
+  const uniqueDays = Array.from(new Set(rawAvailability.map(slot => slot.day)));
+  const availableDates = uniqueDays.map(day => ({
+    date: day, 
+    display: day 
+  }));
+
+  const timeSlots = rawAvailability
+    .filter(slot => slot.day === selectedDate)
+    .map(slot => slot.slotTime);
 
   const topics = [
     "Career Growth Strategy",
@@ -41,14 +66,56 @@ export function BookSession() {
     "Other"
   ];
 
-const handleBooking = async () => {
+  const handleBooking = async () => {
+    const getNextDateString = (dayName: string): string => {
+      const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+      const targetDayIndex = daysOfWeek.indexOf(dayName);
+
+      if (targetDayIndex === -1) return dayName; 
+
+      const resultDate = new Date(); 
+      const currentDayIndex = resultDate.getDay();
+
+      let daysToAdd = (targetDayIndex + 7 - currentDayIndex) % 7;
+        
+      if (daysToAdd === 0 && selectedTime) {
+        daysToAdd = 7;
+      }
+
+      resultDate.setDate(resultDate.getDate() + daysToAdd);
+
+      const year = resultDate.getFullYear();
+      const month = String(resultDate.getMonth() + 1).padStart(2, '0');
+      const day = String(resultDate.getDate()).padStart(2, '0');
+
+      return `${year}-${month}-${day}`;
+    };
+
+    const convertToAmPm = (timeStr: string): string => {
+      if (!timeStr) return "";
+      if (timeStr.includes("AM") || timeStr.includes("PM")) return timeStr;
+
+      const [hoursStr, minutesStr] = timeStr.split(":");
+      let hours = parseInt(hoursStr, 10);
+      const minutes = minutesStr;
+        
+      const ampm = hours >= 12 ? "PM" : "AM";
+      hours = hours % 12;
+      hours = hours ? hours : 12; 
+
+      return `${hours}:${minutes} ${ampm}`;
+    };
+
+    const formattedDate = getNextDateString(selectedDate); // "Monday" -> "2026-06-01"
+    const formattedTime = convertToAmPm(selectedTime); // "10:00" -> "10:00 AM"
+
     const payload = {
-      mentorId: Number(id), // Pulls the mentor ID from the /book/:id URL parameter
-      menteeId: 6, // Hardcoded to 6 (Alex Ionescu) for the prototype demo
-      sessionDate: selectedDate, // e.g., "2026-04-08"
-      sessionTime: selectedTime, // e.g., "9:00 AM"
-      sessionType: sessionType,  // "video" or "chat"
-      topic: topic,              // e.g., "Career Growth Strategy"
+      mentorId: Number(id), 
+      menteeId: 6, // Hardcoded
+      sessionDate: formattedDate, 
+      sessionTime: formattedTime, 
+      sessionType: sessionType,  
+      topic: topic,              
       notes: notes
     };
 
@@ -62,7 +129,10 @@ const handleBooking = async () => {
       });
 
       if (response.ok) {
-        navigate("/dashboard"); 
+        setIsSuccess(true);
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 5000);
       } else {
         console.error("Failed to book session");
       }
@@ -71,6 +141,49 @@ const handleBooking = async () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <Loader2 className="w-10 h-10 text-blue-600 animate-spin" />
+        <span className="ml-3 text-slate-600 font-medium">Loading slots...</span>
+      </div>
+    );
+  }
+
+  if (isSuccess) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background px-4">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="max-w-md w-full bg-white rounded-2xl shadow-xl border border-slate-100 p-8 text-center"
+        >
+          <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-6">
+            <CheckCircle2 className="w-10 h-10 text-green-600" />
+          </div>
+
+          <h2 className="text-2xl font-bold text-slate-900 mb-2">
+            Booking Confirmed!
+          </h2>
+          <p className="text-slate-600 mb-6">
+            Your session with <span className="font-semibold text-slate-800">{mentor.name}</span> has been successfully scheduled.
+          </p>
+
+          <div className="bg-slate-50 rounded-xl p-4 text-left space-y-2 text-sm text-slate-600 mb-6 border border-slate-100">
+            <div><span className="font-medium text-slate-700">Day:</span> {selectedDate}</div>
+            <div><span className="font-medium text-slate-700">Time:</span> {selectedTime}</div>
+            <div><span className="font-medium text-slate-700">Type:</span> {sessionType === "video" ? "Video Call" : "Chat Only"}</div>
+          </div>
+
+          <div className="flex items-center justify-center gap-2 text-xs text-slate-400">
+            <Loader2 className="w-4 h-4 text-blue-600 animate-spin" />
+            Redirecting to dashboard...
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
+  
   return (
     <div className="min-h-screen bg-background">
       <nav className="bg-white border-b border-slate-200">
@@ -94,6 +207,7 @@ const handleBooking = async () => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Link 
           to={`/mentor/${id}`}
+          state={{ mentor: stateMentor }}
           className="inline-flex items-center gap-2 text-slate-600 hover:text-slate-900 mb-6"
         >
           <ArrowLeft className="w-4 h-4" />
@@ -176,7 +290,10 @@ const handleBooking = async () => {
                     {availableDates.map((dateOption) => (
                       <button
                         key={dateOption.date}
-                        onClick={() => setSelectedDate(dateOption.date)}
+                        onClick={() => {
+                          setSelectedDate(dateOption.date);
+                          setSelectedTime(""); 
+                        }}
                         className={`p-4 rounded-lg border-2 text-center transition-all ${
                           selectedDate === dateOption.date
                             ? "border-blue-600 bg-blue-50 shadow-inner"

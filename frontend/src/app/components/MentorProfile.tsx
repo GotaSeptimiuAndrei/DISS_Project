@@ -401,6 +401,12 @@ export function MentorProfile() {
 
               <Link
                 to={`/book/${id}`}
+                state={{ 
+                  mentor: { 
+                    ...mentor, 
+                    image: image 
+                  } 
+                }}
                 className="block w-full px-6 py-3 bg-blue-600 text-white rounded-lg font-medium text-center hover:bg-blue-700 transition-colors mb-3"
               >
                 Book a Session
