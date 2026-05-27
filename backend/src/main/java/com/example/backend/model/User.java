@@ -1,5 +1,7 @@
 package com.example.backend.model;
 
+import com.example.backend.model.enums.ExperienceLevel;
+import com.example.backend.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,6 +24,7 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Role role;
 
     private String image;
