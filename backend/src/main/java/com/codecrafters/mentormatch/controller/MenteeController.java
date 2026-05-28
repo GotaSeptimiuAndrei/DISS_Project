@@ -3,8 +3,9 @@ package com.codecrafters.mentormatch.controller;
 import com.codecrafters.mentormatch.dto.MenteeResponseDTO;
 import com.codecrafters.mentormatch.model.MenteeProfile;
 import com.codecrafters.mentormatch.repository.MenteeProfileRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.hibernate.Hibernate;
@@ -54,6 +55,25 @@ public class MenteeController {
                     .orElse(ResponseEntity.notFound().build());
         } catch (Exception e) {
             logger.error("Error fetching mentee with id {}", id, e);
+            throw e;
+        }
+    }
+
+    @GetMapping("/me")
+    @Transactional
+    public ResponseEntity<MenteeResponseDTO> getCurrentMentee() {
+        try {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            if (auth == null || auth.getName() == null) {
+                return ResponseEntity.status(401).build();
+            }
+
+            return menteeProfileRepository.findByUserEmail(auth.getName())
+                    .map(this::convertToDTO)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (Exception e) {
+            logger.error("Error fetching current mentee profile", e);
             throw e;
         }
     }
