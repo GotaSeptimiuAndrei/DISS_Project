@@ -73,7 +73,11 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:80", "http://localhost:5173", "http://frontend:80"));
+        configuration.setAllowedOrigins(Arrays.asList(
+                "https://mentormatch.szabi-zoltani.workers.dev",
+                "http://localhost:80",
+                "http://localhost:5173",
+                "http://frontend:80"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);
