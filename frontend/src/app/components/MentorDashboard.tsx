@@ -19,7 +19,6 @@ interface PendingRequest {
   name: string;
   image: string;
   goal: string;
-  matchScore: number;
   message: string;
 }
 
@@ -28,34 +27,37 @@ export function MentorDashboard() {
   const [pendingRequests, setPendingRequests] = useState<PendingRequest[]>([]);
   const [pendingRequestsLoading, setPendingRequestsLoading] = useState(true);
   const [pendingRequestsError, setPendingRequestsError] = useState('');
-  const [processingRequestId, setProcessingRequestId] = useState<number | null>(null);
-  const pendingRequestImages = [
-    'https://images.unsplash.com/photo-1765648684613-b77086065bc1?w=100',
-    'https://images.unsplash.com/photo-1648757766966-43d24bf7a264?w=100',
-  ];
+  const [processingRequest, setProcessingRequest] = useState<{ id: number; action: 'ACCEPTED' | 'DECLINED' } | null>(
+    null
+  );
 
   useEffect(() => {
     let isMounted = true;
+    const storedMentorId = localStorage.getItem('mentorId');
+    const parsedMentorId = storedMentorId ? Number(storedMentorId) : Number.NaN;
+    const mentorId = Number.isFinite(parsedMentorId) && parsedMentorId > 0 ? parsedMentorId : 1;
 
     axiosClient
-      .get<PendingSessionResponse[]>('/sessions/mentor/1/pending')
+      .get<PendingSessionResponse[]>(`/sessions/mentor/${mentorId}/pending`)
       .then((res) => {
         if (!isMounted) return;
 
-        const mappedRequests = res.data.map((session, index) => ({
+        const mappedRequests = res.data.map((session) => ({
           id: session.id,
           name: session.mentee?.name || 'Mentee',
-          image: pendingRequestImages[index % pendingRequestImages.length] || pendingRequestImages[0] || '',
+          image: `https://ui-avatars.com/api/?name=${encodeURIComponent(
+            session.mentee?.name || 'Mentee'
+          )}&background=e0e7ff&color=3730a3`,
           goal: session.topic || 'Mentorship Session',
-          matchScore: 90,
           message: session.notes || 'No message provided.',
         }));
 
         setPendingRequests(mappedRequests);
         setPendingRequestsError('');
       })
-      .catch(() => {
+      .catch((error) => {
         if (!isMounted) return;
+        console.error('Failed to load mentor pending requests.', error);
         setPendingRequestsError('Unable to load pending requests right now.');
       })
       .finally(() => {
@@ -69,15 +71,16 @@ export function MentorDashboard() {
   }, []);
 
   const handleRequestStatusUpdate = async (sessionId: number, status: 'ACCEPTED' | 'DECLINED') => {
-    setProcessingRequestId(sessionId);
+    setProcessingRequest({ id: sessionId, action: status });
     try {
       await axiosClient.patch(`/sessions/${sessionId}/status`, null, { params: { status } });
       setPendingRequests((currentRequests) => currentRequests.filter((request) => request.id !== sessionId));
       setPendingRequestsError('');
-    } catch {
+    } catch (error) {
+      console.error(`Failed to update request status for session ${sessionId} to ${status}.`, error);
       setPendingRequestsError(`Failed to ${status === 'ACCEPTED' ? 'accept' : 'decline'} request. Please try again.`);
     } finally {
-      setProcessingRequestId(null);
+      setProcessingRequest(null);
     }
   };
   const upcomingSessions = [
@@ -417,8 +420,8 @@ export function MentorDashboard() {
                           <div className="font-semibold text-slate-900 text-sm">{request.name}</div>
                           <div className="text-xs text-slate-600 line-clamp-1">{request.goal}</div>
                           <div className="flex items-center gap-1 mt-1">
-                            <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-medium rounded-full">
-                              {request.matchScore}% match
+                            <span className="px-2 py-0.5 bg-amber-100 text-amber-700 text-xs font-medium rounded-full">
+                              Pending
                             </span>
                           </div>
                         </div>
@@ -427,17 +430,21 @@ export function MentorDashboard() {
                       <div className="flex gap-2">
                         <button
                           onClick={() => handleRequestStatusUpdate(request.id, 'ACCEPTED')}
-                          disabled={processingRequestId === request.id}
+                          disabled={processingRequest?.id === request.id}
                           className="flex-1 px-3 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 shadow-sm transition-all disabled:opacity-60 disabled:cursor-not-allowed"
                         >
-                          {processingRequestId === request.id ? 'Updating...' : 'Accept'}
+                          {processingRequest?.id === request.id && processingRequest.action === 'ACCEPTED'
+                            ? 'Accepting...'
+                            : 'Accept'}
                         </button>
                         <button
                           onClick={() => handleRequestStatusUpdate(request.id, 'DECLINED')}
-                          disabled={processingRequestId === request.id}
+                          disabled={processingRequest?.id === request.id}
                           className="px-3 py-2 bg-white border border-slate-300 text-slate-700 rounded-lg text-sm font-medium hover:border-indigo-300 hover:bg-indigo-50 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
                         >
-                          Decline
+                          {processingRequest?.id === request.id && processingRequest.action === 'DECLINED'
+                            ? 'Declining...'
+                            : 'Decline'}
                         </button>
                       </div>
                     </div>
