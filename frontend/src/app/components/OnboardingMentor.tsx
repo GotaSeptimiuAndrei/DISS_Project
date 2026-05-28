@@ -81,7 +81,7 @@ export function OnboardingMentor() {
         sessionTypes: formData.sessionTypes,
         capacity: capacityValue,
       });
-      navigate('/dashboard');
+      navigate('/mentor-dashboard');
     } catch (err: unknown) {
       if (typeof err === 'object' && err !== null && 'response' in err) {
         const response = (err as { response?: { status?: number } }).response;
