@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { motion } from 'motion/react';
-import { Users, Mail, Lock, Eye, EyeOff, ArrowRight, Chrome } from 'lucide-react';
+import { Users, Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
 
 export function Login() {
   const [email, setEmail] = useState('');

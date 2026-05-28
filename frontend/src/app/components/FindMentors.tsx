@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Link } from 'react-router';
 import { motion } from 'motion/react';
-import { Users, Search, Filter, Star, MapPin, Briefcase, Loader2, MessageSquare } from 'lucide-react';
+import { Users, Search, Star, MapPin, Briefcase, Loader2, MessageSquare } from 'lucide-react';
 
 import { useChatPanel } from './ChatPanel';
 
@@ -47,9 +47,20 @@ export function FindMentors() {
 
   useEffect(() => {
     axiosClient
-      .get('/mentors')
+      .get<
+        {
+          id: number;
+          name: string;
+          title: string;
+          company: string;
+          rating?: number;
+          reviewCount?: number;
+          profileBio?: string;
+          skills?: string[];
+        }[]
+      >('/mentors')
       .then((res) => {
-        const populatedData = res.data.map((m: any, index: number) => ({
+        const populatedData = res.data.map((m, index: number) => ({
           id: m.id,
           name: m.name,
           title: m.title,
@@ -58,7 +69,7 @@ export function FindMentors() {
           sessions: m.reviewCount || 15,
           bio: m.profileBio || 'Experienced professional passionate about mentoring.',
           expertise: m.skills || [],
-          image: imageUrls[index % imageUrls.length],
+          image: imageUrls[index % imageUrls.length] || '',
           matchScore: Math.floor(Math.random() * 20) + 80,
           location: 'Cluj-Napoca, RO',
           availability: 'Available this week',

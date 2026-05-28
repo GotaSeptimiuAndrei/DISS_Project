@@ -49,8 +49,21 @@ export function Dashboard() {
     axiosClient
       .get('/mentors')
       .then((res) => {
-        const populatedData = res.data.map((m: any, index: number) => ({
-          id: m.id,
+        const populatedData = res.data.map(
+          (
+            m: {
+              id: number;
+              name: string;
+              title: string;
+              company: string;
+              rating?: number;
+              reviewCount?: number;
+              profileBio?: string;
+              skills?: string[];
+            },
+            index: number
+          ) => ({
+            id: m.id,
           name: m.name,
           title: m.title,
           company: m.company,
