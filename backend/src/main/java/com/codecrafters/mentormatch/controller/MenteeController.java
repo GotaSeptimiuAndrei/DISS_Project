@@ -81,6 +81,8 @@ public class MenteeController {
             logger.error("Error fetching current mentee profile", e);
             throw e;
         }
+    }
+
     @PostMapping("/profile")
     @Transactional
     public ResponseEntity<Void> saveMenteeProfile(@Valid @RequestBody MenteeProfileRequest request,
