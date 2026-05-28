@@ -2,16 +2,75 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { motion } from 'motion/react';
 import { Users, GraduationCap, Briefcase } from 'lucide-react';
+import axiosClient from '../../api/axiosClient';
 
 export function SignUp() {
   const [role, setRole] = useState<'mentee' | 'mentor' | null>(null);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleRoleSelection = (selectedRole: 'mentee' | 'mentor') => {
     setRole(selectedRole);
-    setTimeout(() => {
-      navigate(selectedRole === 'mentee' ? '/onboarding/mentee' : '/onboarding/mentor');
-    }, 500);
+  };
+
+  const validateForm = () => {
+    if (!role || !name.trim() || !email.trim() || !password || !confirmPassword) {
+      return 'Please fill in all fields and select a role.';
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return 'Please enter a valid email address.';
+    }
+    if (password.length < 8) {
+      return 'Password must be at least 8 characters long.';
+    }
+    if (password !== confirmPassword) {
+      return 'Passwords do not match.';
+    }
+    return '';
+  };
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setError('');
+    const validationError = validateForm();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await axiosClient.post('/auth/register', {
+        name: name.trim(),
+        email: email.trim(),
+        password,
+        role: role === 'mentee' ? 'MENTEE' : 'MENTOR',
+      });
+      const { token, role: responseRole } = response.data as { token: string; role: string };
+      sessionStorage.setItem('token', token);
+      sessionStorage.setItem('role', responseRole);
+      navigate(role === 'mentee' ? '/onboarding/mentee' : '/onboarding/mentor');
+    } catch (err: unknown) {
+      if (typeof err === 'object' && err !== null && 'response' in err) {
+        const response = (err as { response?: { status?: number } }).response;
+        if (response?.status === 409) {
+          setError('An account with this email already exists.');
+        } else if (response?.status === 400) {
+          setError('Please check your details and try again.');
+        } else {
+          setError('Sign-up failed. Please try again.');
+        }
+      } else {
+        setError('Sign-up failed. Please try again.');
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -91,6 +150,79 @@ export function SignUp() {
             </ul>
           </motion.button>
         </div>
+
+        <motion.form
+          onSubmit={handleSubmit}
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.35 }}
+          className="bg-white rounded-2xl shadow-lg p-8 mb-8"
+        >
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-slate-700 mb-2">Full Name</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                placeholder="John Doe"
+                autoComplete="name"
+              />
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-slate-700 mb-2">Email Address</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                placeholder="john@example.com"
+                autoComplete="email"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                placeholder="Create a password"
+                autoComplete="new-password"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">Confirm Password</label>
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                placeholder="Repeat your password"
+                autoComplete="new-password"
+              />
+            </div>
+          </div>
+
+          {error && (
+            <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-3 mt-4">
+              {error}
+            </p>
+          )}
+
+          <button
+            type="submit"
+            disabled={isLoading}
+            className={`w-full mt-6 px-6 py-3 rounded-lg font-medium transition-all shadow-sm ${
+              isLoading
+                ? 'bg-blue-400 cursor-not-allowed text-white'
+                : 'bg-blue-600 hover:bg-blue-700 text-white'
+            }`}
+          >
+            {isLoading ? 'Creating account...' : 'Create Account'}
+          </button>
+        </motion.form>
 
         <div className="text-center text-sm text-slate-600">
           Already have an account?{' '}

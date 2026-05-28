@@ -33,15 +33,15 @@ export function OnboardingMentee() {
   ];
 
   const skillLevels = [
-    { value: 'beginner', label: 'Beginner', description: 'Just starting out' },
-    { value: 'intermediate', label: 'Intermediate', description: 'Some experience' },
-    { value: 'advanced', label: 'Advanced', description: 'Experienced professional' },
+    { value: 'BEGGINNER', label: 'Beginner', description: 'Just starting out' },
+    { value: 'INTERMEDIATE', label: 'Intermediate', description: 'Some experience' },
+    { value: 'ADVANCED', label: 'Advanced', description: 'Experienced professional' },
   ];
 
   const learningStyles = [
-    { value: 'structured', label: 'Structured', description: 'Step-by-step guidance' },
-    { value: 'exploratory', label: 'Exploratory', description: 'Open-ended discussions' },
-    { value: 'project', label: 'Project-based', description: 'Hands-on learning' },
+    { value: 'STRUCTURED', label: 'Structured', description: 'Step-by-step guidance' },
+    { value: 'EXPLORATORY', label: 'Exploratory', description: 'Open-ended discussions' },
+    { value: 'PROJECT_BASED', label: 'Project-based', description: 'Hands-on learning' },
   ];
 
   const handleNext = () => {
