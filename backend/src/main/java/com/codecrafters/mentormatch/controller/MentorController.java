@@ -1,12 +1,17 @@
 package com.codecrafters.mentormatch.controller;
 
 import com.codecrafters.mentormatch.dto.MentorResponseDTO;
+import com.codecrafters.mentormatch.dto.incoming.MentorProfileRequest;
 import com.codecrafters.mentormatch.model.MentorProfile;
 import com.codecrafters.mentormatch.model.Review;
+import com.codecrafters.mentormatch.model.User;
 import com.codecrafters.mentormatch.repository.MentorProfileRepository;
 import com.codecrafters.mentormatch.repository.ReviewRepository;
+import com.codecrafters.mentormatch.repository.UserRepository;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +26,7 @@ public class MentorController {
 
     private final MentorProfileRepository mentorProfileRepository;
     private final ReviewRepository reviewRepository;
+    private final UserRepository userRepository;
 
     @GetMapping
     @Transactional
@@ -65,6 +71,26 @@ public class MentorController {
                 .map(this::convertToDTO)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/profile")
+    @Transactional
+    public ResponseEntity<Void> saveMentorProfile(@Valid @RequestBody MentorProfileRequest request,
+                                                  Authentication authentication) {
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalStateException("Authenticated user not found"));
+
+        MentorProfile profile = mentorProfileRepository.findById(user.getId())
+                .orElseGet(MentorProfile::new);
+        profile.setUser(user);
+        profile.setSkills(request.expertise());
+        profile.setAvailabilitySlots(request.availability());
+        profile.setSessionTypes(request.sessionTypes());
+        profile.setCapacity(request.capacity());
+
+        mentorProfileRepository.save(profile);
+        return ResponseEntity.ok().build();
     }
 
     // Helper method to map Entity -> DTO

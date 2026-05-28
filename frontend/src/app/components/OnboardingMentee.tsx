@@ -1,20 +1,20 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Users, ArrowRight, ArrowLeft } from 'lucide-react';
+import axiosClient from '../../api/axiosClient';
 
 export function OnboardingMentee() {
   const [step, setStep] = useState(1);
   const [customGoal, setCustomGoal] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
   const totalSteps = 4;
 
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
     goals: [] as string[],
-    skills: [] as string[],
-    experience: '',
+    experienceLevel: '',
     learningStyle: '',
     availability: '',
   });
@@ -33,7 +33,7 @@ export function OnboardingMentee() {
   ];
 
   const skillLevels = [
-    { value: 'BEGGINNER', label: 'Beginner', description: 'Just starting out' },
+    { value: 'BEGINNER', label: 'Beginner', description: 'Just starting out' },
     { value: 'INTERMEDIATE', label: 'Intermediate', description: 'Some experience' },
     { value: 'ADVANCED', label: 'Advanced', description: 'Experienced professional' },
   ];
@@ -44,16 +44,68 @@ export function OnboardingMentee() {
     { value: 'PROJECT_BASED', label: 'Project-based', description: 'Hands-on learning' },
   ];
 
+  const validateStep = (currentStep: number) => {
+    if (currentStep === 1) {
+      if (!formData.experienceLevel) {
+        return 'Please select your experience level.';
+      }
+    }
+    if (currentStep === 2 && formData.goals.length === 0) {
+      return 'Please select at least one learning goal.';
+    }
+    if (currentStep === 3 && !formData.learningStyle) {
+      return 'Please select your learning style.';
+    }
+    if (currentStep === 4 && !formData.availability) {
+      return 'Please select your availability.';
+    }
+    return '';
+  };
+
+  const handleSubmit = async () => {
+    setIsLoading(true);
+    try {
+      await axiosClient.post('/mentees/profile', {
+        experienceLevel: formData.experienceLevel,
+        learningStyle: formData.learningStyle,
+        availability: formData.availability,
+        goals: formData.goals,
+      });
+      navigate('/dashboard');
+    } catch (err: unknown) {
+      if (typeof err === 'object' && err !== null && 'response' in err) {
+        const response = (err as { response?: { status?: number } }).response;
+        if (response?.status === 401) {
+          setError('Your session expired. Please sign in again.');
+        } else {
+          setError('We could not save your profile. Please try again.');
+        }
+      } else {
+        setError('We could not save your profile. Please try again.');
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleNext = () => {
+    setError('');
+    const validationMessage = validateStep(step);
+    if (validationMessage) {
+      setError(validationMessage);
+      return;
+    }
+
     if (step < totalSteps) {
       setStep(step + 1);
     } else {
-      navigate('/dashboard');
+      handleSubmit();
     }
   };
 
   const handleBack = () => {
     if (step > 1) {
+      setError('');
       setStep(step - 1);
     }
   };
@@ -118,34 +170,14 @@ export function OnboardingMentee() {
               <h2 className="text-2xl font-bold text-slate-900 mb-6">Tell us about yourself</h2>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Full Name</label>
-                  <input
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
-                    placeholder="John Doe"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Email Address</label>
-                  <input
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
-                    placeholder="john@example.com"
-                  />
-                </div>
-                <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">Current Experience Level</label>
                   <div className="space-y-2">
                     {skillLevels.map((level) => (
                       <button
                         key={level.value}
-                        onClick={() => setFormData({ ...formData, experience: level.value })}
+                        onClick={() => setFormData({ ...formData, experienceLevel: level.value })}
                         className={`w-full p-4 rounded-lg border-2 text-left transition-all ${
-                          formData.experience === level.value
+                          formData.experienceLevel === level.value
                             ? 'border-blue-600 bg-blue-50'
                             : 'border-slate-200 bg-white hover:border-blue-300'
                         }`}
@@ -248,10 +280,10 @@ export function OnboardingMentee() {
               <p className="text-slate-600 mb-6">We'll match you with mentors who have compatible schedules</p>
               <div className="space-y-3">
                 {[
-                  { value: 'weekday_morning', label: 'Weekday Mornings', time: '9:00 AM - 12:00 PM' },
-                  { value: 'weekday_afternoon', label: 'Weekday Afternoons', time: '12:00 PM - 5:00 PM' },
-                  { value: 'weekday_evening', label: 'Weekday Evenings', time: '5:00 PM - 9:00 PM' },
-                  { value: 'weekend', label: 'Weekends', time: 'Flexible hours' },
+                  { value: 'WEEKDAYS_MORNING', label: 'Weekday Mornings', time: '9:00 AM - 12:00 PM' },
+                  { value: 'WEEKDAYS_AFTERNOON', label: 'Weekday Afternoons', time: '12:00 PM - 5:00 PM' },
+                  { value: 'WEEKDAYS_EVENING', label: 'Weekday Evenings', time: '5:00 PM - 9:00 PM' },
+                  { value: 'WEEKENDS', label: 'Weekends', time: 'Flexible hours' },
                 ].map((slot) => (
                   <button
                     key={slot.value}
@@ -271,6 +303,12 @@ export function OnboardingMentee() {
           )}
         </motion.div>
 
+        {error && (
+          <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-6">
+            {error}
+          </p>
+        )}
+
         {/* Navigation Buttons */}
         <div className="flex justify-between gap-4">
           <button
@@ -287,9 +325,12 @@ export function OnboardingMentee() {
           </button>
           <button
             onClick={handleNext}
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-all flex items-center gap-2 shadow-sm"
+            disabled={isLoading}
+            className={`px-6 py-3 rounded-lg font-medium transition-all flex items-center gap-2 shadow-sm ${
+              isLoading ? 'bg-blue-400 text-white cursor-not-allowed' : 'bg-blue-600 text-white hover:bg-blue-700'
+            }`}
           >
-            {step === totalSteps ? 'Complete' : 'Continue'}
+            {isLoading ? 'Saving...' : step === totalSteps ? 'Complete' : 'Continue'}
             <ArrowRight className="w-5 h-5" />
           </button>
         </div>
