@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Users, Calendar, Star, TrendingUp, Clock, MessageSquare, Award, Video } from 'lucide-react';
 import { useChatPanel } from './ChatPanel';

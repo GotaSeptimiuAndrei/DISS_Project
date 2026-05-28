@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Users, Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
-import axiosClient from '../../api/axiosClient';
+import axiosClient from '../../api/axiosClient.js';
 
 export function Login() {
   const [email, setEmail] = useState('');

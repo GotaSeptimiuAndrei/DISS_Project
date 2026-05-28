@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Users, GraduationCap, Briefcase } from 'lucide-react';
 import axiosClient from '../../api/axiosClient';

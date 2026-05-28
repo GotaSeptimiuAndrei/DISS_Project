@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Users, Target, TrendingUp, Award, Calendar, CheckCircle, MessageSquare } from 'lucide-react';
 import { useChatPanel } from './ChatPanel';
