@@ -15,6 +15,7 @@ interface Mentor {
   sessions: number;
   bio: string;
   expertise: string[];
+  skills?: string[];
   image: string;
   matchScore: number;
   location: string;
@@ -45,15 +46,16 @@ export function computeMatchScore(mentor: Mentor, mentee: Mentee | null): number
 
   // Count overlapping tokens
   const matchCount = menteeKeywords.filter((kw) =>
-    mentorKeywords.some((mk) => mk.includes(kw) || kw.includes(mk)),
+    mentorKeywords.some((mk: string) => mk.includes(kw) || kw.includes(mk)),
   ).length;
 
   // Availability bonus — mentor.availability from API may be an array or undefined
-  const mentorAvail = Array.isArray(mentor.availability)
-    ? mentor.availability.join(' ')
-    : typeof mentor.availability === 'string'
-      ? mentor.availability
-      : '';
+  let mentorAvail = '';
+  if (Array.isArray(mentor.availability)) {
+    mentorAvail = mentor.availability.join(' ');
+  } else if (typeof mentor.availability === 'string') {
+    mentorAvail = mentor.availability;
+  }
   const menteeAvail = typeof mentee.availability === 'string' ? mentee.availability : '';
   const availabilityMatch =
     mentorAvail && menteeAvail && mentorAvail.toLowerCase().includes(menteeAvail.toLowerCase()) ? 1 : 0;

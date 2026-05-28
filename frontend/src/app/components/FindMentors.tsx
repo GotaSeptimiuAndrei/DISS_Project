@@ -79,20 +79,25 @@ export function FindMentors() {
           experienceLevel: menteeRes.data.experienceLevel || 'Intermediate',
         };
 
-        const populatedData = mentorsRes.data.map((m, index: number) => ({
-          id: m.id,
-          name: m.name,
-          title: m.title,
-          company: m.company,
-          rating: m.rating || 4.8,
-          sessions: m.reviewCount || 15,
-          bio: m.profileBio || 'Experienced professional passionate about mentoring.',
-          expertise: m.skills || [],
-          image: imageUrls[index % imageUrls.length] || '',
-          matchScore: computeMatchScore(m, menteeData),
-          location: 'Cluj-Napoca, RO',
-          availability: 'Available this week',
-        }));
+        const populatedData = mentorsRes.data.map((m, index: number) => {
+          const mentorObj: Mentor = {
+            id: m.id,
+            name: m.name,
+            title: m.title,
+            company: m.company,
+            rating: m.rating || 4.8,
+            sessions: m.reviewCount || 15,
+            bio: m.profileBio || 'Experienced professional passionate about mentoring.',
+            expertise: m.skills || [],
+            image: imageUrls[index % imageUrls.length] || '',
+            matchScore: 0,
+            location: 'Cluj-Napoca, RO',
+            availability: 'Available this week',
+          };
+
+          mentorObj.matchScore = computeMatchScore(mentorObj, menteeData);
+          return mentorObj;
+        });
 
         setMentors(populatedData);
         setLoading(false);
@@ -249,11 +254,11 @@ export function FindMentors() {
                     <img src={mentor.image} alt={mentor.name} className="w-full h-48 object-cover bg-slate-100" />
                     <div
                       className={`absolute top-3 right-3 px-3 py-1 rounded-full text-white text-sm font-semibold shadow-sm ${
-                        mentor.matchScore >= 90
-                          ? 'bg-green-500'
-                          : mentor.matchScore >= 75
-                            ? 'bg-blue-500'
-                            : 'bg-slate-500'
+                        (() => {
+                          if (mentor.matchScore >= 90) return 'bg-green-500';
+                          if (mentor.matchScore >= 75) return 'bg-blue-500';
+                          return 'bg-slate-500';
+                        })()
                       }`}
                     >
                       {mentor.matchScore}% Match
@@ -280,7 +285,7 @@ export function FindMentors() {
                     <div className="flex flex-wrap gap-2 mb-4">
                       {mentor.expertise.slice(0, 2).map((skill, idx) => (
                         <span
-                          key={idx}
+                          key={`${skill}-${idx}`}
                           className="px-2 py-1 bg-blue-50 text-blue-700 rounded text-xs font-medium border border-blue-100"
                         >
                           {skill}
