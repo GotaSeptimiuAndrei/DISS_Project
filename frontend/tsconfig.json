@@ -16,8 +16,8 @@
     "noUncheckedIndexedAccess": true,
     "noImplicitOverride": true,
 
-    /* If transpiling with TypeScript: */
-    "module": "NodeNext",
+    // /* If transpiling with TypeScript: */
+    // "module": "NodeNext",
     "outDir": "dist",
     "sourceMap": true,
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import {
   Users,
   Calendar,
@@ -15,8 +15,17 @@ import {
 import { motion } from 'motion/react';
 
 import { useChatPanel } from './ChatPanel';
+import { computeMatchScore } from './utils/computeMatchScore';
 
 import axiosClient from '../../api/axiosClient';
+
+interface MenteeData {
+  id: number;
+  goals: string[];
+  learningStyle: string;
+  availability: string;
+  experienceLevel: string;
+}
 
 // Interface matching the mapped data from FindMentors
 interface Mentor {
@@ -43,41 +52,70 @@ export function Dashboard() {
     'https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHByb2Zlc3Npb25hbCUyMHdvbWFuJTIwaGVhZHNob3R8ZW58MXx8fHwxNzc1NDcwOTI5fDA&ixlib=rb-4.1.0&q=80&w=400',
     'https://images.unsplash.com/photo-1652471949169-9c587e8898cd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxibGFjayUyMHdvbWFuJTIwYnVzaW5lc3MlMjBwcm9mZXNzaW9uYWx8ZW58MXx8fHwxNzc1NTQ5MTc3fDA&ixlib=rb-4.1.0&q=80&w=400',
     'https://images.unsplash.com/photo-1770058428154-9eee8a6a1fbb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtaWRkbGUlMjBhZ2VkJTIwd29tYW4lMjBwcm9mZXNzaW9uYWx8ZW58MXx8fHwxNzc1NTQ5MTc3fDA&ixlib=rb-4.1.0&q=80&w=400',
+    'https://images.unsplash.com/photo-1543132220-7bc04a0e790a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYW4lMjBidXNpbmVzcyUyMHByb2Zlc3Npb25hbCUyMHBvcnRyYWl0fGVufDF8fHx8MTc3NTU0OTA0OXww&ixlib=rb-4.1.0&q=80&w=400',
+    'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtZW50b3J8ZW58MXx8fHwxNzc1NTQ5MTc3fDA&ixlib=rb-4.1.0&q=80&w=400',
   ];
 
   useEffect(() => {
-    axiosClient
-      .get('/mentors')
-      .then((res) => {
-        const populatedData = res.data.map(
-          (
-            m: {
-              id: number;
-              name: string;
-              title: string;
-              company: string;
-              rating?: number;
-              reviewCount?: number;
-              profileBio?: string;
-              skills?: string[];
-            },
-            index: number
-          ) => ({
-            id: m.id,
-          name: m.name,
-          title: m.title,
-          company: m.company,
-          rating: m.rating || 4.8,
-          sessions: m.reviewCount || 15,
-          bio: m.profileBio || 'Experienced professional passionate about mentoring.',
-          expertise: m.skills || [],
-          image: imageUrls[index],
-          matchScore: Math.floor(Math.random() * 20) + 80,
-          location: 'Cluj-Napoca, RO',
-          availability: 'Available this week',
-        }));
+    Promise.all([
+      axiosClient.get('/mentees/me'),
+      axiosClient.get<
+        {
+          id: number;
+          name: string;
+          title: string;
+          company: string;
+          rating?: number;
+          reviewCount?: number;
+          profileBio?: string;
+          skills?: string[];
+        }[]
+      >('/mentors'),
+    ])
+      .then(([menteeRes, mentorsRes]) => {
+        const menteeData: MenteeData = {
+          id: menteeRes.data.id,
+          goals: menteeRes.data.goals || [],
+          learningStyle: menteeRes.data.learningStyle || '',
+          availability: menteeRes.data.availability || '',
+          experienceLevel: menteeRes.data.experienceLevel || 'Intermediate',
+        };
 
-        setRecommendedMentors(populatedData.slice(0, 3));
+        const populatedData = mentorsRes.data
+          .map((m, index: number) => ({
+            id: m.id,
+            name: m.name,
+            title: m.title,
+            company: m.company,
+            rating: m.rating || 4.8,
+            sessions: m.reviewCount || 15,
+            bio: m.profileBio || 'Experienced professional passionate about mentoring.',
+            expertise: m.skills || [],
+            image: imageUrls[index % imageUrls.length] ?? '',
+            matchScore: computeMatchScore(
+              {
+                id: m.id,
+                name: m.name,
+                title: m.title,
+                company: m.company,
+                rating: m.rating || 4.8,
+                sessions: m.reviewCount || 15,
+                bio: m.profileBio || 'Experienced professional passionate about mentoring.',
+                expertise: m.skills || [],
+                image: imageUrls[index % imageUrls.length] ?? '',
+                matchScore: 0,
+                location: 'Cluj-Napoca, RO',
+                availability: 'Available this week',
+              },
+              menteeData,
+            ),
+            location: 'Cluj-Napoca, RO',
+            availability: 'Available this week',
+          }))
+          .sort((a, b) => b.matchScore - a.matchScore)
+          .slice(0, 3);
+
+        setRecommendedMentors(populatedData);
         setLoading(false);
       })
       .catch((err) => {
@@ -265,7 +303,7 @@ export function Dashboard() {
               </div>
               <div className="space-y-4">
                 {goals.map((goal, index) => (
-                  <div key={index}>
+                  <div key={goal.name}>
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center gap-2">
                         <Target className="w-4 h-4 text-blue-600" />

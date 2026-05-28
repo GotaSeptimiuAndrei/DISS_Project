@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useState, useEffect } from 'react';
 import { Users, Star, Calendar, MessageSquare, Video, Clock, Loader2 } from 'lucide-react';
