@@ -13,7 +13,7 @@ spring:
         sql: true
         format_sql: true
     hibernate:
-      ddl-auto: create #to run the seeder again change this to 'create' and after the first run switch it back to update
+      ddl-auto: update #to run the seeder again change this to 'create' and after the first run switch it back to update
     open-in-view: false
 logging:
   level:
