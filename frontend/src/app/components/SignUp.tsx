@@ -52,8 +52,8 @@ export function SignUp() {
         role: role === 'mentee' ? 'MENTEE' : 'MENTOR',
       });
       const { token, role: responseRole } = response.data as { token: string; role: string };
-      sessionStorage.setItem('token', token);
-      sessionStorage.setItem('role', responseRole);
+      localStorage.setItem('token', token);
+      localStorage.setItem('role', responseRole);
       navigate(role === 'mentee' ? '/onboarding/mentee' : '/onboarding/mentor');
     } catch (err: unknown) {
       if (typeof err === 'object' && err !== null && 'response' in err) {
