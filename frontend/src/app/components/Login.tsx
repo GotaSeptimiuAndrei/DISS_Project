@@ -30,7 +30,8 @@ export function Login() {
       const { token, role } = response.data as { token: string; role: string };
       localStorage.setItem('token', token);
       localStorage.setItem('role', role);
-      navigate('/dashboard');
+      const destination = role === 'MENTOR' ? '/mentor-dashboard' : '/dashboard';
+      navigate(destination);
     } catch (err: unknown) {
       if (typeof err === 'object' && err !== null && 'response' in err) {
         const response = (err as { response?: { status?: number } }).response;
