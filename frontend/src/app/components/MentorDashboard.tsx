@@ -1,10 +1,85 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { motion } from 'motion/react';
 import { Users, Calendar, Star, TrendingUp, Clock, MessageSquare, Award, Video } from 'lucide-react';
 import { useChatPanel } from './ChatPanel';
+import axiosClient from '../../api/axiosClient';
+
+interface PendingSessionResponse {
+  id: number;
+  topic: string;
+  notes: string | null;
+  mentee?: {
+    name?: string;
+  };
+}
+
+interface PendingRequest {
+  id: number;
+  name: string;
+  image: string;
+  goal: string;
+  matchScore: number;
+  message: string;
+}
 
 export function MentorDashboard() {
   const { openChat, ChatPortal } = useChatPanel();
+  const [pendingRequests, setPendingRequests] = useState<PendingRequest[]>([]);
+  const [pendingRequestsLoading, setPendingRequestsLoading] = useState(true);
+  const [pendingRequestsError, setPendingRequestsError] = useState('');
+  const [processingRequestId, setProcessingRequestId] = useState<number | null>(null);
+  const pendingRequestImages = [
+    'https://images.unsplash.com/photo-1765648684613-b77086065bc1?w=100',
+    'https://images.unsplash.com/photo-1648757766966-43d24bf7a264?w=100',
+  ];
+
+  useEffect(() => {
+    let isMounted = true;
+
+    axiosClient
+      .get<PendingSessionResponse[]>('/sessions/mentor/1/pending')
+      .then((res) => {
+        if (!isMounted) return;
+
+        const mappedRequests = res.data.map((session, index) => ({
+          id: session.id,
+          name: session.mentee?.name || 'Mentee',
+          image: pendingRequestImages[index % pendingRequestImages.length] || pendingRequestImages[0] || '',
+          goal: session.topic || 'Mentorship Session',
+          matchScore: 90,
+          message: session.notes || 'No message provided.',
+        }));
+
+        setPendingRequests(mappedRequests);
+        setPendingRequestsError('');
+      })
+      .catch(() => {
+        if (!isMounted) return;
+        setPendingRequestsError('Unable to load pending requests right now.');
+      })
+      .finally(() => {
+        if (!isMounted) return;
+        setPendingRequestsLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const handleRequestStatusUpdate = async (sessionId: number, status: 'ACCEPTED' | 'DECLINED') => {
+    setProcessingRequestId(sessionId);
+    try {
+      await axiosClient.patch(`/sessions/${sessionId}/status`, null, { params: { status } });
+      setPendingRequests((currentRequests) => currentRequests.filter((request) => request.id !== sessionId));
+      setPendingRequestsError('');
+    } catch {
+      setPendingRequestsError(`Failed to ${status === 'ACCEPTED' ? 'accept' : 'decline'} request. Please try again.`);
+    } finally {
+      setProcessingRequestId(null);
+    }
+  };
   const upcomingSessions = [
     {
       id: 1,
@@ -91,25 +166,6 @@ export function MentorDashboard() {
       rating: 5,
       comment: 'Very helpful system design guidance. Practical examples made complex concepts clear.',
       date: '1 week ago',
-    },
-  ];
-
-  const pendingRequests = [
-    {
-      id: 1,
-      name: 'Emily Rodriguez',
-      image: 'https://images.unsplash.com/photo-1765648684613-b77086065bc1?w=100',
-      goal: 'Product Management Transition',
-      matchScore: 95,
-      message: "I'm transitioning from engineering to product management and would love your guidance...",
-    },
-    {
-      id: 2,
-      name: 'Michael Thompson',
-      image: 'https://images.unsplash.com/photo-1648757766966-43d24bf7a264?w=100',
-      goal: 'Engineering Leadership',
-      matchScore: 88,
-      message: 'Looking to develop leadership skills to move into a management role...',
     },
   ];
 
@@ -342,36 +398,51 @@ export function MentorDashboard() {
             {/* Pending Requests */}
             <div className="bg-white rounded-xl shadow-md border border-slate-200 p-6">
               <h3 className="text-lg font-bold text-slate-900 mb-4">New Requests ({pendingRequests.length})</h3>
+              {pendingRequestsError && <p className="text-sm text-red-600 mb-3">{pendingRequestsError}</p>}
               <div className="space-y-4">
-                {pendingRequests.map((request) => (
-                  <div key={request.id} className="p-4 rounded-lg bg-indigo-50 border border-indigo-100">
-                    <div className="flex items-start gap-3 mb-3">
-                      <img
-                        src={request.image}
-                        alt={request.name}
-                        className="w-10 h-10 rounded-full object-cover border border-white"
-                      />
-                      <div className="flex-1">
-                        <div className="font-semibold text-slate-900 text-sm">{request.name}</div>
-                        <div className="text-xs text-slate-600 line-clamp-1">{request.goal}</div>
-                        <div className="flex items-center gap-1 mt-1">
-                          <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-medium rounded-full">
-                            {request.matchScore}% match
-                          </span>
+                {pendingRequestsLoading ? (
+                  <p className="text-sm text-slate-600">Loading pending requests...</p>
+                ) : pendingRequests.length === 0 ? (
+                  <p className="text-sm text-slate-600">No pending requests.</p>
+                ) : (
+                  pendingRequests.map((request) => (
+                    <div key={request.id} className="p-4 rounded-lg bg-indigo-50 border border-indigo-100">
+                      <div className="flex items-start gap-3 mb-3">
+                        <img
+                          src={request.image}
+                          alt={request.name}
+                          className="w-10 h-10 rounded-full object-cover border border-white"
+                        />
+                        <div className="flex-1">
+                          <div className="font-semibold text-slate-900 text-sm">{request.name}</div>
+                          <div className="text-xs text-slate-600 line-clamp-1">{request.goal}</div>
+                          <div className="flex items-center gap-1 mt-1">
+                            <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-medium rounded-full">
+                              {request.matchScore}% match
+                            </span>
+                          </div>
                         </div>
                       </div>
+                      <p className="text-sm text-slate-600 mb-3 line-clamp-2 italic">{request.message}</p>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => handleRequestStatusUpdate(request.id, 'ACCEPTED')}
+                          disabled={processingRequestId === request.id}
+                          className="flex-1 px-3 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 shadow-sm transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+                        >
+                          {processingRequestId === request.id ? 'Updating...' : 'Accept'}
+                        </button>
+                        <button
+                          onClick={() => handleRequestStatusUpdate(request.id, 'DECLINED')}
+                          disabled={processingRequestId === request.id}
+                          className="px-3 py-2 bg-white border border-slate-300 text-slate-700 rounded-lg text-sm font-medium hover:border-indigo-300 hover:bg-indigo-50 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+                        >
+                          Decline
+                        </button>
+                      </div>
                     </div>
-                    <p className="text-sm text-slate-600 mb-3 line-clamp-2 italic">{request.message}</p>
-                    <div className="flex gap-2">
-                      <button className="flex-1 px-3 py-2 bg-indigo-600 text-white rounded-lg text-sm font-medium hover:bg-indigo-700 shadow-sm transition-all">
-                        Accept
-                      </button>
-                      <button className="px-3 py-2 bg-white border border-slate-300 text-slate-700 rounded-lg text-sm font-medium hover:border-indigo-300 hover:bg-indigo-50 transition-all">
-                        View
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
             </div>
 
