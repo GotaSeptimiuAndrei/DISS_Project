@@ -80,15 +80,15 @@ export function MyMentors() {
     axiosClient
       .get('/mentors')
       .then((res) => {
-        const top3 = res.data.slice(0, 3).map((m: any, i: number) => ({
+        const top3 = res.data.slice(0, 3).map((m: Mentor, i: number) => ({
           id: m.id,
           name: m.name,
           title: m.title,
           company: m.company,
           rating: m.rating ?? 4.8,
           image: imageUrls[i],
-          sessionsCompleted: MENTOR_MOCK[i].sessionsCompleted,
-          nextSession: MENTOR_MOCK[i].nextSession,
+          sessionsCompleted: MENTOR_MOCK[i]?.sessionsCompleted,
+          nextSession: MENTOR_MOCK[i]?.nextSession,
         }));
         setMentors(top3);
         setLoading(false);
@@ -100,14 +100,14 @@ export function MyMentors() {
   const upcomingSessions = mentors
     .map((m, i) => {
       const mock = MENTOR_MOCK[i];
-      if (!mock.upcomingTopic) return null;
+      if (!mock?.upcomingTopic || !mock.upcomingDate || !mock.upcomingTime) return null;
       return {
         id: m.id,
         mentor: m.name,
         mentorImage: m.image,
-        topic: mock.upcomingTopic,
-        date: mock.upcomingDate!,
-        time: mock.upcomingTime!,
+        topic: mock?.upcomingTopic,
+        date: mock.upcomingDate,
+        time: mock.upcomingTime,
       };
     })
     .filter(Boolean) as {
@@ -121,7 +121,7 @@ export function MyMentors() {
 
   // Derive past sessions from all mentors
   const pastSessions = mentors.flatMap((m, i) =>
-    MENTOR_MOCK[i].pastSessions.map((s) => ({
+    MENTOR_MOCK[i]?.pastSessions.map((s) => ({
       ...s,
       mentor: m.name,
       mentorImage: m.image,
@@ -268,18 +268,18 @@ export function MyMentors() {
                   <div key={i} className="p-6 hover:bg-slate-50 transition-colors">
                     <div className="flex items-start gap-4">
                       <img
-                        src={session.mentorImage}
-                        alt={session.mentor}
+                        src={session?.mentorImage}
+                        alt={session?.mentor}
                         className="w-12 h-12 rounded-full object-cover"
                       />
                       <div className="flex-1">
                         <div className="flex items-start justify-between mb-2">
                           <div>
-                            <h4 className="font-semibold text-slate-900">{session.topic}</h4>
-                            <p className="text-sm text-slate-600">{session.mentor}</p>
+                            <h4 className="font-semibold text-slate-900">{session?.topic}</h4>
+                            <p className="text-sm text-slate-600">{session?.mentor}</p>
                           </div>
                           <div className="flex items-center gap-1">
-                            {[...Array(session.rating)].map((_, j) => (
+                            {[...Array(session?.rating)].map((_, j) => (
                               <Star key={j} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                             ))}
                           </div>
@@ -287,12 +287,12 @@ export function MyMentors() {
                         <div className="flex items-center gap-4 text-sm text-slate-600">
                           <span className="flex items-center gap-1">
                             <Calendar className="w-3 h-3" />
-                            {session.date}
+                            {session?.date}
                           </span>
                           <span>•</span>
                           <span className="flex items-center gap-1">
                             <Clock className="w-3 h-3" />
-                            {session.duration}
+                            {session?.duration}
                           </span>
                         </div>
                       </div>

@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { motion } from 'motion/react';
-import { Users, Mail, Lock, Eye, EyeOff, ArrowRight, Chrome } from 'lucide-react';
+import { Users, Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
+import axiosClient from '../../api/axiosClient';
 
 export function Login() {
   const [email, setEmail] = useState('');
@@ -21,10 +22,29 @@ export function Login() {
     }
 
     setIsLoading(true);
-    // Simulate auth — replace with real logic
-    await new Promise((res) => setTimeout(res, 1000));
-    setIsLoading(false);
-    navigate('/dashboard');
+    try {
+      const response = await axiosClient.post('/auth/login', {
+        email,
+        password,
+      });
+      const { token, role } = response.data as { token: string; role: string };
+      localStorage.setItem('token', token);
+      localStorage.setItem('role', role);
+      navigate('/dashboard');
+    } catch (err: unknown) {
+      if (typeof err === 'object' && err !== null && 'response' in err) {
+        const response = (err as { response?: { status?: number } }).response;
+        if (response?.status === 401) {
+          setError('Invalid email or password.');
+        } else {
+          setError('Sign-in failed. Please try again.');
+        }
+      } else {
+        setError('Sign-in failed. Please try again.');
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleGoogleSignIn = () => {

@@ -1,6 +1,6 @@
 spring:
   application:
-    name: backend
+    name: mentor-match
   datasource:
     url: jdbc:postgresql://localhost:5432/mentormatch
     username: postgres
@@ -20,4 +20,13 @@ logging:
     org.hibernate.sql: debug
 #    org.hibernate.orm.jdbc.bind: trace
 server:
-  port: 8080
+  port: 8081
+
+# application specific properties
+pagination:
+  page-size: 10
+jwt:
+  secret: 833152120af0c8ec782f305853993c4dee763222474600133c9c080688ebc13c
+access:
+  token:
+    lifetime: 3600000 # 1 hour in milliseconds

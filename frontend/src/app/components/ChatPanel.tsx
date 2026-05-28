@@ -20,7 +20,7 @@ interface Conversation {
   initials: string;
   online: boolean;
   unread: number;
-  lastMsg: string;
+  lastMsg: string | undefined;
   lastTime: string;
   messages: Message[];
 }
@@ -314,6 +314,7 @@ function ChatView({
   conv,
   wsStatus,
   onSend,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onBack,
   typing,
 }: {
@@ -356,7 +357,8 @@ function ChatView({
   const groups: Message[][] = [];
   conv.messages.forEach((msg) => {
     const last = groups[groups.length - 1];
-    if (last && last[0].from === msg.from) last.push(msg);
+    const lastFirst = last?.[0];
+    if (lastFirst && lastFirst.from === msg.from) last.push(msg);
     else groups.push([msg]);
   });
 
@@ -367,9 +369,9 @@ function ChatView({
         <div className="chat-date-separator text-center text-[11px] text-slate-400 py-1">Today</div>
 
         {groups.map((group) => {
-          const sent = group[0].from === 'me';
+          const sent = group[0]?.from === 'me';
           return (
-            <div key={group[0].id} className={`flex items-end gap-2 ${sent ? 'flex-row-reverse' : ''}`}>
+            <div key={group[0]?.id} className={`flex items-end gap-2 ${sent ? 'flex-row-reverse' : ''}`}>
               {!sent && <InitialsAvatar initials={conv.initials} size="sm" />}
               <div className={`flex flex-col gap-1 ${sent ? 'items-end' : 'items-start'}`}>
                 {group.map((msg, i) => (
@@ -438,7 +440,7 @@ export function ChatPanel({ initialConversationId, isOpen, onClose }: ChatPanelP
   const [activeId, setActiveId] = useState<string | null>(initialConversationId ?? null);
 
   const [typing, setTyping] = useState(false);
-  const typingTimer = useRef<ReturnType<typeof setTimeout>>();
+  const typingTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Sync with prop changes (e.g. clicking "Send Message" on a different mentor)
   useEffect(() => {
@@ -471,7 +473,7 @@ export function ChatPanel({ initialConversationId, isOpen, onClose }: ChatPanelP
     if (conv?.online && Math.random() > 0.5) {
       setTimeout(() => {
         setTyping(true);
-        clearTimeout(typingTimer.current);
+        if (typingTimer.current) clearTimeout(typingTimer.current);
         typingTimer.current = setTimeout(() => setTyping(false), 2500);
       }, 900);
     }
@@ -537,7 +539,7 @@ export function ChatPanel({ initialConversationId, isOpen, onClose }: ChatPanelP
         if (conv?.online && Math.random() > 0.3) {
           setTimeout(() => {
             setTyping(true);
-            clearTimeout(typingTimer.current);
+            if (typingTimer.current) clearTimeout(typingTimer.current);
             typingTimer.current = setTimeout(
               () => {
                 setTyping(false);
@@ -548,7 +550,7 @@ export function ChatPanel({ initialConversationId, isOpen, onClose }: ChatPanelP
                   "I'll prepare some materials on that topic.",
                   'Looking forward to diving deeper into this!',
                 ];
-                const replyText = replies[Math.floor(Math.random() * replies.length)];
+                const replyText = replies[Math.floor(Math.random() * replies.length)] || '';
                 setConversations((prev) =>
                   prev.map((c) =>
                     c.id === activeId

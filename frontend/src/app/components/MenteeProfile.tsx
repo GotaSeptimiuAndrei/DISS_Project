@@ -31,9 +31,37 @@ const imageUrls = [
   'https://images.unsplash.com/photo-1770058428154-9eee8a6a1fbb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400', // man
 ];
 
+interface Mentee {
+  id: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  image: string;
+  experienceLevel: string;
+  bio: string;
+  learningGoals: string[];
+  customGoals: string[];
+  learningStyle: {
+    type: string;
+    description: string;
+  };
+  availability: string[];
+  mentorshipPreferences: {
+    sessionFrequency: string;
+    preferredSessionType: string;
+    commitmentLevel: string;
+  };
+  progress: {
+    completedSessions: number;
+    activeGoals: number;
+    mentorshipStreak: string;
+  };
+  interests: string[];
+}
+
 export function MenteeProfile() {
   const { id } = useParams<{ id: string }>();
-  const [mentee, setMentee] = useState<any>(null);
+  const [mentee, setMentee] = useState<Mentee | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -75,7 +103,7 @@ export function MenteeProfile() {
         setMentee(menteeData);
         setLoading(false);
       })
-      .catch((err) => {
+      .catch(() => {
         setError('Failed to load mentee profile');
         setLoading(false);
       });
@@ -150,14 +178,16 @@ export function MenteeProfile() {
                 <div className="flex flex-col sm:flex-row items-start gap-6">
                   <img
                     src={mentee.image}
-                    alt={mentee.name}
+                    alt={`${mentee.firstName} ${mentee.lastName}`}
                     className="w-32 h-32 -mt-16 shrink-0 rounded-xl object-cover border-4 border-white shadow-lg"
                   />
 
                   <div className="flex-1 pt-0 sm:pt-2">
                     <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                       <div>
-                        <h1 className="text-3xl font-bold text-slate-900 mb-2">{mentee.name}</h1>
+                        <h1 className="text-3xl font-bold text-slate-900 mb-2">
+                          {mentee.firstName} {mentee.lastName}
+                        </h1>
 
                         <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600 mb-4">
                           <div className="flex items-center gap-2">
@@ -229,7 +259,7 @@ export function MenteeProfile() {
               </div>
 
               <div className="flex flex-wrap gap-3 mb-6">
-                {mentee.learningGoals.map((goal, index) => (
+                {mentee.learningGoals.map((goal: string, index: number) => (
                   <span key={index} className="px-4 py-2 bg-blue-50 text-blue-700 rounded-lg font-medium">
                     {goal}
                   </span>
@@ -240,7 +270,7 @@ export function MenteeProfile() {
                 <h3 className="font-semibold text-slate-900 mb-3">Custom Goals</h3>
 
                 <div className="space-y-3">
-                  {mentee.customGoals.map((goal, index) => (
+                  {mentee.customGoals.map((goal: string, index: number) => (
                     <div key={index} className="flex items-start gap-3 p-4 bg-slate-50 rounded-xl">
                       <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
 
@@ -295,7 +325,7 @@ export function MenteeProfile() {
               </div>
 
               <div className="flex flex-wrap gap-2">
-                {mentee.interests.map((interest, index) => (
+                {mentee.interests.map((interest: string, index: number) => (
                   <span key={index} className="px-4 py-2 rounded-lg bg-slate-100 text-slate-700 font-medium">
                     {interest}
                   </span>
@@ -354,7 +384,7 @@ export function MenteeProfile() {
                 </div>
 
                 <div className="space-y-3">
-                  {mentee.availability.map((slot, index) => (
+                  {mentee.availability.map((slot: string, index: number) => (
                     <div key={index} className="px-4 py-3 rounded-xl bg-slate-50 border border-slate-200">
                       <div className="text-sm font-medium text-slate-700">{slot}</div>
                     </div>

@@ -56,21 +56,6 @@ interface MentorDetail {
 const FALLBACK_IMAGE =
   'https://images.unsplash.com/photo-1762522921456-cdfe882d36c3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx5b3VuZyUyMHByb2Zlc3Npb25hbCUyMHdvbWFuJTIwaGVhZHNob3R8ZW58MXx8fHwxNzc1NDcwOTI5fDA&ixlib=rb-4.1.0&q=80&w=800';
 
-const MOCK_REVIEWS = [
-  {
-    name: 'Alex Johnson',
-    role: 'Software Engineer',
-    rating: 5,
-    date: 'Recently',
-    text: 'Great mentor, very helpful!',
-    avatar: 'https://images.unsplash.com/photo-1706025090996-63717544be2d?w=100',
-  },
-];
-const MOCK_AVAILABILITY = [
-  { day: 'Monday', slots: ['2:00 PM', '4:00 PM'] },
-  { day: 'Wednesday', slots: ['10:00 AM', '3:00 PM'] },
-];
-
 export function MentorProfile() {
   const { id } = useParams();
   const location = useLocation();

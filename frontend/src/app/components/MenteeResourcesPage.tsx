@@ -7,7 +7,6 @@ import {
   BookOpen,
   Video,
   FileText,
-  Link as LinkIcon,
   CheckCircle,
   Clock,
   PlayCircle,

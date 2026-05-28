@@ -8,13 +8,10 @@ import {
   TrendingUp,
   Star,
   Clock,
-  ChevronDown,
-  ChevronUp,
   Target,
   BookOpen,
   Award,
   Video,
-  MoreHorizontal,
   Search,
   Filter,
   CheckCircle,
@@ -58,10 +55,25 @@ interface Mentee {
   joinedDate: string;
   status: 'active' | 'on-track' | 'needs-attention';
   rating: number;
+  reviewCount: number;
   skills: Skill[];
   recentSessions: Session[];
   lastNote: string;
   email?: string;
+  experienceLevel?: string;
+  learningStyle?: string;
+  availability?: string;
+  goals?: string[];
+}
+
+interface MenteeResponse {
+  id: number;
+  name: string;
+  email: string;
+  title: string;
+  company: string;
+  rating?: number;
+  reviewCount?: number;
   experienceLevel?: string;
   learningStyle?: string;
   availability?: string;
@@ -167,7 +179,7 @@ function SessionRow({ session }: { session: Session }) {
 }
 
 function MenteeCard({ mentee, openChat }: { mentee: Mentee; openChat: () => void }) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded] = useState(false);
 
   const progressColor =
     mentee.overallProgress >= 70 ? 'bg-green-500' : mentee.overallProgress >= 40 ? 'bg-indigo-500' : 'bg-amber-500';
@@ -368,7 +380,7 @@ function MenteeCard({ mentee, openChat }: { mentee: Mentee; openChat: () => void
       </AnimatePresence>
     </motion.div>
   );
-}
+};
 
 // ─── Main page ─────────────────────────────────────────────────────────────────
 
@@ -383,7 +395,7 @@ export function MyMentees() {
     axiosClient
       .get('/mentees')
       .then((res) => {
-        const menteesWithImages = res.data.map((m: any, i: number) => ({
+        const menteesWithImages = res.data.map((m: MenteeResponse, i: number) => ({
           id: m.id,
           name: m.name,
           email: m.email,
