@@ -120,20 +120,24 @@ export function FindMentors() {
 
   const filteredMentors = useMemo(() => {
     return mentors.filter((mentor) => {
-      const query = searchQuery.toLowerCase().trim();
-      const matchesSearch =
-        mentor.name.toLowerCase().includes(query) ||
-        mentor.title.toLowerCase().includes(query) ||
-        mentor.company.toLowerCase().includes(query) ||
-        mentor.expertise.some((skill) => skill.toLowerCase().includes(query));
+      const query = (searchQuery || '').toLowerCase().trim();
+
+      const name = (mentor.name || '').toLowerCase();
+      const title = (mentor.title || '').toLowerCase();
+      const company = (mentor.company || '').toLowerCase();
+      const expertiseMatch = Array.isArray(mentor.expertise)
+        ? mentor.expertise.some((skill) => (skill || '').toLowerCase().includes(query))
+        : false;
+
+      const matchesSearch = name.includes(query) || title.includes(query) || company.includes(query) || expertiseMatch;
 
       let matchesTab = true;
       if (selectedFilter === 'high-match') {
-        matchesTab = mentor.matchScore >= 90;
+        matchesTab = (mentor.matchScore || 0) >= 90;
       } else if (selectedFilter === 'available') {
-        matchesTab = mentor.availability === 'Available this week';
+        matchesTab = (mentor.availability || '') === 'Available this week';
       } else if (selectedFilter === 'popular') {
-        matchesTab = mentor.sessions >= 15 || mentor.rating >= 4.9;
+        matchesTab = (mentor.sessions || 0) >= 15 || (mentor.rating || 0) >= 4.9;
       }
 
       return matchesSearch && matchesTab;
