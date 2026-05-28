@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Users, Search, Star, MapPin, Briefcase, Loader2, MessageSquare } from 'lucide-react';
 

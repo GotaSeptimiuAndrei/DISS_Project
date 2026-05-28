@@ -1,4 +1,4 @@
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Users, Target, Calendar, TrendingUp, CheckCircle, Star } from 'lucide-react';
 

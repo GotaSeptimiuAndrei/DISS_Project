@@ -1,10 +1,15 @@
 package com.codecrafters.mentormatch.controller;
 
 import com.codecrafters.mentormatch.dto.MenteeResponseDTO;
+import com.codecrafters.mentormatch.dto.incoming.MenteeProfileRequest;
 import com.codecrafters.mentormatch.model.MenteeProfile;
+import com.codecrafters.mentormatch.model.User;
 import com.codecrafters.mentormatch.repository.MenteeProfileRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.codecrafters.mentormatch.repository.UserRepository;
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.hibernate.Hibernate;
@@ -17,14 +22,12 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/mentees")
 @CrossOrigin(origins = "*")
+@AllArgsConstructor
 public class MenteeController {
     private static final Logger logger = LoggerFactory.getLogger(MenteeController.class);
 
     private final MenteeProfileRepository menteeProfileRepository;
-
-    public MenteeController(MenteeProfileRepository menteeProfileRepository) {
-        this.menteeProfileRepository = menteeProfileRepository;
-    }
+    private final UserRepository userRepository;
 
     @GetMapping
     @Transactional
@@ -56,6 +59,26 @@ public class MenteeController {
             logger.error("Error fetching mentee with id {}", id, e);
             throw e;
         }
+    }
+
+    @PostMapping("/profile")
+    @Transactional
+    public ResponseEntity<Void> saveMenteeProfile(@Valid @RequestBody MenteeProfileRequest request,
+                                                  Authentication authentication) {
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalStateException("Authenticated user not found"));
+
+        MenteeProfile profile = menteeProfileRepository.findById(user.getId())
+                .orElseGet(MenteeProfile::new);
+        profile.setUser(user);
+        profile.setExperienceLevel(request.experienceLevel());
+        profile.setLearningStyle(request.learningStyle());
+        profile.setAvailability(request.availability());
+        profile.setGoals(request.goals());
+
+        menteeProfileRepository.save(profile);
+        return ResponseEntity.ok().build();
     }
 
     // Helper method to map Entity -> DTO

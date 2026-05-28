@@ -1,23 +1,25 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Users, ArrowRight, ArrowLeft } from 'lucide-react';
+import axiosClient from '../../api/axiosClient';
 
 export function OnboardingMentor() {
   const [step, setStep] = useState(1);
   const [customExpertise, setCustomExpertise] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
   const totalSteps = 4;
 
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
     title: '',
     company: '',
     expertise: [] as string[],
     experience: '',
-    availability: [] as string[],
     sessionTypes: [] as string[],
+    availability: [] as string[],
+    capacity: '',
   });
 
   const expertiseOptions = [
@@ -34,21 +36,86 @@ export function OnboardingMentor() {
   ];
 
   const sessionTypeOptions = [
-    { value: 'one-on-one', label: 'One-on-One Sessions', description: 'Individual mentorship' },
-    { value: 'group', label: 'Group Sessions', description: 'Mentor multiple mentees' },
-    { value: 'workshop', label: 'Workshops', description: 'Structured learning sessions' },
+    { value: 'ONE_ON_ONE', label: 'One-on-One Sessions', description: 'Individual mentorship' },
+    { value: 'GROUP', label: 'Group Sessions', description: 'Mentor multiple mentees' },
+    { value: 'WORKSHOP', label: 'Workshops', description: 'Structured learning sessions' },
   ];
 
+  const validateStep = (currentStep: number) => {
+    if (currentStep === 1) {
+      if (
+        !formData.title.trim() ||
+        !formData.company.trim()
+      ) {
+        return 'Please complete your professional details.';
+      }
+      if (!formData.experience) {
+        return 'Please select your years of experience.';
+      }
+    }
+    if (currentStep === 2 && formData.expertise.length === 0) {
+      return 'Please select at least one expertise area.';
+    }
+    if (currentStep === 3) {
+      if (formData.sessionTypes.length === 0) {
+        return 'Please select at least one session type.';
+      }
+      const capacityValue = Number(formData.capacity);
+      if (!Number.isInteger(capacityValue) || capacityValue <= 0) {
+        return 'Please enter a valid mentee capacity.';
+      }
+    }
+    if (currentStep === 4 && formData.availability.length === 0) {
+      return 'Please select your availability.';
+    }
+    return '';
+  };
+
+  const handleSubmit = async () => {
+    const capacityValue = Number(formData.capacity);
+    setIsLoading(true);
+    try {
+      await axiosClient.post('/mentors/profile', {
+        expertise: formData.expertise,
+        availability: formData.availability,
+        sessionTypes: formData.sessionTypes,
+        capacity: capacityValue,
+      });
+      navigate('/dashboard');
+    } catch (err: unknown) {
+      if (typeof err === 'object' && err !== null && 'response' in err) {
+        const response = (err as { response?: { status?: number } }).response;
+        if (response?.status === 401) {
+          setError('Your session expired. Please sign in again.');
+        } else {
+          setError('We could not save your profile. Please try again.');
+        }
+      } else {
+        setError('We could not save your profile. Please try again.');
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleNext = () => {
+    setError('');
+    const validationMessage = validateStep(step);
+    if (validationMessage) {
+      setError(validationMessage);
+      return;
+    }
+
     if (step < totalSteps) {
       setStep(step + 1);
     } else {
-      navigate('/mentor-dashboard');
+      handleSubmit();
     }
   };
 
   const handleBack = () => {
     if (step > 1) {
+      setError('');
       setStep(step - 1);
     }
   };
@@ -121,26 +188,6 @@ export function OnboardingMentor() {
             <div>
               <h2 className="text-2xl font-bold text-slate-900 mb-6">Professional Information</h2>
               <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Full Name</label>
-                  <input
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white"
-                    placeholder="Jane Smith"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Email Address</label>
-                  <input
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white"
-                    placeholder="jane@company.com"
-                  />
-                </div>
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-2">Current Title</label>
                   <input
@@ -258,6 +305,17 @@ export function OnboardingMentor() {
                   </button>
                 ))}
               </div>
+              <div className="mt-6">
+                <label className="block text-sm font-medium text-slate-700 mb-2">Mentee Capacity</label>
+                <input
+                  type="number"
+                  min={1}
+                  value={formData.capacity}
+                  onChange={(e) => setFormData({ ...formData, capacity: e.target.value })}
+                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent bg-white"
+                  placeholder="How many mentees can you take?"
+                />
+              </div>
             </div>
           )}
 
@@ -267,10 +325,10 @@ export function OnboardingMentor() {
               <p className="text-slate-600 mb-6">Select your preferred mentoring time slots</p>
               <div className="space-y-3">
                 {[
-                  { value: 'weekday_morning', label: 'Weekday Mornings', time: '9:00 AM - 12:00 PM' },
-                  { value: 'weekday_afternoon', label: 'Weekday Afternoons', time: '12:00 PM - 5:00 PM' },
-                  { value: 'weekday_evening', label: 'Weekday Evenings', time: '5:00 PM - 9:00 PM' },
-                  { value: 'weekend', label: 'Weekends', time: 'Flexible hours' },
+                  { value: 'WEEKDAYS_MORNING', label: 'Weekday Mornings', time: '9:00 AM - 12:00 PM' },
+                  { value: 'WEEKDAYS_AFTERNOON', label: 'Weekday Afternoons', time: '12:00 PM - 5:00 PM' },
+                  { value: 'WEEKDAYS_EVENING', label: 'Weekday Evenings', time: '5:00 PM - 9:00 PM' },
+                  { value: 'WEEKENDS', label: 'Weekends', time: 'Flexible hours' },
                 ].map((slot) => (
                   <button
                     key={slot.value}
@@ -295,6 +353,12 @@ export function OnboardingMentor() {
           )}
         </motion.div>
 
+        {error && (
+          <p className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-3 mb-6">
+            {error}
+          </p>
+        )}
+
         {/* Navigation Buttons */}
         <div className="flex justify-between gap-4">
           <button
@@ -311,9 +375,12 @@ export function OnboardingMentor() {
           </button>
           <button
             onClick={handleNext}
-            className="px-6 py-3 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-all flex items-center gap-2 shadow-sm"
+            disabled={isLoading}
+            className={`px-6 py-3 rounded-lg font-medium transition-all flex items-center gap-2 shadow-sm ${
+              isLoading ? 'bg-indigo-400 text-white cursor-not-allowed' : 'bg-indigo-600 text-white hover:bg-indigo-700'
+            }`}
           >
-            {step === totalSteps ? 'Complete' : 'Continue'}
+            {isLoading ? 'Saving...' : step === totalSteps ? 'Complete' : 'Continue'}
             <ArrowRight className="w-5 h-5" />
           </button>
         </div>

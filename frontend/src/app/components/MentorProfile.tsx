@@ -1,4 +1,4 @@
-import { Link, useParams, useLocation } from 'react-router';
+import { Link, useParams, useLocation } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useState, useEffect } from 'react';
 import {

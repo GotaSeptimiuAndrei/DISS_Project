@@ -1,5 +1,7 @@
 package com.codecrafters.mentormatch.model;
 
+import com.codecrafters.mentormatch.model.enums.Availability;
+import com.codecrafters.mentormatch.model.enums.MentorSessionType;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -40,4 +42,19 @@ public class MentorProfile {
 
     @OneToMany(mappedBy = "mentor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<MentorAvailability> availability = new ArrayList<>();
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "mentor_availability_slots", joinColumns = @JoinColumn(name = "mentor_id"))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "availability_slot")
+    private List<Availability> availabilitySlots;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "mentor_session_types", joinColumns = @JoinColumn(name = "mentor_id"))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "session_type")
+    private List<MentorSessionType> sessionTypes;
+
+    @Column
+    private Integer capacity;
 }
